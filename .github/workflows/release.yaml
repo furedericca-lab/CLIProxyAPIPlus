@@ -16,10 +16,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: recursive
       - name: Refresh models catalog
         run: |
-          git fetch --depth 1 https://github.com/router-for-me/models.git main
-          git show FETCH_HEAD:models.json > internal/registry/models/models.json
+          git -C third_party/models fetch --depth 1 origin main
+          git -C third_party/models checkout --detach FETCH_HEAD
+          cp third_party/models/models.json internal/registry/models/models.json
       - run: git fetch --force --tags
       - uses: actions/setup-go@v4
         with:

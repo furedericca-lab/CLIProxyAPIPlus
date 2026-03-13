@@ -607,6 +607,18 @@ func GetKiroModels() []*ModelInfo {
 			MaxCompletionTokens: 64000,
 			Thinking:            &ThinkingSupport{Min: 1024, Max: 32000, ZeroAllowed: true, DynamicAllowed: true},
 		},
+		// --- Chat Variant (No tool calling, for pure conversation) ---
+		{
+			ID:                  "kiro-claude-opus-4-5-chat",
+			Object:              "model",
+			Created:             1732752000,
+			OwnedBy:             "aws",
+			Type:                "kiro",
+			DisplayName:         "Kiro Claude Opus 4.5 (Chat)",
+			Description:         "Claude Opus 4.5 for chat only (no tool calling)",
+			ContextLength:       200000,
+			MaxCompletionTokens: 64000,
+		},
 		// --- 第三方模型 (通过 Kiro 接入) ---
 		{
 			ID:                  "kiro-deepseek-3-2",
