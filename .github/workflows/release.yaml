@@ -1,6 +1,14 @@
 name: goreleaser
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build and publish, for example v6.8.55-2'
+        required: true
+      ref:
+        description: 'Git ref to checkout before building. Defaults to the triggering ref.'
+        required: false
   push:
     # run only against tags
     tags:
@@ -17,6 +25,15 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
+      - name: Prepare manual release tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          if [ -z "${{ inputs.tag }}" ]; then
+            echo "workflow_dispatch input 'tag' is required" >&2
+            exit 1
+          fi
+          git tag -f "${{ inputs.tag }}" HEAD
       - name: Refresh models catalog
         run: |
           git -C third_party/models fetch --depth 1 origin main
@@ -29,7 +46,11 @@ jobs:
           cache: true
       - name: Generate Build Metadata
         run: |
-          echo "VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ inputs.tag }}" >> $GITHUB_ENV
+          else
+            echo "VERSION=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          fi
           echo COMMIT=`git rev-parse --short HEAD` >> $GITHUB_ENV
           echo BUILD_DATE=`date -u +%Y-%m-%dT%H:%M:%SZ` >> $GITHUB_ENV
       - uses: goreleaser/goreleaser-action@v4
