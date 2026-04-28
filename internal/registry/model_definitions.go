@@ -105,7 +105,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "Automatic model selection via CodeBuddy",
 			ContextLength:       128000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "glm-5v-turbo",
@@ -117,7 +117,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "GLM-5v Turbo via CodeBuddy",
 			ContextLength:       200000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "glm-5.1",
@@ -129,7 +129,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "GLM-5.1 via CodeBuddy",
 			ContextLength:       200000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "glm-5.0-turbo",
@@ -141,7 +141,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "GLM-5.0 Turbo via CodeBuddy",
 			ContextLength:       200000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "glm-5.0",
@@ -153,7 +153,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "GLM-5.0 via CodeBuddy",
 			ContextLength:       200000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "glm-4.7",
@@ -165,7 +165,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "GLM-4.7 via CodeBuddy",
 			ContextLength:       200000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "minimax-m2.7",
@@ -177,7 +177,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "MiniMax M2.7 via CodeBuddy",
 			ContextLength:       200000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "kimi-k2.5",
@@ -189,7 +189,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "Kimi K2.5 via CodeBuddy",
 			ContextLength:       256000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "kimi-k2-thinking",
@@ -202,7 +202,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			ContextLength:       256000,
 			MaxCompletionTokens: 32768,
 			Thinking:            &ThinkingSupport{ZeroAllowed: true},
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "deepseek-v3-2-volc",
@@ -214,7 +214,7 @@ func GetCodeBuddyModels() []*ModelInfo {
 			Description:         "DeepSeek V3.2 via CodeBuddy",
 			ContextLength:       128000,
 			MaxCompletionTokens: 32768,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 	}
 }
@@ -622,7 +622,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Haiku 4.5 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 64000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "claude-opus-4.1",
@@ -634,7 +634,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Opus 4.1 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 32000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 		},
 		{
 			ID:                  "claude-opus-4.5",
@@ -646,7 +646,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Opus 4.5 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 64000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 			Thinking:            &ThinkingSupport{Levels: []string{"low", "medium", "high"}},
 		},
 		{
@@ -659,7 +659,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Opus 4.6 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 64000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 			Thinking:            &ThinkingSupport{Levels: []string{"low", "medium", "high"}},
 		},
 		{
@@ -672,7 +672,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Sonnet 4 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 64000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 			Thinking:            &ThinkingSupport{Levels: []string{"low", "medium", "high"}},
 		},
 		{
@@ -685,7 +685,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Sonnet 4.5 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 64000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 			Thinking:            &ThinkingSupport{Levels: []string{"low", "medium", "high"}},
 		},
 		{
@@ -698,7 +698,7 @@ func GetGitHubCopilotModels() []*ModelInfo {
 			Description:         "Anthropic Claude Sonnet 4.6 via GitHub Copilot",
 			ContextLength:       defaultCopilotClaudeContextLength,
 			MaxCompletionTokens: 64000,
-			SupportedEndpoints:  []string{"/chat/completions"},
+			SupportedEndpoints:  []string{"/chat/completions", "/messages"},
 			Thinking:            &ThinkingSupport{Levels: []string{"low", "medium", "high"}},
 		},
 		{
