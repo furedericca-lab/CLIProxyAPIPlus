@@ -429,7 +429,6 @@ func (a *Auth) AccountInfo() (string, string) {
 			}
 		}
 	}
-
 	// Check metadata for email first (OAuth-style auth)
 	if a.Metadata != nil {
 		if method, ok := a.Metadata["auth_method"].(string); ok {

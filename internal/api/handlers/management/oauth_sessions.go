@@ -232,12 +232,12 @@ func NormalizeOAuthProvider(provider string) (string, error) {
 		return "gitlab", nil
 	case "gemini", "google":
 		return "gemini", nil
-	case "iflow", "i-flow":
-		return "iflow", nil
 	case "antigravity", "anti-gravity":
 		return "antigravity", nil
 	case "qwen":
 		return "qwen", nil
+	case "iflow", "i-flow":
+		return "iflow", nil
 	case "kiro":
 		return "kiro", nil
 	case "github":
