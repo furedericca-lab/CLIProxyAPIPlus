@@ -6,11 +6,11 @@ description: Execution checklist for the HsnSaboor clean-root integration scope.
 
 ## Input References
 
-- `docs/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`
-- `docs/hsnsaboor-clean-root/task-plans/phase-1-hsnsaboor-clean-root.md`
-- `docs/hsnsaboor-clean-root/task-plans/phase-2-hsnsaboor-clean-root.md`
-- `docs/hsnsaboor-clean-root/task-plans/phase-3-hsnsaboor-clean-root.md`
-- `docs/hsnsaboor-clean-root/task-plans/phase-4-hsnsaboor-clean-root.md`
+- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`
+- `docs/archive/hsnsaboor-clean-root/task-plans/phase-1-hsnsaboor-clean-root.md`
+- `docs/archive/hsnsaboor-clean-root/task-plans/phase-2-hsnsaboor-clean-root.md`
+- `docs/archive/hsnsaboor-clean-root/task-plans/phase-3-hsnsaboor-clean-root.md`
+- `docs/archive/hsnsaboor-clean-root/task-plans/phase-4-hsnsaboor-clean-root.md`
 - `.codex/wiki/reference/upstream-plus-maintenance.md`
 - `.codex/wiki/reference/local-provider-and-commit-inventory.md`
 
@@ -48,13 +48,13 @@ Result:
 
 - [x] `.codex/wiki/**` is trackable.
 - [x] `.codex/notepad.md` remains ignored.
-- [x] Scope docs exist under `docs/hsnsaboor-clean-root/`.
+- [x] Scope docs exist under `docs/archive/hsnsaboor-clean-root/`.
 - [x] Wiki lint passes.
 
 Evidence commands:
 
 ```bash
-git check-ignore -v .codex/wiki/index.md .codex/notepad.md docs/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md || true
+git check-ignore -v .codex/wiki/index.md .codex/notepad.md docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md || true
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint
 ```
 
@@ -113,3 +113,10 @@ Result:
 ## Final Release Gate Summary
 
 Clean-root branch verification passed. Replacing `main` remains blocked until explicit user approval.
+
+## Archive Record
+
+- Archived on 2026-05-28 under `docs/archive/hsnsaboor-clean-root/`.
+- Archive purpose: preserve the completed hsnsaboor-clean-root audit trail.
+- Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
+- Archived docs should only change for factual errata or path-maintenance updates.

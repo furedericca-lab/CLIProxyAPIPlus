@@ -25,13 +25,13 @@ Repository task documentation lives under `docs/<scope>/` and completed scopes m
 
 Durable maintainer knowledge lives under `.codex/wiki/**`. Use it for decisions, maintenance notes, architecture breadcrumbs, provider inventories, and lessons learned that should survive context compaction.
 
-## Current Active Scope
+## Completed Scope
 
-The current maintenance scope is:
+The clean-root maintenance scope has been completed and archived:
 
-- `docs/hsnsaboor-clean-root/`
+- `docs/archive/hsnsaboor-clean-root/`
 
-Its purpose is to create a clean branch rooted at HsnSaboor `upstream/main`, then add only our current maintenance decisions as new commits.
+It created a clean branch rooted at HsnSaboor `upstream/main`, then added only our current maintenance decisions as new commits.
 
 ## Upstream Policy
 

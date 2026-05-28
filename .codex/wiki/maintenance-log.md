@@ -26,6 +26,6 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 ## 2026-05-28T13:03:48Z [hsnsaboor-clean-root]
 
 - Summary: Added detailed clean-root integration plan using HsnSaboor upstream as base and replaying only current local maintenance decisions.
-- Pages: .codex/wiki/implementation/hsnsaboor-clean-root-plan.md
-- Verification: apply_patch .codex/wiki/implementation/hsnsaboor-clean-root-plan.md
+- Pages: docs/archive/hsnsaboor-clean-root/
+- Verification: scope archived after build, full tests, provider matrix, wiki lint, and scope inventory passed
 - Residual risk: Plan only; integration branch has not been created yet.

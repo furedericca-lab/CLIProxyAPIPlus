@@ -91,7 +91,7 @@ Preserve local-only commits, especially local provider routing changes such as `
 
 Current refined policy: HsnSaboor is the baseline. If HsnSaboor has the same provider or same-topic implementation, prefer HsnSaboor first and validate behavior before reintroducing old local patches.
 
-For history cleanup, use the active scope under `docs/hsnsaboor-clean-root/` instead of rebasing old `main`: create a new branch from `upstream/main`, then add our current maintenance commits on top.
+The clean-root history cleanup scope is archived under `docs/archive/hsnsaboor-clean-root/`: it created a branch from `upstream/main`, then added our current maintenance commit on top.
 
 ## Router absorption rule
 

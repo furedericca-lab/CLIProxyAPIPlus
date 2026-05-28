@@ -6,7 +6,7 @@ description: Phase 1 task plan for creating the non-destructive HsnSaboor clean-
 
 ## Input
 
-- `docs/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`
+- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`
 - Current `main`
 - `upstream/main`
 - `router/main`

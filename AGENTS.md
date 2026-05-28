@@ -115,8 +115,8 @@ For non-trivial repo work:
 4. Run the narrowest meaningful verification, then broader checks when risk justifies it.
 5. Do not claim completion without matching evidence.
 
-For the current clean-root effort, use:
+For the completed clean-root effort, use:
 
-- `docs/hsnsaboor-clean-root/`
+- `docs/archive/hsnsaboor-clean-root/`
 - `.codex/wiki/reference/upstream-plus-maintenance.md`
 - `.codex/wiki/reference/local-provider-and-commit-inventory.md`

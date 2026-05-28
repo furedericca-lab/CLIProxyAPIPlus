@@ -17,11 +17,11 @@
 
 `docs/` 可以继续按照 repo-task-driven workflow 放我们的 scope 和归档，但不要放上游文档镜像。
 
-## 当前 scope
+## 已完成 scope
 
-- `docs/hsnsaboor-clean-root/`
+- `docs/archive/hsnsaboor-clean-root/`
 
-目标是以 HsnSaboor 当前 `upstream/main` 为干净根，再把我们的维护策略作为新的 commit 叠加上去。
+该 scope 已完成：以 HsnSaboor 当前 `upstream/main` 为干净根，再把我们的维护策略作为新的 commit 叠加上去。
 
 ## 开发命令
 

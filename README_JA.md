@@ -17,11 +17,11 @@ Maintenance policy:
 
 `docs/` remains available for our repo-task-driven scopes and archives. It should not be used to mirror upstream documentation.
 
-## Current Scope
+## Completed Scope
 
-- `docs/hsnsaboor-clean-root/`
+- `docs/archive/hsnsaboor-clean-root/`
 
-The goal is to build a clean branch rooted at HsnSaboor `upstream/main`, then add only our current maintenance decisions as new commits.
+This completed scope built a clean branch rooted at HsnSaboor `upstream/main`, then added only our current maintenance decisions as new commits.
 
 ## Commands
 

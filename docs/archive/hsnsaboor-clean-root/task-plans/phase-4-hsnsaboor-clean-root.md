@@ -7,7 +7,7 @@ description: Phase 4 task plan for verifying the clean root and deciding whether
 ## Input
 
 - `integrate/hsnsaboor-clean-root`
-- `docs/hsnsaboor-clean-root/`
+- `docs/archive/hsnsaboor-clean-root/`
 - `.codex/wiki/**`
 
 ## Canonical architecture / Key constraints

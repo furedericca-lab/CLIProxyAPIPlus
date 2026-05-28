@@ -41,7 +41,7 @@ Goals:
 - Recreate only current maintenance decisions as new commits on top of HsnSaboor.
 - Track `.codex/wiki/**`.
 - Keep `.codex/notepad.md` and scratch ignored.
-- Keep durable scope execution docs under `docs/hsnsaboor-clean-root/`.
+- Keep durable scope execution docs under `docs/archive/hsnsaboor-clean-root/`.
 - Keep `docs/` available for `repo-task-driven` active scopes and archives; the cleanup only removed old upstream/historical docs.
 - Keep long-lived project knowledge under `.codex/wiki/**`.
 - Own root entrypoint docs locally:
@@ -82,7 +82,7 @@ Old local commits not in HsnSaboor should not be replayed wholesale.
 - `.gitignore`
 - `.gitattributes`
 - `.codex/wiki/**`
-- `docs/hsnsaboor-clean-root/**`
+- `docs/archive/hsnsaboor-clean-root/**`
 - `README.md`
 - `README_CN.md`
 - `README_JA.md`
