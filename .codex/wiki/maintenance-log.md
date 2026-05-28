@@ -47,3 +47,9 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Summary: Resolved old-local audit model source and iFlow thinking risks: runtime now uses furedericca-lab/models, CI no longer rewrites committed catalog, and iFlow Kimi thinking fallback has tests.
 - Pages: .codex/wiki/reference/model-catalog-maintenance.md
 - Verification: go test ./...; go build -o test-output ./cmd/server && rm test-output
+
+## 2026-05-28T13:45:49Z [risk-resolution-from-old-local-audit]
+
+- Summary: Archived completed risk-resolution scope after verification and scope inventory showed no active scopes.
+- Pages: docs/archive/risk-resolution-from-old-local-audit/risk-resolution-from-old-local-audit-contract.md
+- Verification: archive_scope_docs.sh risk-resolution-from-old-local-audit 2026-05-28; scope_inventory.sh --archive

@@ -90,8 +90,8 @@ go build -o test-output ./cmd/server && rm test-output
 go test ./...
 rg -n "router-for-me/models|models.router-for.me" .github internal/registry -g '!**/*_test.go'
 git diff --check
-bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh docs/risk-resolution-from-old-local-audit
-bash /root/.codex/skills/repo-task-driven/scripts/post_refactor_text_scan.sh docs/risk-resolution-from-old-local-audit README.md AGENTS.md
+bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh docs/archive/risk-resolution-from-old-local-audit
+bash /root/.codex/skills/repo-task-driven/scripts/post_refactor_text_scan.sh docs/archive/risk-resolution-from-old-local-audit README.md AGENTS.md
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint
 ```
 
@@ -104,3 +104,10 @@ Revert the implementation commit and this scope archive commit. This will restor
 ## Open Questions
 
 - None for this implementation pass. `furedericca-lab/models.git` was verified to have a `main` branch before implementation.
+
+## Archive Record
+
+- Archived on 2026-05-28 under `docs/archive/risk-resolution-from-old-local-audit/`.
+- Archive purpose: preserve the completed risk-resolution-from-old-local-audit audit trail.
+- Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
+- Archived docs should only change for factual errata or path-maintenance updates.
