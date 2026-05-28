@@ -1,5 +1,6 @@
 # Locally owned project documentation. Keep our versions during upstream merges.
 README.md merge=ours
+# Intentionally absent locally; keep deletion during upstream merges.
 README_CN.md merge=ours
 README_JA.md merge=ours
 AGENTS.md merge=ours

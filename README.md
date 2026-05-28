@@ -14,8 +14,6 @@ The project goal is to keep the Plus provider surface while using the best maint
 Root documentation is locally owned:
 
 - `README.md`
-- `README_CN.md`
-- `README_JA.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 
@@ -88,6 +86,7 @@ Common server flags:
 - Put durable maintainer knowledge in `.codex/wiki/**`.
 - Do not restore upstream `docs/*` during sync.
 - Do not restore upstream `README*`, `AGENTS.md`, or `CLAUDE.md` during sync.
+- `README_CN.md` and `README_JA.md` are intentionally absent.
 
 The merge policy for these owned paths is recorded in `.gitattributes`.
 

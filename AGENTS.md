@@ -41,14 +41,14 @@ Keep scratch notes out of git, for example `.codex/notepad.md`.
 These paths are local project identity and operator policy:
 
 - `README.md`
-- `README_CN.md`
-- `README_JA.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 
 Do not blindly sync these files from upstream. If upstream changes contain useful command or compatibility information, manually port the relevant facts into our local docs or wiki.
 
 The same rule applies to upstream `docs/**`: do not merge it into this repo as documentation content.
+
+`README_CN.md` and `README_JA.md` are intentionally absent. Do not recreate them from upstream during synchronization.
 
 The merge policy is recorded in `.gitattributes`.
 

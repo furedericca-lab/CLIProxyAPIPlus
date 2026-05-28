@@ -68,14 +68,14 @@ Result:
 
 - [x] `README.md` is our maintained Plus fork README.
 - [x] `AGENTS.md` is our local operator contract.
-- [x] `README_CN.md` and `README_JA.md` policy is decided.
+- [x] `README_CN.md` and `README_JA.md` policy is decided: intentionally absent.
 - [x] `CLAUDE.md` policy is decided.
 - [x] `.gitattributes` protects locally owned root docs.
 
 Evidence commands:
 
 ```bash
-git diff -- README.md README_CN.md README_JA.md AGENTS.md CLAUDE.md .gitattributes
+git diff -- README.md AGENTS.md CLAUDE.md .gitattributes
 git config --get merge.ours.driver
 ```
 

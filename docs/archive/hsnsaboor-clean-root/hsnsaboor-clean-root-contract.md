@@ -46,10 +46,9 @@ Goals:
 - Keep long-lived project knowledge under `.codex/wiki/**`.
 - Own root entrypoint docs locally:
   - `README.md`
-  - `README_CN.md`
-  - `README_JA.md`
   - `AGENTS.md`
   - `CLAUDE.md`
+- Keep `README_CN.md` and `README_JA.md` absent unless a future scope explicitly reintroduces maintained translations.
 - Add merge protection for locally owned root docs.
 - Verify provider surface before and after reroot.
 
@@ -84,8 +83,6 @@ Old local commits not in HsnSaboor should not be replayed wholesale.
 - `.codex/wiki/**`
 - `docs/archive/hsnsaboor-clean-root/**`
 - `README.md`
-- `README_CN.md`
-- `README_JA.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 
@@ -151,7 +148,7 @@ Final replacement of `main` and any force push require explicit user approval.
 
 ## Open questions
 
-- Should `README_CN.md` and `README_JA.md` become full translations immediately or short pointers until translation is refreshed?
+- Resolved after archive: `README_CN.md` and `README_JA.md` are intentionally removed.
 - Should `CLAUDE.md` be created now, or only if a Claude-specific workflow appears?
 - After clean root builds, do we still need any part of the old model fork/submodule behavior?
 

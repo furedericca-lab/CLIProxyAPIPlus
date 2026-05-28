@@ -7,8 +7,6 @@ description: Phase 3 task plan for owning local root entrypoint docs.
 ## Input
 
 - `README.md`
-- `README_CN.md`
-- `README_JA.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 - `.gitattributes`
@@ -38,14 +36,14 @@ Tasks:
   - DoD: README states HsnSaboor-first, router-selective maintenance and links to scope/wiki knowledge.
 - [x] T011 [Docs] Rewrite `AGENTS.md`
   - DoD: AGENTS records provider preservation, root-doc ownership, docs/wiki boundaries, and verification commands.
-- [x] T012 [Docs] Decide and update `README_CN.md` / `README_JA.md`
-  - DoD: both files either contain refreshed local summaries or explicit short pointers to `README.md`.
+- [x] T012 [Docs] Decide `README_CN.md` / `README_JA.md` policy
+  - DoD: both files are intentionally absent unless a future scope reintroduces maintained translations.
 - [x] T013 [Docs] Decide and update `CLAUDE.md`
   - DoD: file is either created with local policy or intentionally absent with rationale in checklist.
 - [x] T014 [Config] Add `.gitattributes` root-doc merge policy
   - DoD: README/AGENTS/CLAUDE root docs use the selected merge policy.
 - [x] T015 [QA] Verify root-doc policy
-  - DoD: `git diff -- README.md README_CN.md README_JA.md AGENTS.md CLAUDE.md .gitattributes` shows only intended local identity changes.
+  - DoD: `git diff -- README.md AGENTS.md CLAUDE.md .gitattributes` shows only intended local identity changes.
 
 Checkpoint: Phase 4 can start after root docs and merge policy are committed.
 
