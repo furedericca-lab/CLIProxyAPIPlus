@@ -41,3 +41,9 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Summary: Archived completed old-local commit audit scope and updated wiki references from active docs path to archive path.
 - Pages: docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md
 - Verification: archive_scope_docs.sh old-local-commit-audit 2026-05-28
+
+## 2026-05-28T13:44:58Z [risk-resolution-from-old-local-audit]
+
+- Summary: Resolved old-local audit model source and iFlow thinking risks: runtime now uses furedericca-lab/models, CI no longer rewrites committed catalog, and iFlow Kimi thinking fallback has tests.
+- Pages: .codex/wiki/reference/model-catalog-maintenance.md
+- Verification: go test ./...; go build -o test-output ./cmd/server && rm test-output

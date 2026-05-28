@@ -2,25 +2,34 @@
 title: Model Catalog Maintenance
 type: reference
 status: current
-scope: docs-migration
+scope: risk-resolution-from-old-local-audit
 related_files:
   - internal/registry/models/models.json
   - internal/registry/model_definitions.go
   - internal/registry/model_updater.go
   - internal/thinking/provider/iflow/apply.go
-  - third_party/models
 tags:
   - models
   - iflow
   - kiro
   - registry
 last_checked: 2026-05-28
-updated: 2026-05-28T13:20:00Z
+updated: 2026-05-28T14:35:00Z
 ---
 
 # Model Catalog Maintenance
 
-This page preserves useful conclusions from the old `docs/iflow-kimi-k2-5`, `docs/kiro-model-recovery`, `docs/models-fork-submodule`, and `docs/models-fork-sync` scopes.
+This page preserves useful conclusions from the old `docs/iflow-kimi-k2-5`, `docs/kiro-model-recovery`, `docs/models-fork-submodule`, and `docs/models-fork-sync` scopes, updated for the current clean-root implementation.
+
+## Current model source policy
+
+Runtime model refresh uses the maintained fork source:
+
+- `https://raw.githubusercontent.com/furedericca-lab/models/refs/heads/main/models.json`
+
+Release and PR build workflows no longer rewrite `internal/registry/models/models.json` from an external repository. Release artifacts use the catalog committed in the release tag. This avoids hidden dirty checkout state during GoReleaser and prevents accidental drift back to `router-for-me/models`.
+
+The old `third_party/models` submodule approach is not restored in current `main`.
 
 ## iFlow `kimi-k2.5`
 
@@ -31,24 +40,17 @@ Historical finding:
 - `kimi-k2.5` also existed under the standalone `kimi` provider.
 - Restoring it under iFlow required both catalog metadata and iFlow Kimi fallback thinking handling.
 
-Recorded implementation from the old scope:
+Current implementation:
 
-- Restored `kimi-k2.5` to `internal/registry/models/models.json` under `iflow`.
-- Restored iFlow Kimi fallback thinking in `internal/thinking/provider/iflow/apply.go`.
-- Added focused tests in `internal/thinking/provider/iflow/apply_test.go`.
+- iFlow Kimi fallback thinking is implemented in `internal/thinking/provider/iflow/apply.go`.
+- Focused tests are in `internal/thinking/provider/iflow/apply_test.go`.
+- `kimi-*` iFlow models with `Thinking` support use `chat_template_kwargs.enable_thinking`; GLM remains the only family that also sets `clear_thinking`.
 
-Verification commands from the old scope:
+Current verification commands:
 
 ```bash
-jq -e '.iflow | map(.id) | index("kimi-k2.5") != null' internal/registry/models/models.json
-jq -e '.iflow[] | select(.id == "kimi-k2.5") | .thinking.levels | index("high") != null' internal/registry/models/models.json
-jq -e '.' internal/registry/models/models.json
-git diff --check
+go test ./internal/thinking/provider/iflow ./internal/thinking
 ```
-
-Stale environment note from the old scope:
-
-- At that time, `go test ./internal/thinking/provider/iflow` was blocked because the installed Go toolchain rejected `go 1.26.0` in `go.mod`.
 
 ## Kiro model recovery
 
@@ -77,6 +79,12 @@ Historical decision:
 - A submodule was added at `third_party/models` on branch `main`.
 - The release workflow copied `third_party/models/models.json` into `internal/registry/models/models.json`.
 
+Current implementation differs from the old submodule design:
+
+- `internal/registry/model_updater.go` points directly to `furedericca-lab/models`.
+- `.github/workflows/release.yaml` and `.github/workflows/pr-test-build.yml` do not fetch a model catalog during CI.
+- `internal/registry/model_updater_test.go` prevents runtime model URLs from drifting back to router sources.
+
 Follow-up historical finding:
 
 - The submodule schema only contained `models.json`.
@@ -95,7 +103,6 @@ diff -u <(jq -r '.iflow[].id' internal/registry/models/models.json) <(jq -r '.if
 
 These model/catalog decisions may conflict with HsnSaboor/router registry changes. During upstream convergence:
 
-- Re-check whether `third_party/models` still exists and is desired.
-- Re-check whether `internal/registry/model_updater.go` still supports a forked source.
+- Keep `internal/registry/model_updater.go` on the forked source unless a new scope deliberately changes model catalog ownership.
 - Re-check whether Kiro models are still code-defined.
 - Re-check whether iFlow thinking behavior is still implemented in the same provider package.

@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-28T13:39:33Z
+updated: 2026-05-28T13:45:05Z
 ---
+
 
 
 
@@ -28,7 +29,7 @@ updated: 2026-05-28T13:39:33Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-28T13:39:33Z
+- Last rebuilt: 2026-05-28T13:45:05Z
 - Page count: 7
 
 ## By Type
@@ -49,7 +50,7 @@ updated: 2026-05-28T13:39:33Z
 ### reference
 
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-28T14:05:00Z
-- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-28T13:20:00Z
+- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-28T14:35:00Z
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-28T14:05:00Z
 
 ## By Scope
@@ -59,7 +60,6 @@ updated: 2026-05-28T13:39:33Z
 - [Codebase Function Map](concepts/codebase-function-map.md) | type: concept | status: current
 - [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md) | type: implementation | status: current
 - [SDK Embedding Notes](implementation/sdk-embedding-notes.md) | type: implementation | status: current
-- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | type: reference | status: current
 
 ### hsnsaboor-clean-root
 
@@ -70,15 +70,19 @@ updated: 2026-05-28T13:39:33Z
 
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
 
+### risk-resolution-from-old-local-audit
+
+- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | type: reference | status: current
+
 ## Recently Updated
 
+- 2026-05-28T14:35:00Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - 2026-05-28T14:05:00Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - 2026-05-28T14:05:00Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-28T14:05:00Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - 2026-05-28T13:20:00Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-28T13:20:00Z | [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - 2026-05-28T13:20:00Z | [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- 2026-05-28T13:20:00Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 
 ## Stale Or Draft
 
@@ -116,7 +120,6 @@ updated: 2026-05-28T13:39:33Z
 - `sdk/cliproxy` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `sdk/cliproxy` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
 - `sdk/translator` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- `third_party/models` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 <!-- END AUTO -->
 
 ## Manual Priority Notes
