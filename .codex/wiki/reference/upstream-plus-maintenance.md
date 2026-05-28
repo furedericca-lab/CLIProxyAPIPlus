@@ -2,9 +2,9 @@
 title: Upstream Plus Maintenance Strategy
 type: reference
 status: current
-scope: upstream-plus-gap-analysis
+scope: hsnsaboor-clean-root
 related_scopes:
-  - upstream-plus-gap-analysis
+  []
 related_files:
   - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - internal/auth
@@ -15,7 +15,7 @@ tags:
   - providers
   - maintenance
 last_checked: 2026-05-28
-updated: 2026-05-28T12:55:00Z
+updated: 2026-05-28T14:05:00Z
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -30,7 +30,8 @@ Use three remotes when maintaining this fork:
 
 As of the clean-root push on 2026-05-28:
 
-- local `main`: `6325b63a`
+- pushed clean-root `origin/main`: `6325b63a`
+- local stale-record refresh commit before the old-local audit scope: `71408c2f`
 - HsnSaboor `upstream/main`: `8c93cf68`
 - router `router/main`: `2bcc7622`
 - HsnSaboor and router split at `v7.1.9` (`9ef99aa7`)
@@ -86,7 +87,7 @@ HsnSaboor adds provider/runtime pieces missing locally:
 - `internal/cmd/cline_login.go`
 - `internal/cmd/xai_login.go`
 
-Pre-clean-root local commits, especially provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, require a dedicated audit before reintroduction.
+Pre-clean-root local commits, especially provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, require a dedicated audit before reintroduction. The active audit scope is `docs/old-local-commit-audit/old-local-commit-audit-contract.md`.
 
 Current refined policy: HsnSaboor is the baseline. If HsnSaboor has the same provider or same-topic implementation, prefer HsnSaboor first and validate behavior before reintroducing old local patches.
 

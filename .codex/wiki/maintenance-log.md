@@ -29,3 +29,9 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: docs/archive/hsnsaboor-clean-root/
 - Verification: scope archived after build, full tests, provider matrix, wiki lint, and scope inventory passed
 - Residual risk: Plan only; integration branch has not been created yet.
+
+## 2026-05-28T13:37:42Z [old-local-commit-audit]
+
+- Summary: Opened old-local commit audit scope, refreshed HsnSaboor clean-root wiki scope pointers, and linked the current audit from provider/commit inventory.
+- Pages: .codex/wiki/reference/local-provider-and-commit-inventory.md
+- Verification: scope_inventory.sh; wiki_note.py rebuild; wiki_note.py lint

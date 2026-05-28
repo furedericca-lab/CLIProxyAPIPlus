@@ -2,9 +2,9 @@
 title: Track HsnSaboor Plus Before Router Core
 type: decision
 status: accepted
-scope: upstream-plus-gap-analysis
+scope: hsnsaboor-clean-root
 related_scopes:
-  - upstream-plus-gap-analysis
+  []
 related_files:
   - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - .codex/wiki/reference/upstream-plus-maintenance.md
@@ -14,7 +14,7 @@ tags:
   - merge-strategy
 decision_date: 2026-05-28
 last_checked: 2026-05-28
-updated: 2026-05-28T12:55:00Z
+updated: 2026-05-28T14:05:00Z
 ---
 
 # Track HsnSaboor Plus Before Router Core
@@ -40,3 +40,4 @@ Refinement on 2026-05-28:
 - Use HsnSaboor implementations as the default when local old commits overlap by provider or feature.
 - Do not replay local old commits wholesale.
 - Build a clean branch from `upstream/main`, then add only our current maintenance commits on top.
+- Audit old local commits under `docs/old-local-commit-audit/` before reintroducing any missing behavior.

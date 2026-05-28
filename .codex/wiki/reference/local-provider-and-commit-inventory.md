@@ -2,9 +2,9 @@
 title: Pre-clean-root Provider and Commit Inventory
 type: reference
 status: current
-scope: upstream-plus-gap-analysis
+scope: old-local-commit-audit
 related_scopes:
-  - upstream-plus-gap-analysis
+  []
 related_files:
   - internal/auth
   - internal/runtime/executor
@@ -16,7 +16,7 @@ tags:
   - commits
   - upstream
 last_checked: 2026-05-28
-updated: 2026-05-28T13:20:00Z
+updated: 2026-05-28T14:05:00Z
 ---
 
 # Pre-clean-root Provider and Commit Inventory
@@ -137,6 +137,8 @@ Non-merge commits from `backup/main-before-hsnsaboor-clean-root` that are not in
   - Review carefully because it may reintroduce static data that upstream intentionally removed.
 
 Merge commits not in HsnSaboor are mostly historical upstream/router integration points and should not be replayed as feature patches.
+
+The dedicated current audit is tracked in `docs/old-local-commit-audit/old-local-commit-audit-contract.md`.
 
 ## Merge guidance
 

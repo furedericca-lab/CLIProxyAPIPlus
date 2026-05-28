@@ -3,8 +3,12 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-28T13:28:55Z
+updated: 2026-05-28T13:38:31Z
 ---
+
+
+
+
 
 
 
@@ -23,7 +27,7 @@ updated: 2026-05-28T13:28:55Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-28T13:28:55Z
+- Last rebuilt: 2026-05-28T13:38:31Z
 - Page count: 7
 
 ## By Type
@@ -34,7 +38,7 @@ updated: 2026-05-28T13:28:55Z
 
 ### decision
 
-- [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | status: accepted | updated: 2026-05-28T12:55:00Z
+- [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | status: accepted | updated: 2026-05-28T14:05:00Z
 
 ### implementation
 
@@ -43,9 +47,9 @@ updated: 2026-05-28T13:28:55Z
 
 ### reference
 
-- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-28T13:20:00Z
+- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-28T14:05:00Z
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-28T13:20:00Z
-- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-28T12:55:00Z
+- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-28T14:05:00Z
 
 ## By Scope
 
@@ -56,24 +60,24 @@ updated: 2026-05-28T13:28:55Z
 - [SDK Embedding Notes](implementation/sdk-embedding-notes.md) | type: implementation | status: current
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | type: reference | status: current
 
-### upstream-plus-gap-analysis
+### hsnsaboor-clean-root
 
 - [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | type: decision | status: accepted
-- [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | type: decision | status: accepted
-- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
-- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | type: reference | status: current
-- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | type: reference | status: current
+
+### old-local-commit-audit
+
+- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
 
 ## Recently Updated
 
+- 2026-05-28T14:05:00Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
+- 2026-05-28T14:05:00Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- 2026-05-28T14:05:00Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - 2026-05-28T13:20:00Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-28T13:20:00Z | [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - 2026-05-28T13:20:00Z | [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- 2026-05-28T13:20:00Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-28T13:20:00Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
-- 2026-05-28T12:55:00Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
-- 2026-05-28T12:55:00Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 
 ## Stale Or Draft
 

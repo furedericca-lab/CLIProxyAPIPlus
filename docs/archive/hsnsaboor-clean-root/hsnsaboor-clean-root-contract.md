@@ -17,9 +17,10 @@ upstream/main (HsnSaboor)
   -> our: selected repo-specific maintenance only after review
 ```
 
-Current baseline checked on 2026-05-28:
+Clean-root baseline checked on 2026-05-28:
 
-- Current local `main`: `6325b63a`
+- Pushed clean-root `origin/main`: `6325b63a`
+- Local stale-record refresh commit after archive: `71408c2f`
 - Pre-clean-root backup branch: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 - HsnSaboor `upstream/main`: `8c93cf68`
 - router `router/main`: `2bcc7622`
