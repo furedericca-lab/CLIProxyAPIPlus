@@ -35,3 +35,9 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Summary: Opened old-local commit audit scope, refreshed HsnSaboor clean-root wiki scope pointers, and linked the current audit from provider/commit inventory.
 - Pages: .codex/wiki/reference/local-provider-and-commit-inventory.md
 - Verification: scope_inventory.sh; wiki_note.py rebuild; wiki_note.py lint
+
+## 2026-05-28T13:39:25Z [old-local-commit-audit]
+
+- Summary: Archived completed old-local commit audit scope and updated wiki references from active docs path to archive path.
+- Pages: docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md
+- Verification: archive_scope_docs.sh old-local-commit-audit 2026-05-28

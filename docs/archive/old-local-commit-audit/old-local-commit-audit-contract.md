@@ -252,3 +252,10 @@ Immediate follow-up scopes, in order:
 1. `model-catalog-source-policy`: decide and implement fork-owned vs router-owned model catalog source across runtime and CI.
 2. `iflow-kimi-thinking-recovery`: port the small Kimi thinking fallback with tests if current model catalog still needs it.
 3. `release-workflow-policy`: reintroduce manual release and dirty-state behavior after model catalog policy is settled.
+
+## Archive Record
+
+- Archived on 2026-05-28 under `docs/archive/old-local-commit-audit/`.
+- Archive purpose: preserve the completed old-local-commit-audit audit trail.
+- Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
+- Archived docs should only change for factual errata or path-maintenance updates.

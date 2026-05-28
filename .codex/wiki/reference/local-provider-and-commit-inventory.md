@@ -138,7 +138,7 @@ Non-merge commits from `backup/main-before-hsnsaboor-clean-root` that are not in
 
 Merge commits not in HsnSaboor are mostly historical upstream/router integration points and should not be replayed as feature patches.
 
-The dedicated current audit is tracked in `docs/old-local-commit-audit/old-local-commit-audit-contract.md`.
+The dedicated audit is archived at `docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md`.
 
 ## Merge guidance
 
