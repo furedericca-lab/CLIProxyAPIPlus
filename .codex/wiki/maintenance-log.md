@@ -53,3 +53,17 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Summary: Archived completed risk-resolution scope after verification and scope inventory showed no active scopes.
 - Pages: docs/archive/risk-resolution-from-old-local-audit/risk-resolution-from-old-local-audit-contract.md
 - Verification: archive_scope_docs.sh risk-resolution-from-old-local-audit 2026-05-28; scope_inventory.sh --archive
+
+## 2026-05-28T16:03:33Z [release-ci-repair]
+
+- Summary: Repaired release CI packaging after GoReleaser failed on absent README_CN.md and moved release actions to Node 24-backed majors.
+- Pages: docs/archive/release-ci-repair/release-ci-repair-contract.md
+- Verification: go run github.com/goreleaser/goreleaser/v2@v2.16.0 check, go build -o test-output ./cmd/server && rm test-output, go run github.com/goreleaser/goreleaser/v2@v2.16.0 release --snapshot --clean --skip=publish
+- Residual risk: A real GitHub release publish was not rerun from this local validation.
+
+## 2026-05-28T16:04:24Z [release-ci-repair]
+
+- Summary: Archived completed release CI repair scope after config validation and server build passed.
+- Pages: docs/archive/release-ci-repair/release-ci-repair-contract.md
+- Verification: bash /root/.codex/skills/repo-task-driven/scripts/archive_scope_docs.sh release-ci-repair 2026-05-28, bash /root/.codex/skills/repo-task-driven/scripts/scope_inventory.sh --archive
+- Residual risk: Release publishing still needs a new GitHub Actions run.
