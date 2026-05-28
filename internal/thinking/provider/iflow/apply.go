@@ -22,7 +22,6 @@ import (
 // iFlow-specific behavior:
 //   - enable_thinking toggle models: enable_thinking boolean
 //   - GLM models: enable_thinking boolean + clear_thinking=false
-//   - Kimi models: enable_thinking boolean fallback
 //   - MiniMax models: reasoning_split boolean
 //   - Level to boolean: none=false, others=true
 //   - No quantized support (only on/off)
@@ -41,7 +40,7 @@ func init() {
 
 // Apply applies thinking configuration to iFlow request body.
 //
-// Expected output format (GLM / Kimi fallback):
+// Expected output format (GLM):
 //
 //	{
 //	  "chat_template_kwargs": {
@@ -153,9 +152,6 @@ func isEnableThinkingModel(modelID string) bool {
 	if isGLMModel(modelID) {
 		return true
 	}
-	if isKimiModel(modelID) {
-		return true
-	}
 	id := strings.ToLower(modelID)
 	switch id {
 	case "qwen3-max-preview", "deepseek-v3.2", "deepseek-v3.1":
@@ -168,12 +164,6 @@ func isEnableThinkingModel(modelID string) bool {
 // isGLMModel determines if the model is a GLM series model.
 func isGLMModel(modelID string) bool {
 	return strings.HasPrefix(strings.ToLower(modelID), "glm")
-}
-
-// isKimiModel determines if the model is an iFlow Kimi series model.
-// These use the generic enable_thinking fallback semantics.
-func isKimiModel(modelID string) bool {
-	return strings.HasPrefix(strings.ToLower(modelID), "kimi-")
 }
 
 // isMiniMaxModel determines if the model is a MiniMax series model.

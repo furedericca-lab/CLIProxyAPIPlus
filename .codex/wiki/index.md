@@ -3,8 +3,10 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-28T16:07:23Z
+updated: 2026-05-28T17:42:37Z
 ---
+
+
 
 
 
@@ -33,7 +35,7 @@ updated: 2026-05-28T16:07:23Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-28T16:07:23Z
+- Last rebuilt: 2026-05-28T17:42:37Z
 - Page count: 7
 
 ## By Type
@@ -54,7 +56,7 @@ updated: 2026-05-28T16:07:23Z
 ### reference
 
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-28T14:05:00Z
-- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-28T14:35:00Z
+- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-29T00:00:00Z
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-28T14:05:00Z
 
 ## By Scope
@@ -80,7 +82,7 @@ updated: 2026-05-28T16:07:23Z
 
 ## Recently Updated
 
-- 2026-05-28T14:35:00Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
+- 2026-05-29T00:00:00Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - 2026-05-28T14:05:00Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - 2026-05-28T14:05:00Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-28T14:05:00Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)

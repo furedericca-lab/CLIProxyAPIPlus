@@ -14,7 +14,7 @@ tags:
   - kiro
   - registry
 last_checked: 2026-05-28
-updated: 2026-05-28T14:35:00Z
+updated: 2026-05-29T00:00:00Z
 ---
 
 # Model Catalog Maintenance
@@ -23,11 +23,12 @@ This page preserves useful conclusions from the old `docs/iflow-kimi-k2-5`, `doc
 
 ## Current model source policy
 
-Runtime model refresh uses the maintained fork source:
+Runtime model refresh follows the HsnSaboor baseline:
 
-- `https://raw.githubusercontent.com/furedericca-lab/models/refs/heads/main/models.json`
+- `https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json`
+- `https://models.router-for.me/models.json`
 
-Release and PR build workflows no longer rewrite `internal/registry/models/models.json` from an external repository. Release artifacts use the catalog committed in the release tag. This avoids hidden dirty checkout state during GoReleaser and prevents accidental drift back to `router-for-me/models`.
+Release and PR build workflows still keep the local CI/release policy: they do not rewrite `internal/registry/models/models.json` before build/release. Release artifacts use the catalog committed in the release tag.
 
 The old `third_party/models` submodule approach is not restored in current `main`.
 
@@ -42,9 +43,9 @@ Historical finding:
 
 Current implementation:
 
-- iFlow Kimi fallback thinking is implemented in `internal/thinking/provider/iflow/apply.go`.
-- Focused tests are in `internal/thinking/provider/iflow/apply_test.go`.
-- `kimi-*` iFlow models with `Thinking` support use `chat_template_kwargs.enable_thinking`; GLM remains the only family that also sets `clear_thinking`.
+- The local iFlow Kimi fallback patch was intentionally removed on 2026-05-29.
+- Keep HsnSaboor behavior for iFlow Kimi unless a future current-code/runtime validation proves a real gap.
+- `internal/thinking/provider/iflow/apply.go` does not special-case `kimi-*` for iFlow thinking.
 
 Current verification commands:
 
@@ -70,7 +71,7 @@ Verification command from the old scope:
 awk '/func GetKiroModels\(\)/,/^}/' internal/registry/model_definitions.go | rg 'kiro-claude-opus-4-5-chat|kiro-claude-opus-4-5|kiro-claude-opus-4-5-agentic'
 ```
 
-## Forked models source
+## Historical forked models source
 
 Historical decision:
 
@@ -79,11 +80,11 @@ Historical decision:
 - A submodule was added at `third_party/models` on branch `main`.
 - The release workflow copied `third_party/models/models.json` into `internal/registry/models/models.json`.
 
-Current implementation differs from the old submodule design:
+Current implementation:
 
-- `internal/registry/model_updater.go` points directly to `furedericca-lab/models`.
+- `internal/registry/model_updater.go` follows HsnSaboor's router model URLs.
 - `.github/workflows/release.yaml` and `.github/workflows/pr-test-build.yml` do not fetch a model catalog during CI.
-- `internal/registry/model_updater_test.go` prevents runtime model URLs from drifting back to router sources.
+- There is no local runtime model-source guard test; source behavior should stay close to HsnSaboor unless a future scope decides otherwise.
 
 Follow-up historical finding:
 
@@ -103,6 +104,7 @@ diff -u <(jq -r '.iflow[].id' internal/registry/models/models.json) <(jq -r '.if
 
 These model/catalog decisions may conflict with HsnSaboor/router registry changes. During upstream convergence:
 
-- Keep `internal/registry/model_updater.go` on the forked source unless a new scope deliberately changes model catalog ownership.
+- Keep runtime source code close to HsnSaboor by default.
+- Keep local CI/release policy and local documentation ownership.
 - Re-check whether Kiro models are still code-defined.
-- Re-check whether iFlow thinking behavior is still implemented in the same provider package.
+- Do not restore the old iFlow Kimi fallback from archived audit notes unless current runtime/catalog evidence requires it.

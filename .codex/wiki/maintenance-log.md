@@ -67,3 +67,17 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: docs/archive/release-ci-repair/release-ci-repair-contract.md
 - Verification: bash /root/.codex/skills/repo-task-driven/scripts/archive_scope_docs.sh release-ci-repair 2026-05-28, bash /root/.codex/skills/repo-task-driven/scripts/scope_inventory.sh --archive
 - Residual risk: Release publishing still needs a new GitHub Actions run.
+
+## 2026-05-28T17:40:03Z [remove-iflow-kimi-fallback]
+
+- Summary: Removed the local iFlow Kimi thinking fallback after user confirmed it is not needed; wiki now records HsnSaboor behavior as intended.
+- Pages: .codex/wiki/reference/model-catalog-maintenance.md
+- Verification: go test ./internal/thinking/provider/iflow ./internal/thinking, go build -o test-output ./cmd/server && rm test-output
+- Residual risk: Archived historical audit docs still mention the earlier rationale as provenance.
+
+## 2026-05-28T17:41:58Z [align-runtime-with-hsnsaboor]
+
+- Summary: Aligned runtime source code with HsnSaboor by removing local model source and iFlow Kimi fallback patches while preserving local CI/release and documentation policy.
+- Pages: .codex/wiki/reference/model-catalog-maintenance.md
+- Verification: go test ./internal/thinking/provider/iflow ./internal/thinking ./internal/registry, go build -o test-output ./cmd/server && rm test-output
+- Residual risk: Archived historical scopes still describe the removed local patches as provenance.
