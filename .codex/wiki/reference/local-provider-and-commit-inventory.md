@@ -1,5 +1,5 @@
 ---
-title: Local Provider and Commit Inventory
+title: Pre-clean-root Provider and Commit Inventory
 type: reference
 status: current
 scope: upstream-plus-gap-analysis
@@ -19,11 +19,21 @@ last_checked: 2026-05-28
 updated: 2026-05-28T13:20:00Z
 ---
 
-# Local Provider and Commit Inventory
+# Pre-clean-root Provider and Commit Inventory
 
-## Local provider surface
+## Current clean-root provider surface
 
-Current local `main` provider/auth directories:
+Current `main` is rooted at HsnSaboor and has the HsnSaboor Plus provider surface:
+
+- Auth dirs: old local providers plus `cline` and `xai`.
+- Executors: old local executors plus `cline`, `ollama`, and `xai`.
+- Login commands: old local login commands plus `cline_login.go` and `xai_login.go`.
+
+The old local provider directories were not lost during the clean-root switch.
+
+## Pre-clean-root local provider surface
+
+Pre-clean-root `backup/main-before-hsnsaboor-clean-root` provider/auth directories:
 
 - `antigravity`
 - `claude`
@@ -41,7 +51,7 @@ Current local `main` provider/auth directories:
 - `qwen`
 - `vertex`
 
-Current local executor names:
+Pre-clean-root executor names:
 
 - `aistudio`
 - `antigravity`
@@ -62,7 +72,7 @@ Current local executor names:
 - `openai_compat`
 - `qwen`
 
-Current local login commands:
+Pre-clean-root login commands:
 
 - `anthropic_login.go`
 - `antigravity_login.go`
@@ -80,19 +90,19 @@ Current local login commands:
 - `qwen_login.go`
 - `vertex_import.go`
 
-## Local surface relative to HsnSaboor Plus
+## Pre-clean-root surface relative to HsnSaboor Plus
 
-HsnSaboor `upstream/main` is a superset of local for provider breadth. Local is missing these HsnSaboor pieces:
+HsnSaboor `upstream/main` was a superset of the pre-clean-root local line for provider breadth. The old local line was missing these HsnSaboor pieces:
 
 - Auth dirs: `cline`, `xai`
 - Executors: `cline`, `ollama`, `xai`
 - Login commands: `cline_login.go`, `xai_login.go`
 
-This means HsnSaboor should not remove local providers by default. Conflicts may still happen in shared registries, config, management APIs, and executor helpers.
+The clean-root switch now includes those HsnSaboor pieces.
 
-## Local surface relative to router
+## Pre-clean-root surface relative to router
 
-Router `router/main` removed or lacks multiple Plus providers that local keeps:
+Router `router/main` removed or lacks multiple Plus providers that both the pre-clean-root line and current clean-root line keep:
 
 - Auth dirs: `codebuddy`, `copilot`, `cursor`, `gitlab`, `iflow`, `kilo`, `kiro`, `qwen`
 - Executors: `codebuddy`, `cursor`, `github_copilot`, `gitlab`, `iflow`, `kilo`, `kiro`, `qwen`
@@ -100,9 +110,9 @@ Router `router/main` removed or lacks multiple Plus providers that local keeps:
 
 Do not merge router wholesale into the Plus line.
 
-## Local commits not in HsnSaboor
+## Pre-clean-root local commits not in HsnSaboor
 
-Non-merge commits from local `main` that are not in HsnSaboor `upstream/main`:
+Non-merge commits from `backup/main-before-hsnsaboor-clean-root` that are not in HsnSaboor `upstream/main`:
 
 - `044678b0` `fix(copilot): route claude models through native messages`
   - Touches `internal/registry/model_definitions.go`, `internal/registry/model_definitions_test.go`, `internal/runtime/executor/github_copilot_executor.go`, and `internal/runtime/executor/github_copilot_executor_test.go`.
@@ -130,9 +140,9 @@ Merge commits not in HsnSaboor are mostly historical upstream/router integration
 
 ## Merge guidance
 
-When aligning with HsnSaboor:
+When auditing old local commits:
 
-- Preserve `044678b0` unless HsnSaboor has an equivalent native Claude routing implementation for Copilot.
+- Do not replay `044678b0` unless HsnSaboor lacks equivalent native Claude routing implementation for Copilot.
 - Re-evaluate model fork commits against the current decision to avoid stale `docs/*` and stale submodule behavior.
 - Treat CI workflow commits as optional and easy to reapply.
 - Inspect `2a1cf2b3` before carrying it forward, because static model data may conflict with newer registry architecture.
@@ -140,9 +150,9 @@ When aligning with HsnSaboor:
 Evidence commands:
 
 ```bash
-git log --oneline --no-merges upstream/main..main
+git log --oneline --no-merges upstream/main..backup/main-before-hsnsaboor-clean-root
 git show --stat --oneline <commit>
-git ls-tree -d --name-only main:internal/auth | sort
-git ls-tree --name-only main:internal/runtime/executor | rg '_executor\.go$' | sed 's/_executor\.go$//' | sort
-git ls-tree --name-only main:internal/cmd | rg '(_login|_cookie|vertex_import)\.go$' | sort
+git ls-tree -d --name-only backup/main-before-hsnsaboor-clean-root:internal/auth | sort
+git ls-tree --name-only backup/main-before-hsnsaboor-clean-root:internal/runtime/executor | rg '_executor\.go$' | sed 's/_executor\.go$//' | sort
+git ls-tree --name-only backup/main-before-hsnsaboor-clean-root:internal/cmd | rg '(_login|_cookie|vertex_import)\.go$' | sort
 ```

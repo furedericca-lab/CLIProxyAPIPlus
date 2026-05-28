@@ -6,7 +6,7 @@ scope: upstream-plus-gap-analysis
 related_scopes:
   - upstream-plus-gap-analysis
 related_files:
-  - docs/upstream-plus-gap-analysis/upstream-plus-gap-analysis-contract.md
+  - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - internal/auth
   - internal/runtime/executor
   - internal/cmd
@@ -28,12 +28,13 @@ Use three remotes when maintaining this fork:
 - `upstream`: Plus continuation target, currently `https://github.com/HsnSaboor/CLIProxyAPIPlus`
 - `router`: original upstream, currently `https://github.com/router-for-me/CLIProxyAPI`
 
-As of 2026-05-28:
+As of the clean-root push on 2026-05-28:
 
-- local `main`: `044678b0`
+- local `main`: `6325b63a`
 - HsnSaboor `upstream/main`: `8c93cf68`
 - router `router/main`: `2bcc7622`
 - HsnSaboor and router split at `v7.1.9` (`9ef99aa7`)
+- pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 
 ## Maintenance rule
 
@@ -85,7 +86,7 @@ HsnSaboor adds provider/runtime pieces missing locally:
 - `internal/cmd/cline_login.go`
 - `internal/cmd/xai_login.go`
 
-Preserve local-only commits, especially local provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, unless later evidence proves HsnSaboor already contains an equivalent or better implementation.
+Pre-clean-root local commits, especially provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, require a dedicated audit before reintroduction.
 
 Current refined policy: HsnSaboor is the baseline. If HsnSaboor has the same provider or same-topic implementation, prefer HsnSaboor first and validate behavior before reintroducing old local patches.
 

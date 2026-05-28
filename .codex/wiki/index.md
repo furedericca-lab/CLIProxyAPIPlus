@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-28T13:21:09Z
+updated: 2026-05-28T13:28:55Z
 ---
+
 
 
 
@@ -22,7 +23,7 @@ updated: 2026-05-28T13:21:09Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-28T13:21:09Z
+- Last rebuilt: 2026-05-28T13:28:55Z
 - Page count: 7
 
 ## By Type
@@ -42,7 +43,7 @@ updated: 2026-05-28T13:21:09Z
 
 ### reference
 
-- [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-28T13:20:00Z
+- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-28T13:20:00Z
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-28T13:20:00Z
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-28T12:55:00Z
 
@@ -59,8 +60,8 @@ updated: 2026-05-28T13:21:09Z
 
 - [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | type: decision | status: accepted
 - [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | type: decision | status: accepted
-- [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
-- [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
+- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
+- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | type: reference | status: current
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | type: reference | status: current
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | type: reference | status: current
 
@@ -69,7 +70,7 @@ updated: 2026-05-28T13:21:09Z
 - 2026-05-28T13:20:00Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-28T13:20:00Z | [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - 2026-05-28T13:20:00Z | [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- 2026-05-28T13:20:00Z | [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- 2026-05-28T13:20:00Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-28T13:20:00Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - 2026-05-28T12:55:00Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - 2026-05-28T12:55:00Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
@@ -81,27 +82,27 @@ updated: 2026-05-28T13:21:09Z
 ## File-Coupled Pages
 
 - `.codex/wiki/reference/upstream-plus-maintenance.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
-- `.github/workflows/release.yaml` -> [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- `.github/workflows/release.yaml` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - `cmd/server/main.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `docs/upstream-plus-gap-analysis/upstream-plus-gap-analysis-contract.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
-- `docs/upstream-plus-gap-analysis/upstream-plus-gap-analysis-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
+- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
+- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `internal/api/handlers/management/auth_files_gitlab_test.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - `internal/api/modules` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `internal/api/server.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/auth` -> [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- `internal/auth` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - `internal/auth` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `internal/auth/gitlab` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
-- `internal/cmd` -> [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- `internal/cmd` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - `internal/cmd` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `internal/cmd/gitlab_login.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - `internal/cmd/run.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `internal/registry` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/registry/model_definitions.go` -> [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- `internal/registry/model_definitions.go` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - `internal/registry/model_definitions.go` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - `internal/registry/model_updater.go` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - `internal/registry/models/models.json` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - `internal/runtime/executor` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/runtime/executor` -> [Local Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
+- `internal/runtime/executor` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - `internal/runtime/executor` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `internal/runtime/executor/gitlab_executor.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - `internal/thinking/provider/iflow/apply.go` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)

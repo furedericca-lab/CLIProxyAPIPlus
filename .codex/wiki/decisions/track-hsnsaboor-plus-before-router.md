@@ -6,7 +6,7 @@ scope: upstream-plus-gap-analysis
 related_scopes:
   - upstream-plus-gap-analysis
 related_files:
-  - docs/upstream-plus-gap-analysis/upstream-plus-gap-analysis-contract.md
+  - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - .codex/wiki/reference/upstream-plus-maintenance.md
 tags:
   - upstream
@@ -31,7 +31,7 @@ Directly merging router risks deleting provider/auth/executor functionality that
 
 ## Consequences
 
-- First implementation scope should align local `main` with HsnSaboor while preserving local-only commits.
+- The completed clean-root scope aligned `main` with HsnSaboor and did not replay old local commits wholesale.
 - Later router updates should be cherry-picked or manually ported with provider-deletion hunks excluded.
 - Provider surface checks are mandatory before declaring any upstream integration complete.
 

@@ -19,7 +19,8 @@ upstream/main (HsnSaboor)
 
 Current baseline checked on 2026-05-28:
 
-- Current local `main`: `044678b0`
+- Current local `main`: `6325b63a`
+- Pre-clean-root backup branch: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 - HsnSaboor `upstream/main`: `8c93cf68`
 - router `router/main`: `2bcc7622`
 - HsnSaboor/router split point: `9ef99aa7` (`v7.1.9`)

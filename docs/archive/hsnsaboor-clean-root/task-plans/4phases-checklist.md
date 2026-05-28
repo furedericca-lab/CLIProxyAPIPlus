@@ -21,7 +21,7 @@ description: Execution checklist for the HsnSaboor clean-root integration scope.
 | Phase 1: Prepare clean root | Completed | 100% | Passed | None |
 | Phase 2: Local docs/wiki policy | Completed | 100% | Passed | None |
 | Phase 3: Root entrypoint ownership | Completed | 100% | Passed | None |
-| Phase 4: Verification and switch decision | Completed | 100% | Passed | Main replacement pending user approval |
+| Phase 4: Verification and switch decision | Completed | 100% | Passed | Main replacement completed and pushed |
 
 ## Phase 1: Prepare Clean Root
 
@@ -90,7 +90,7 @@ Result:
 - [x] Build passes.
 - [x] Tests pass or failures are documented as pre-existing/upstream.
 - [x] Provider matrix is intact.
-- [ ] User explicitly approves or rejects replacing `main`.
+- [x] User explicitly approved replacing `main`; replacement was completed and pushed.
 
 Evidence commands:
 
@@ -108,11 +108,11 @@ Result:
 - `go test ./...` passed.
 - Provider matrix includes HsnSaboor Plus additions: `cline`, `xai`, and `ollama`.
 - `gofmt -w .` was not run because this batch changed docs/config only and no Go files.
-- `git log --oneline upstream/main..HEAD` shows only `ef390d0f docs: establish clean-root maintenance policy`.
+- `git log --oneline upstream/main..HEAD` shows only our current maintenance commits: `37cee697`, `74f8b457`, and `6325b63a`.
 
 ## Final Release Gate Summary
 
-Clean-root branch verification passed. Replacing `main` remains blocked until explicit user approval.
+Clean-root branch verification passed. `main` was replaced and pushed to `origin/main` at `6325b63a`.
 
 ## Archive Record
 
