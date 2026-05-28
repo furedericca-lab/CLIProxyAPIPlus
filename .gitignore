@@ -29,16 +29,13 @@ static/*
 auths/*
 !auths/.gitkeep
 
-# Documentation
-docs/*
-AGENTS.md
-CLAUDE.md
-GEMINI.md
-
 # Tooling metadata
 .vscode/*
 .worktrees/
 .codex/*
+!.codex/
+!.codex/wiki/
+!.codex/wiki/**
 .claude/*
 .gemini/*
 .serena/*

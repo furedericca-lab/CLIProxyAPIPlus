@@ -1,0 +1,9 @@
+# Locally owned project documentation. Keep our versions during upstream merges.
+README.md merge=ours
+README_CN.md merge=ours
+README_JA.md merge=ours
+AGENTS.md merge=ours
+CLAUDE.md merge=ours
+
+# Scope docs are ours. Do not import upstream docs/** during synchronization.
+docs/** merge=ours
