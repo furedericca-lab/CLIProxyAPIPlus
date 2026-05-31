@@ -3,6 +3,7 @@
 // and integration with various AI API handlers (OpenAI, Claude, Gemini).
 // The server supports hot-reloading of clients and configuration.
 package api
+
 import (
 	"context"
 	"crypto/subtle"
@@ -10,16 +11,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net"
-	"net/http"
-	"os"
-	"path/filepath"
-	"reflect"
-	"sort"
-	"strings"
-	"sync"
-	"sync/atomic"
-	"time"
 	"github.com/gin-gonic/gin"
 	"github.com/router-for-me/CLIProxyAPI/v7/internal/access"
 	managementHandlers "github.com/router-for-me/CLIProxyAPI/v7/internal/api/handlers/management"
@@ -43,8 +34,20 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
 	"gopkg.in/yaml.v3"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+	"reflect"
+	"sort"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
 )
+
 const oauthCallbackSuccessHTML = `<html><head><meta charset="utf-8"><title>Authentication successful</title><script>setTimeout(function(){window.close();},5000);</script></head><body><h1>Authentication successful!</h1><p>You can close this window.</p><p>This window will close automatically in 5 seconds.</p></body></html>`
+
 type serverOptionConfig struct {
 	extraMiddleware      []gin.HandlerFunc
 	engineConfigurator   func(*gin.Engine)
@@ -56,8 +59,10 @@ type serverOptionConfig struct {
 	keepAliveOnTimeout   func()
 	postAuthHook         auth.PostAuthHook
 }
+
 // ServerOption customises HTTP server construction.
 type ServerOption func(*serverOptionConfig)
+
 func defaultRequestLoggerFactory(cfg *config.Config, configPath string) logging.RequestLogger {
 	configDir := filepath.Dir(configPath)
 	logsDir := logging.ResolveLogDirectory(cfg)
@@ -65,30 +70,35 @@ func defaultRequestLoggerFactory(cfg *config.Config, configPath string) logging.
 	logger.SetHomeEnabled(cfg != nil && cfg.Home.Enabled)
 	return logger
 }
+
 // WithMiddleware appends additional Gin middleware during server construction.
 func WithMiddleware(mw ...gin.HandlerFunc) ServerOption {
 	return func(cfg *serverOptionConfig) {
 		cfg.extraMiddleware = append(cfg.extraMiddleware, mw...)
 	}
 }
+
 // WithEngineConfigurator allows callers to mutate the Gin engine prior to middleware setup.
 func WithEngineConfigurator(fn func(*gin.Engine)) ServerOption {
 	return func(cfg *serverOptionConfig) {
 		cfg.engineConfigurator = fn
 	}
 }
+
 // WithRouterConfigurator appends a callback after default routes are registered.
 func WithRouterConfigurator(fn func(*gin.Engine, *handlers.BaseAPIHandler, *config.Config)) ServerOption {
 	return func(cfg *serverOptionConfig) {
 		cfg.routerConfigurator = fn
 	}
 }
+
 // WithLocalManagementPassword stores a runtime-only management password accepted for localhost requests.
 func WithLocalManagementPassword(password string) ServerOption {
 	return func(cfg *serverOptionConfig) {
 		cfg.localPassword = password
 	}
 }
+
 // WithKeepAliveEndpoint enables a keep-alive endpoint with the provided timeout and callback.
 func WithKeepAliveEndpoint(timeout time.Duration, onTimeout func()) ServerOption {
 	return func(cfg *serverOptionConfig) {
@@ -100,18 +110,21 @@ func WithKeepAliveEndpoint(timeout time.Duration, onTimeout func()) ServerOption
 		cfg.keepAliveOnTimeout = onTimeout
 	}
 }
+
 // WithRequestLoggerFactory customises request logger creation.
 func WithRequestLoggerFactory(factory func(*config.Config, string) logging.RequestLogger) ServerOption {
 	return func(cfg *serverOptionConfig) {
 		cfg.requestLoggerFactory = factory
 	}
 }
+
 // WithPostAuthHook registers a hook to be called after auth record creation.
 func WithPostAuthHook(hook auth.PostAuthHook) ServerOption {
 	return func(cfg *serverOptionConfig) {
 		cfg.postAuthHook = hook
 	}
 }
+
 // Server represents the main API server.
 // It encapsulates the Gin engine, HTTP server, handlers, and configuration.
 type Server struct {
@@ -155,13 +168,14 @@ type Server struct {
 	managementRoutesEnabled atomic.Bool
 	// envManagementSecret indicates whether MANAGEMENT_PASSWORD is configured.
 	envManagementSecret bool
-	localPassword string
-	keepAliveEnabled   bool
-	keepAliveTimeout   time.Duration
-	keepAliveOnTimeout func()
-	keepAliveHeartbeat chan struct{}
-	keepAliveStop      chan struct{}
+	localPassword       string
+	keepAliveEnabled    bool
+	keepAliveTimeout    time.Duration
+	keepAliveOnTimeout  func()
+	keepAliveHeartbeat  chan struct{}
+	keepAliveStop       chan struct{}
 }
+
 // NewServer creates and initializes a new API server instance.
 // It sets up the Gin engine, middleware, routes, and handlers.
 //
@@ -185,15 +199,12 @@ func NewServer(cfg *config.Config, authManager *auth.Manager, accessManager *sdk
 	}
 	// Create gin engine
 	engine := gin.New()
-	if errSetTrustedProxies := engine.SetTrustedProxies(nil); errSetTrustedProxies != nil {
-		log.Warnf("failed to disable trusted proxy headers: %v", errSetTrustedProxies)
-	}
 	if optionState.engineConfigurator != nil {
 		optionState.engineConfigurator(engine)
 	}
 	// Add middleware
 	engine.Use(blockScannerProbeMiddleware())
-		engine.Use(logging.GinLogrusLogger(cfg))
+	engine.Use(logging.GinLogrusLogger(cfg))
 	engine.Use(logging.GinLogrusRecovery())
 	for _, mw := range optionState.extraMiddleware {
 		engine.Use(mw)
@@ -355,6 +366,7 @@ func (s *Server) homeHeartbeatMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
 // setupRoutes configures the API routes for the server.
 // It defines the endpoints and associates them with their respective handlers.
 func (s *Server) setupRoutes() {
@@ -491,6 +503,7 @@ func (s *Server) setupRoutes() {
 	})
 	// Management routes are registered lazily by registerManagementRoutes when a secret is configured.
 }
+
 // AttachWebsocketRoute registers a websocket upgrade handler on the primary Gin engine.
 // The handler is served as-is without additional middleware beyond the standard stack already configured.
 func (s *Server) AttachWebsocketRoute(path string, handler http.Handler) {
@@ -784,6 +797,7 @@ func (s *Server) watchKeepAlive() {
 		}
 	}
 }
+
 // unifiedModelsHandler creates a unified handler for the /v1/models endpoint
 // that routes to different handlers based on the User-Agent header.
 // If User-Agent starts with "claude-cli", it routes to Claude handler,
@@ -856,12 +870,14 @@ func (s *Server) geminiGetHandler(geminiHandler *gemini.GeminiAPIHandler) gin.Ha
 		geminiHandler.GeminiGetHandler(c)
 	}
 }
+
 type homeModelEntry struct {
 	id          string
 	created     int64
 	ownedBy     string
 	displayName string
 }
+
 func (s *Server) handleHomeModels(c *gin.Context) {
 	entries, ok := s.loadHomeModelEntries(c)
 	if !ok {
@@ -1083,6 +1099,7 @@ func decodeHomeModels(raw []byte) ([]homeModelEntry, error) {
 	}
 	return out, nil
 }
+
 // Start begins listening for and serving HTTP or HTTPS requests.
 // It's a blocking call and will only return on an unrecoverable error.
 //
@@ -1179,6 +1196,7 @@ func (s *Server) Start() error {
 		return nil
 	}
 }
+
 // Stop gracefully shuts down the API server without interrupting any
 // active connections.
 //
@@ -1210,6 +1228,7 @@ func (s *Server) Stop(ctx context.Context) error {
 	log.Debug("API server stopped")
 	return nil
 }
+
 // corsMiddleware returns a Gin middleware handler that adds CORS headers
 // to every response, allowing cross-origin requests.
 //
@@ -1235,6 +1254,7 @@ func (s *Server) applyAccessConfig(oldCfg, newCfg *config.Config) {
 		return
 	}
 }
+
 // UpdateClients updates the server's client list and configuration.
 // This method is called when the configuration or authentication tokens change.
 //
@@ -1393,6 +1413,7 @@ func (s *Server) SetWebsocketAuthChangeHandler(fn func(bool, bool)) {
 	}
 	s.wsAuthChanged = fn
 }
+
 // (management handlers moved to internal/api/handlers/management)
 func (s *Server) apiKeyIPBlacklistMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -1409,6 +1430,7 @@ func (s *Server) apiKeyIPBlacklistMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
 // AuthMiddleware returns a Gin middleware handler that authenticates requests
 // using the configured authentication providers. When no providers are available,
 // it allows all requests (legacy behaviour).
