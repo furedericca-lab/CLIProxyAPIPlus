@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/router-for-me/CLIProxyAPI/v7/internal/interfaces"
 	"github.com/router-for-me/CLIProxyAPI/v7/internal/logging"
+	log "github.com/sirupsen/logrus"
 )
 
 const requestBodyOverrideContextKey = "REQUEST_BODY_OVERRIDE"
@@ -471,4 +472,37 @@ func (w *ResponseWriterWrapper) logRequest(requestBody []byte, statusCode int, h
 		w.requestInfo.Timestamp,
 		apiResponseTimestamp,
 	)
+}
+
+func mergeFileBodySource(payload []byte, source *logging.FileBodySource) ([]byte, error) {
+	if source == nil {
+		return payload, nil
+	}
+	defer cleanupFileBodySources(source)
+	if !source.HasPayload() {
+		return payload, nil
+	}
+	var buf bytes.Buffer
+	if len(payload) > 0 {
+		buf.Write(payload)
+		if !bytes.HasSuffix(payload, []byte("\n")) {
+			buf.WriteByte('\n')
+		}
+		buf.WriteByte('\n')
+	}
+	if errWrite := source.WriteTo(&buf); errWrite != nil {
+		return nil, errWrite
+	}
+	return buf.Bytes(), nil
+}
+
+func cleanupFileBodySources(sources ...*logging.FileBodySource) {
+	for _, source := range sources {
+		if source == nil {
+			continue
+		}
+		if errCleanup := source.Cleanup(); errCleanup != nil {
+			log.WithError(errCleanup).Warn("failed to clean up log part files")
+		}
+	}
 }
