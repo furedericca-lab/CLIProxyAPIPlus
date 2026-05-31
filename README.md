@@ -41,6 +41,10 @@ The upstream rebaseline scope has been completed and archived:
 
 - `docs/archive/router-upstream-rebaseline/`
 
+The router batch sync through `v7.1.32` has been completed and archived:
+
+- `docs/archive/router-batch-sync/`
+
 ## Upstream Policy
 
 Configured remotes:

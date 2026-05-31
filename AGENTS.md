@@ -141,3 +141,7 @@ For the completed router-first rebaseline decision, use:
 
 - `docs/archive/router-upstream-rebaseline/`
 - `.codex/wiki/decisions/track-router-main-as-upstream.md`
+
+For the completed router batch sync through `v7.1.32`, use:
+
+- `docs/archive/router-batch-sync/`
