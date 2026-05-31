@@ -7,15 +7,17 @@ related_files:
   - cmd/server/main.go
   - internal/cmd/run.go
   - internal/api/server.go
+  - internal/api/handlers/management/api_tools.go
   - internal/api/modules
   - internal/runtime/executor
   - internal/registry
   - sdk/cliproxy
+  - sdk/proxyutil/proxy.go
 tags:
   - architecture
   - function-map
 last_checked: 2026-05-28
-updated: 2026-05-31T06:51:32Z
+updated: 2026-05-31T08:23:43Z
 ---
 
 # Codebase Function Map
@@ -110,6 +112,13 @@ and `sdk/proxyutil`. HTTPS requests whose URL host is an IP literal are routed
 through an insecure TLS clone of the selected transport by default; domain-name
 HTTPS requests keep normal certificate verification. This preserves proxy and
 `proxy-url: direct` behavior while supporting bare-IP upstreams.
+
+Management resource probes under `/ai-providers/*` use a separate transport
+builder, `internal/api/handlers/management/api_tools.go:apiCallTransport`,
+instead of the executor helper path. Keep that transport wrapped with
+`proxyutil.WrapBareIPTLSBypass` too; otherwise Codex/Claude resource checks for
+bare-IP HTTPS base URLs can still fail with a frontend 502 even though runtime
+executor requests already work.
 
 ## Maintainer warning
 

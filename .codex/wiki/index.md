@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-31T07:01:48Z
+updated: 2026-05-31T08:25:09Z
 ---
+
 
 
 
@@ -42,14 +43,14 @@ updated: 2026-05-31T07:01:48Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-31T07:01:48Z
+- Last rebuilt: 2026-05-31T08:25:09Z
 - Page count: 8
 
 ## By Type
 
 ### concept
 
-- [Codebase Function Map](concepts/codebase-function-map.md) | status: current | updated: 2026-05-31T06:51:32Z
+- [Codebase Function Map](concepts/codebase-function-map.md) | status: current | updated: 2026-05-31T08:23:43Z
 
 ### decision
 
@@ -95,7 +96,7 @@ updated: 2026-05-31T07:01:48Z
 
 ## Recently Updated
 
-- 2026-05-31T06:51:32Z | [Codebase Function Map](concepts/codebase-function-map.md)
+- 2026-05-31T08:23:43Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-31T05:16:13Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-31T05:16:13Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - 2026-05-31T05:13:53Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
@@ -119,6 +120,7 @@ updated: 2026-05-31T07:01:48Z
 - `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
+- `internal/api/handlers/management/api_tools.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `internal/api/handlers/management/auth_files_gitlab_test.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - `internal/api/modules` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `internal/api/server.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
@@ -143,6 +145,7 @@ updated: 2026-05-31T07:01:48Z
 - `sdk/access` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
 - `sdk/cliproxy` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `sdk/cliproxy` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
+- `sdk/proxyutil/proxy.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `sdk/translator` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
 <!-- END AUTO -->
 

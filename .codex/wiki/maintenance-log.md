@@ -112,3 +112,10 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 
 - Summary: Archived bare-IP HTTPS TLS bypass scope after implementation and verification
 - Pages: docs/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
+
+## 2026-05-31T08:23:43Z [bare-ip-tls-skip]
+
+- Summary: Recorded the management resource transport pitfall: `/ai-providers/*` probes use `apiCallTransport`, separate from executor transports, and must also wrap bare-IP HTTPS requests with `proxyutil.WrapBareIPTLSBypass`.
+- Pages: .codex/wiki/concepts/codebase-function-map.md; docs/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
+- Verification: `rg` confirmed the pitfall was only in the archived scope before this wiki update; current source has `apiCallTransport` wrapping all return paths.
+- Residual risk: Running services still need a rebuilt/restarted binary before the management UI observes the transport fix.
