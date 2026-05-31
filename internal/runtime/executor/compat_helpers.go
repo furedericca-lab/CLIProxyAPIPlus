@@ -305,3 +305,17 @@ func (r *usageReporter) ensurePublished(ctx context.Context) {
 	}
 	r.reporter.EnsurePublished(ctx)
 }
+
+func (r *usageReporter) SetTranslatedReasoningEffort(payload []byte, format string) {
+	if r == nil || r.reporter == nil {
+		return
+	}
+	r.reporter.SetTranslatedReasoningEffort(payload, format)
+}
+
+func (r *usageReporter) TrackHTTPClient(client *http.Client) *http.Client {
+	if r == nil || r.reporter == nil {
+		return client
+	}
+	return r.reporter.TrackHTTPClient(client)
+}

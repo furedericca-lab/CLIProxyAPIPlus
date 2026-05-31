@@ -643,6 +643,18 @@ func (h *Handler) listAuthFilesFromDisk(c *gin.Context) {
 						fileData["base_url"] = trimmed
 					}
 				}
+				if wv := gjson.GetBytes(data, "websockets"); wv.Exists() {
+					switch wv.Type {
+					case gjson.True:
+						fileData["websockets"] = true
+					case gjson.False:
+						fileData["websockets"] = false
+					case gjson.String:
+						if parsed, errParse := strconv.ParseBool(strings.TrimSpace(wv.String())); errParse == nil {
+							fileData["websockets"] = parsed
+						}
+					}
+				}
 			}
 
 			files = append(files, fileData)
@@ -793,7 +805,39 @@ func (h *Handler) buildAuthFileEntry(auth *coreauth.Auth) gin.H {
 			"order":      auth.PrimaryInfo.Order,
 		}
 	}
+	if websockets, ok := authWebsocketsValue(auth); ok {
+		entry["websockets"] = websockets
+	}
 	return entry
+}
+
+func authWebsocketsValue(auth *coreauth.Auth) (bool, bool) {
+	if auth == nil {
+		return false, false
+	}
+	if auth.Attributes != nil {
+		if raw := strings.TrimSpace(auth.Attributes["websockets"]); raw != "" {
+			if parsed, errParse := strconv.ParseBool(raw); errParse == nil {
+				return parsed, true
+			}
+		}
+	}
+	if auth.Metadata == nil {
+		return false, false
+	}
+	raw, ok := auth.Metadata["websockets"]
+	if !ok || raw == nil {
+		return false, false
+	}
+	switch v := raw.(type) {
+	case bool:
+		return v, true
+	case string:
+		if parsed, errParse := strconv.ParseBool(strings.TrimSpace(v)); errParse == nil {
+			return parsed, true
+		}
+	}
+	return false, false
 }
 
 func extractPrimaryInfoFromMetadata(metadata map[string]any) *coreauth.PrimaryInfo {
