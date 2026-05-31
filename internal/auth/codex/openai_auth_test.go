@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -46,35 +47,44 @@ func TestRefreshTokensWithRetry_NonRetryableOnlyAttemptsOnce(t *testing.T) {
 }
 
 func TestNewCodexAuthWithProxyURL_OverrideDirectDisablesProxy(t *testing.T) {
-	cfg := &config.Config{SDKConfig: config.SDKConfig{ProxyURL: "http://proxy.example.com:8080"}}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
+	cfg := &config.Config{SDKConfig: config.SDKConfig{ProxyURL: "http://127.0.0.1:1"}}
 	auth := NewCodexAuthWithProxyURL(cfg, "direct")
 
-	transport, ok := auth.httpClient.Transport.(*http.Transport)
-	if !ok || transport == nil {
-		t.Fatalf("expected http.Transport, got %T", auth.httpClient.Transport)
+	resp, errDo := auth.httpClient.Get(server.URL)
+	if errDo != nil {
+		t.Fatalf("client.Get returned error: %v", errDo)
 	}
-	if transport.Proxy != nil {
-		t.Fatal("expected direct transport to disable proxy function")
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("status = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
 }
 
 func TestNewCodexAuthWithProxyURL_OverrideProxyTakesPrecedence(t *testing.T) {
-	cfg := &config.Config{SDKConfig: config.SDKConfig{ProxyURL: "http://global.example.com:8080"}}
-	auth := NewCodexAuthWithProxyURL(cfg, "http://override.example.com:8081")
+	var proxyCalls int32
+	proxyServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		atomic.AddInt32(&proxyCalls, 1)
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer proxyServer.Close()
 
-	transport, ok := auth.httpClient.Transport.(*http.Transport)
-	if !ok || transport == nil {
-		t.Fatalf("expected http.Transport, got %T", auth.httpClient.Transport)
+	cfg := &config.Config{SDKConfig: config.SDKConfig{ProxyURL: "http://global.example.com:8080"}}
+	auth := NewCodexAuthWithProxyURL(cfg, proxyServer.URL)
+
+	resp, errDo := auth.httpClient.Get("http://example.com/test")
+	if errDo != nil {
+		t.Fatalf("client.Get returned error: %v", errDo)
 	}
-	req, errReq := http.NewRequest(http.MethodGet, "https://example.com", nil)
-	if errReq != nil {
-		t.Fatalf("new request: %v", errReq)
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("status = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
-	proxyURL, errProxy := transport.Proxy(req)
-	if errProxy != nil {
-		t.Fatalf("proxy func: %v", errProxy)
-	}
-	if proxyURL == nil || proxyURL.String() != "http://override.example.com:8081" {
-		t.Fatalf("proxy URL = %v, want http://override.example.com:8081", proxyURL)
+	if got := atomic.LoadInt32(&proxyCalls); got != 1 {
+		t.Fatalf("proxy calls = %d, want 1", got)
 	}
 }

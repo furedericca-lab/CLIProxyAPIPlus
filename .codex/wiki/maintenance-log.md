@@ -102,3 +102,13 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
 - Verification: repo_task.py --root /root/work/CLIProxyAPIPlus archive --scope router-upstream-rebaseline --archive-date 2026-05-31 --apply --json
 - Residual risk: Future router integration still needs separate implementation scopes.
+
+## 2026-05-31T06:51:46Z [bare-ip-tls-skip]
+
+- Summary: Documented automatic TLS verification bypass for HTTPS IP-literal upstream transports
+- Pages: .codex/wiki/concepts/codebase-function-map.md
+
+## 2026-05-31T07:01:48Z [bare-ip-tls-skip]
+
+- Summary: Archived bare-IP HTTPS TLS bypass scope after implementation and verification
+- Pages: docs/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md

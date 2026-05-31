@@ -3,8 +3,10 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-31T05:20:00Z
+updated: 2026-05-31T07:01:48Z
 ---
+
+
 
 
 
@@ -40,14 +42,14 @@ updated: 2026-05-31T05:20:00Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-31T05:20:00Z
+- Last rebuilt: 2026-05-31T07:01:48Z
 - Page count: 8
 
 ## By Type
 
 ### concept
 
-- [Codebase Function Map](concepts/codebase-function-map.md) | status: current | updated: 2026-05-28T13:20:00Z
+- [Codebase Function Map](concepts/codebase-function-map.md) | status: current | updated: 2026-05-31T06:51:32Z
 
 ### decision
 
@@ -93,12 +95,12 @@ updated: 2026-05-31T05:20:00Z
 
 ## Recently Updated
 
+- 2026-05-31T06:51:32Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-31T05:16:13Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-31T05:16:13Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - 2026-05-31T05:13:53Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - 2026-05-31T05:13:53Z | [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
 - 2026-05-31T05:13:53Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- 2026-05-28T13:20:00Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-28T13:20:00Z | [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - 2026-05-28T13:20:00Z | [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
 

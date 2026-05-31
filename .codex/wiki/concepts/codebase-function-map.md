@@ -15,7 +15,7 @@ tags:
   - architecture
   - function-map
 last_checked: 2026-05-28
-updated: 2026-05-28T13:20:00Z
+updated: 2026-05-31T06:51:32Z
 ---
 
 # Codebase Function Map
@@ -104,6 +104,12 @@ Provider additions usually require changes across:
 - config examples
 - management auth files / config views
 - tests
+
+Shared outbound HTTP transport helpers live under `internal/runtime/executor/helps`
+and `sdk/proxyutil`. HTTPS requests whose URL host is an IP literal are routed
+through an insecure TLS clone of the selected transport by default; domain-name
+HTTPS requests keep normal certificate verification. This preserves proxy and
+`proxy-url: direct` behavior while supporting bare-IP upstreams.
 
 ## Maintainer warning
 

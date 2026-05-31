@@ -26,5 +26,6 @@ func SetProxy(cfg *config.SDKConfig, httpClient *http.Client) *http.Client {
 	if transport != nil {
 		httpClient.Transport = transport
 	}
+	httpClient.Transport = proxyutil.WrapBareIPTLSBypass(httpClient.Transport)
 	return httpClient
 }

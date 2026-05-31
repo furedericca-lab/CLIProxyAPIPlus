@@ -78,11 +78,59 @@ func cloneDefaultTransport() *http.Transport {
 	return &http.Transport{}
 }
 
+func cloneTransportWithInsecureSkipVerify(transport *http.Transport) *http.Transport {
+	clone := transport.Clone()
+	if clone.TLSClientConfig == nil {
+		clone.TLSClientConfig = &tls.Config{}
+	} else {
+		clone.TLSClientConfig = clone.TLSClientConfig.Clone()
+	}
+	clone.TLSClientConfig.InsecureSkipVerify = true
+	return clone
+}
+
 // NewDirectTransport returns a transport that bypasses environment proxies.
 func NewDirectTransport() *http.Transport {
 	clone := cloneDefaultTransport()
 	clone.Proxy = nil
 	return clone
+}
+
+// BareIPTLSBypassRoundTripper routes HTTPS requests whose URL host is an IP
+// literal through an insecure TLS transport. Domain-name HTTPS requests continue
+// to use the normal transport and keep certificate verification enabled.
+type BareIPTLSBypassRoundTripper struct {
+	normal   http.RoundTripper
+	insecure http.RoundTripper
+}
+
+// WrapBareIPTLSBypass enables certificate bypass only for HTTPS IP-literal
+// upstreams. The wrapped transport must be an *http.Transport so proxy and dial
+// settings can be cloned for the insecure path without weakening domain requests.
+func WrapBareIPTLSBypass(rt http.RoundTripper) http.RoundTripper {
+	if rt == nil {
+		rt = cloneDefaultTransport()
+	}
+	if _, ok := rt.(*BareIPTLSBypassRoundTripper); ok {
+		return rt
+	}
+	transport, ok := rt.(*http.Transport)
+	if !ok || transport == nil {
+		return rt
+	}
+	return &BareIPTLSBypassRoundTripper{
+		normal:   transport,
+		insecure: cloneTransportWithInsecureSkipVerify(transport),
+	}
+}
+
+func (rt *BareIPTLSBypassRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if req != nil && req.URL != nil && strings.EqualFold(req.URL.Scheme, "https") {
+		if ip := net.ParseIP(req.URL.Hostname()); ip != nil {
+			return rt.insecure.RoundTrip(req)
+		}
+	}
+	return rt.normal.RoundTrip(req)
 }
 
 // BuildHTTPTransport constructs an HTTP transport for the provided proxy setting.
