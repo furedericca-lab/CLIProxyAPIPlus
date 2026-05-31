@@ -69,7 +69,7 @@ func NewProxyAwareHTTPClient(ctx context.Context, cfg *config.Config, auth *clip
 	if proxyURL != "" {
 		transport := buildProxyTransport(proxyURL)
 		if transport != nil {
-			httpClient.Transport = transport
+			httpClient.Transport = proxyutil.WrapBareIPTLSBypass(transport)
 			// Cache the client
 			httpClientCacheMutex.Lock()
 			httpClientCache[proxyURL] = httpClient
@@ -82,9 +82,11 @@ func NewProxyAwareHTTPClient(ctx context.Context, cfg *config.Config, auth *clip
 
 	// Priority 3: Use RoundTripper from context (typically from RoundTripperFor)
 	if rt, ok := ctx.Value("cliproxy.roundtripper").(http.RoundTripper); ok && rt != nil {
-		httpClient.Transport = rt
+		httpClient.Transport = proxyutil.WrapBareIPTLSBypass(rt)
+		return httpClient
 	}
 
+	httpClient.Transport = proxyutil.WrapBareIPTLSBypass(nil)
 	return httpClient
 }
 

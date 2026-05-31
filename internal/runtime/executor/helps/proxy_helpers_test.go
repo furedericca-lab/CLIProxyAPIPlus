@@ -3,6 +3,7 @@ package helps
 import (
 	"context"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/router-for-me/CLIProxyAPI/v7/internal/config"
@@ -13,18 +14,24 @@ import (
 func TestNewProxyAwareHTTPClientDirectBypassesGlobalProxy(t *testing.T) {
 	t.Parallel()
 
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
 	client := NewProxyAwareHTTPClient(
 		context.Background(),
-		&config.Config{SDKConfig: sdkconfig.SDKConfig{ProxyURL: "http://global-proxy.example.com:8080"}},
+		&config.Config{SDKConfig: sdkconfig.SDKConfig{ProxyURL: "http://127.0.0.1:1"}},
 		&cliproxyauth.Auth{ProxyURL: "direct"},
 		0,
 	)
 
-	transport, ok := client.Transport.(*http.Transport)
-	if !ok {
-		t.Fatalf("transport type = %T, want *http.Transport", client.Transport)
+	resp, errDo := client.Get(server.URL)
+	if errDo != nil {
+		t.Fatalf("client.Get returned error: %v", errDo)
 	}
-	if transport.Proxy != nil {
-		t.Fatal("expected direct transport to disable proxy function")
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("status = %d, want %d", resp.StatusCode, http.StatusNoContent)
 	}
 }

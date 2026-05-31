@@ -735,17 +735,17 @@ func (h *Handler) apiCallTransport(auth *coreauth.Auth) http.RoundTripper {
 
 	for _, proxyStr := range proxyCandidates {
 		if transport := buildProxyTransport(proxyStr); transport != nil {
-			return transport
+			return proxyutil.WrapBareIPTLSBypass(transport)
 		}
 	}
 
 	transport, ok := http.DefaultTransport.(*http.Transport)
 	if !ok || transport == nil {
-		return &http.Transport{Proxy: nil}
+		return proxyutil.WrapBareIPTLSBypass(&http.Transport{Proxy: nil})
 	}
 	clone := transport.Clone()
 	clone.Proxy = nil
-	return clone
+	return proxyutil.WrapBareIPTLSBypass(clone)
 }
 
 type apiKeyConfigEntry interface {

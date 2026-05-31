@@ -8,7 +8,26 @@ import (
 	"github.com/router-for-me/CLIProxyAPI/v7/internal/config"
 	coreauth "github.com/router-for-me/CLIProxyAPI/v7/sdk/cliproxy/auth"
 	sdkconfig "github.com/router-for-me/CLIProxyAPI/v7/sdk/config"
+	"github.com/router-for-me/CLIProxyAPI/v7/sdk/proxyutil"
 )
+
+func apiCallHTTPTransport(t *testing.T, rt http.RoundTripper) *http.Transport {
+	t.Helper()
+
+	wrapped, ok := rt.(*proxyutil.BareIPTLSBypassRoundTripper)
+	if ok {
+		normal, ok := wrapped.Normal().(*http.Transport)
+		if !ok {
+			t.Fatalf("wrapped normal transport type = %T, want *http.Transport", wrapped.Normal())
+		}
+		return normal
+	}
+	httpTransport, ok := rt.(*http.Transport)
+	if !ok {
+		t.Fatalf("transport type = %T, want *http.Transport", rt)
+	}
+	return httpTransport
+}
 
 func TestAPICallTransportDirectBypassesGlobalProxy(t *testing.T) {
 	t.Parallel()
@@ -20,12 +39,12 @@ func TestAPICallTransportDirectBypassesGlobalProxy(t *testing.T) {
 	}
 
 	transport := h.apiCallTransport(&coreauth.Auth{ProxyURL: "direct"})
-	httpTransport, ok := transport.(*http.Transport)
-	if !ok {
-		t.Fatalf("transport type = %T, want *http.Transport", transport)
-	}
+	httpTransport := apiCallHTTPTransport(t, transport)
 	if httpTransport.Proxy != nil {
 		t.Fatal("expected direct transport to disable proxy function")
+	}
+	if _, ok := transport.(*proxyutil.BareIPTLSBypassRoundTripper); !ok {
+		t.Fatalf("transport type = %T, want *proxyutil.BareIPTLSBypassRoundTripper", transport)
 	}
 }
 
@@ -39,10 +58,7 @@ func TestAPICallTransportInvalidAuthFallsBackToGlobalProxy(t *testing.T) {
 	}
 
 	transport := h.apiCallTransport(&coreauth.Auth{ProxyURL: "bad-value"})
-	httpTransport, ok := transport.(*http.Transport)
-	if !ok {
-		t.Fatalf("transport type = %T, want *http.Transport", transport)
-	}
+	httpTransport := apiCallHTTPTransport(t, transport)
 
 	req, errRequest := http.NewRequest(http.MethodGet, "https://example.com", nil)
 	if errRequest != nil {
@@ -136,10 +152,7 @@ func TestAPICallTransportAPIKeyAuthFallsBackToConfigProxyURL(t *testing.T) {
 			t.Parallel()
 
 			transport := h.apiCallTransport(tc.auth)
-			httpTransport, ok := transport.(*http.Transport)
-			if !ok {
-				t.Fatalf("transport type = %T, want *http.Transport", transport)
-			}
+			httpTransport := apiCallHTTPTransport(t, transport)
 
 			req, errRequest := http.NewRequest(http.MethodGet, "https://example.com", nil)
 			if errRequest != nil {
@@ -154,6 +167,31 @@ func TestAPICallTransportAPIKeyAuthFallsBackToConfigProxyURL(t *testing.T) {
 				t.Fatalf("proxy URL = %v, want %s", proxyURL, tc.wantProxy)
 			}
 		})
+	}
+}
+
+func TestAPICallTransportWrapsBareIPTLSBypass(t *testing.T) {
+	t.Parallel()
+
+	h := &Handler{
+		cfg: &config.Config{
+			CodexKey: []config.CodexKey{{
+				APIKey:   "codex-key",
+				BaseURL:  "https://114.119.173.40/v1",
+				ProxyURL: "direct",
+			}},
+		},
+	}
+
+	transport := h.apiCallTransport(&coreauth.Auth{
+		Provider: "codex",
+		Attributes: map[string]string{
+			"api_key":  "codex-key",
+			"base_url": "https://114.119.173.40/v1",
+		},
+	})
+	if _, ok := transport.(*proxyutil.BareIPTLSBypassRoundTripper); !ok {
+		t.Fatalf("transport type = %T, want *proxyutil.BareIPTLSBypassRoundTripper", transport)
 	}
 }
 

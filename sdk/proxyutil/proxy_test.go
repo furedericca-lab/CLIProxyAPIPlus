@@ -2,15 +2,23 @@ package proxyutil
 
 import (
 	"bufio"
+	"crypto/tls"
 	"encoding/base64"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
 )
+
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return fn(req)
+}
 
 func mustDefaultTransport(t *testing.T) *http.Transport {
 	t.Helper()
@@ -164,6 +172,107 @@ func TestBuildHTTPTransportSOCKS5HProxy(t *testing.T) {
 	}
 	if transport.DialContext == nil {
 		t.Fatal("expected SOCKS5H transport to have custom DialContext")
+	}
+}
+
+func TestWrapBareIPTLSBypassClonesTransportWithInsecureTLSOnly(t *testing.T) {
+	t.Parallel()
+
+	proxyURL, errParse := url.Parse("http://proxy.example.com:8080")
+	if errParse != nil {
+		t.Fatalf("url.Parse returned error: %v", errParse)
+	}
+	base := &http.Transport{
+		Proxy:           http.ProxyURL(proxyURL),
+		TLSClientConfig: &tls.Config{ServerName: "example.com"},
+	}
+
+	wrapped, ok := WrapBareIPTLSBypass(base).(*BareIPTLSBypassRoundTripper)
+	if !ok {
+		t.Fatalf("wrapped transport = %T, want *BareIPTLSBypassRoundTripper", wrapped)
+	}
+	if wrapped.normal != base {
+		t.Fatal("normal transport should keep the original transport")
+	}
+
+	insecure, ok := wrapped.insecure.(*http.Transport)
+	if !ok {
+		t.Fatalf("insecure transport = %T, want *http.Transport", wrapped.insecure)
+	}
+	if insecure == base {
+		t.Fatal("insecure transport should be a clone, not the original")
+	}
+	if base.TLSClientConfig.InsecureSkipVerify {
+		t.Fatal("base transport TLSClientConfig was mutated")
+	}
+	if !insecure.TLSClientConfig.InsecureSkipVerify {
+		t.Fatal("insecure transport did not enable InsecureSkipVerify")
+	}
+	if insecure.TLSClientConfig.ServerName != "example.com" {
+		t.Fatalf("ServerName = %q, want example.com", insecure.TLSClientConfig.ServerName)
+	}
+
+	req, errRequest := http.NewRequest(http.MethodGet, "https://203.0.113.10", nil)
+	if errRequest != nil {
+		t.Fatalf("http.NewRequest returned error: %v", errRequest)
+	}
+	gotProxy, errProxy := insecure.Proxy(req)
+	if errProxy != nil {
+		t.Fatalf("insecure.Proxy returned error: %v", errProxy)
+	}
+	if gotProxy == nil || gotProxy.String() != proxyURL.String() {
+		t.Fatalf("insecure proxy = %v, want %s", gotProxy, proxyURL)
+	}
+}
+
+func TestBareIPTLSBypassRoundTripperRoutesOnlyHTTPSIPLiteral(t *testing.T) {
+	t.Parallel()
+
+	var normalCalls, insecureCalls int
+	rt := &BareIPTLSBypassRoundTripper{
+		normal: roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			normalCalls++
+			return &http.Response{StatusCode: http.StatusNoContent, Body: http.NoBody, Header: make(http.Header)}, nil
+		}),
+		insecure: roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+			insecureCalls++
+			return &http.Response{StatusCode: http.StatusAccepted, Body: http.NoBody, Header: make(http.Header)}, nil
+		}),
+	}
+
+	tests := []struct {
+		name       string
+		rawURL     string
+		wantStatus int
+	}{
+		{name: "https ipv4", rawURL: "https://203.0.113.10/v1/messages", wantStatus: http.StatusAccepted},
+		{name: "https ipv6", rawURL: "https://[2001:db8::1]/v1/messages", wantStatus: http.StatusAccepted},
+		{name: "https domain", rawURL: "https://example.com/v1/messages", wantStatus: http.StatusNoContent},
+		{name: "http ipv4", rawURL: "http://203.0.113.10/v1/messages", wantStatus: http.StatusNoContent},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			req, errRequest := http.NewRequest(http.MethodGet, tt.rawURL, nil)
+			if errRequest != nil {
+				t.Fatalf("http.NewRequest returned error: %v", errRequest)
+			}
+			resp, errRoundTrip := rt.RoundTrip(req)
+			if errRoundTrip != nil {
+				t.Fatalf("RoundTrip returned error: %v", errRoundTrip)
+			}
+			if resp.StatusCode != tt.wantStatus {
+				t.Fatalf("status = %d, want %d", resp.StatusCode, tt.wantStatus)
+			}
+		})
+	}
+
+	if normalCalls != 2 {
+		t.Fatalf("normalCalls = %d, want 2", normalCalls)
+	}
+	if insecureCalls != 2 {
+		t.Fatalf("insecureCalls = %d, want 2", insecureCalls)
 	}
 }
 
