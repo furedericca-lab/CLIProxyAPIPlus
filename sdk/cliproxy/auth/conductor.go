@@ -134,6 +134,13 @@ type ProviderExecutor interface {
 	HttpRequest(ctx context.Context, auth *Auth, req *http.Request) (*http.Response, error)
 }
 
+// RequestAuthPreparer lets an executor update missing auth metadata immediately
+// before a request. Manager serializes and persists returned updates.
+type RequestAuthPreparer interface {
+	ShouldPrepareRequestAuth(auth *Auth) bool
+	PrepareRequestAuth(ctx context.Context, auth *Auth) (*Auth, error)
+}
+
 // ExecutionSessionCloser allows executors to release per-session runtime resources.
 type ExecutionSessionCloser interface {
 	CloseExecutionSession(sessionID string)
@@ -280,6 +287,8 @@ type Manager struct {
 	// Auto refresh state
 	refreshCancel context.CancelFunc
 	refreshLoop   *authAutoRefreshLoop
+
+	requestPrepareLocks sync.Map
 }
 
 // NewManager constructs a manager with optional custom selector and hook.
@@ -1785,7 +1794,7 @@ func (m *Manager) Execute(ctx context.Context, providers []string, req cliproxye
 	if err == nil {
 		return resp, nil
 	}
-	if shouldAttemptAntigravityCreditsFallback(m, err, normalized) {
+	if hasAntigravityProvider(normalized) && shouldAttemptAntigravityCreditsFallback(m, err, normalized) {
 		if fallbackResp, ok := m.tryAntigravityCreditsExecute(ctx, req, opts); ok {
 			return fallbackResp, nil
 		}
@@ -1813,7 +1822,7 @@ func (m *Manager) ExecuteStream(ctx context.Context, providers []string, req cli
 	if err == nil {
 		return result, nil
 	}
-	if shouldAttemptAntigravityCreditsFallback(m, err, normalized) {
+	if hasAntigravityProvider(normalized) && shouldAttemptAntigravityCreditsFallback(m, err, normalized) {
 		if fallbackResult, ok := m.tryAntigravityCreditsExecuteStream(ctx, req, opts); ok {
 			return fallbackResult, nil
 		}
@@ -1872,6 +1881,17 @@ func (m *Manager) executeMixedOnce(ctx context.Context, providers []string, req 
 
 		models, pooled := m.preparedExecutionModels(auth, routeModel)
 		if len(models) == 0 {
+			continue
+		}
+		var errPrepare error
+		auth, errPrepare = m.prepareRequestAuth(execCtx, executor, auth)
+		if errPrepare != nil {
+			result := Result{AuthID: auth.ID, Provider: provider, Model: routeModel, Success: false, Error: &Error{Message: errPrepare.Error()}}
+			if se, ok := errors.AsType[cliproxyexecutor.StatusError](errPrepare); ok && se != nil {
+				result.Error.HTTPStatus = se.StatusCode()
+			}
+			m.MarkResult(execCtx, result)
+			lastErr = errPrepare
 			continue
 		}
 		var authErr error
@@ -1977,6 +1997,17 @@ func (m *Manager) executeCountMixedOnce(ctx context.Context, providers []string,
 
 		models, pooled := m.preparedExecutionModels(auth, routeModel)
 		if len(models) == 0 {
+			continue
+		}
+		var errPrepare error
+		auth, errPrepare = m.prepareRequestAuth(execCtx, executor, auth)
+		if errPrepare != nil {
+			result := Result{AuthID: auth.ID, Provider: provider, Model: routeModel, Success: false, Error: &Error{Message: errPrepare.Error()}}
+			if se, ok := errors.AsType[cliproxyexecutor.StatusError](errPrepare); ok && se != nil {
+				result.Error.HTTPStatus = se.StatusCode()
+			}
+			m.MarkResult(execCtx, result)
+			lastErr = errPrepare
 			continue
 		}
 		var authErr error
@@ -2283,6 +2314,17 @@ func (m *Manager) executeStreamMixedOnce(ctx context.Context, providers []string
 			continue
 		}
 		countBudget := true
+		var errPrepare error
+		auth, errPrepare = m.prepareRequestAuth(execCtx, executor, auth)
+		if errPrepare != nil {
+			result := Result{AuthID: auth.ID, Provider: provider, Model: routeModel, Success: false, Error: &Error{Message: errPrepare.Error()}}
+			if se, ok := errors.AsType[cliproxyexecutor.StatusError](errPrepare); ok && se != nil {
+				result.Error.HTTPStatus = se.StatusCode()
+			}
+			m.MarkResult(execCtx, result)
+			lastErr = errPrepare
+			continue
+		}
 		streamResult, errStream := m.executeStreamWithModelPool(execCtx, executor, auth, provider, req, opts, routeModel, models, pooled)
 		if errStream != nil {
 			if errCtx := execCtx.Err(); errCtx != nil {
@@ -2403,9 +2445,69 @@ func hasRequestedModelMetadata(meta map[string]any) bool {
 	}
 }
 
+type requestAuthPrepareLock struct {
+	mu sync.Mutex
+}
+
+func (m *Manager) prepareRequestAuth(ctx context.Context, executor ProviderExecutor, auth *Auth) (*Auth, error) {
+	if m == nil || executor == nil || auth == nil {
+		return auth, nil
+	}
+	preparer, ok := executor.(RequestAuthPreparer)
+	if !ok || preparer == nil || !preparer.ShouldPrepareRequestAuth(auth) {
+		return auth, nil
+	}
+
+	id := strings.TrimSpace(auth.ID)
+	if id == "" {
+		return preparer.PrepareRequestAuth(ctx, auth.Clone())
+	}
+
+	lockValue, _ := m.requestPrepareLocks.LoadOrStore(id, &requestAuthPrepareLock{})
+	lock, ok := lockValue.(*requestAuthPrepareLock)
+	if !ok || lock == nil {
+		return preparer.PrepareRequestAuth(ctx, auth.Clone())
+	}
+
+	lock.mu.Lock()
+	defer lock.mu.Unlock()
+
+	target := auth.Clone()
+	m.mu.RLock()
+	if current := m.auths[id]; current != nil {
+		target = current.Clone()
+	}
+	m.mu.RUnlock()
+
+	if !preparer.ShouldPrepareRequestAuth(target) {
+		return target, nil
+	}
+
+	updated, errPrepare := preparer.PrepareRequestAuth(ctx, target)
+	if errPrepare != nil {
+		return auth, errPrepare
+	}
+	if updated == nil {
+		return target, nil
+	}
+
+	saved, errUpdate := m.Update(ctx, updated)
+	if errUpdate != nil {
+		return updated, errUpdate
+	}
+	if saved != nil {
+		return saved, nil
+	}
+	return updated, nil
+}
+
 func contextWithRequestedModelAlias(ctx context.Context, opts cliproxyexecutor.Options, fallback string) context.Context {
 	alias := requestedModelAliasFromOptions(opts, fallback)
-	return coreusage.WithRequestedModelAlias(ctx, alias)
+	ctx = coreusage.WithRequestedModelAlias(ctx, alias)
+	if effort := reasoningEffortFromOptions(opts); effort != "" {
+		ctx = coreusage.WithReasoningEffort(ctx, effort)
+	}
+	return ctx
 }
 
 func requestedModelAliasFromOptions(opts cliproxyexecutor.Options, fallback string) string {
@@ -2430,6 +2532,24 @@ func requestedModelAliasFromOptions(opts cliproxyexecutor.Options, fallback stri
 		return strings.TrimSpace(string(value))
 	default:
 		return fallback
+	}
+}
+
+func reasoningEffortFromOptions(opts cliproxyexecutor.Options) string {
+	if len(opts.Metadata) == 0 {
+		return ""
+	}
+	raw, ok := opts.Metadata[cliproxyexecutor.ReasoningEffortMetadataKey]
+	if !ok || raw == nil {
+		return ""
+	}
+	switch value := raw.(type) {
+	case string:
+		return strings.TrimSpace(value)
+	case []byte:
+		return strings.TrimSpace(string(value))
+	default:
+		return ""
 	}
 }
 
@@ -4560,6 +4680,15 @@ type creditsCandidateEntry struct {
 	provider string
 }
 
+func hasAntigravityProvider(providers []string) bool {
+	for _, p := range providers {
+		if strings.EqualFold(strings.TrimSpace(p), "antigravity") {
+			return true
+		}
+	}
+	return false
+}
+
 func shouldAttemptAntigravityCreditsFallback(m *Manager, lastErr error, providers []string) bool {
 	status := statusCodeFromError(lastErr)
 	log.WithFields(log.Fields{
@@ -4569,18 +4698,6 @@ func shouldAttemptAntigravityCreditsFallback(m *Manager, lastErr error, provider
 	}).Debug("shouldAttemptAntigravityCreditsFallback")
 	if m == nil || lastErr == nil {
 		return false
-	}
-	if len(providers) > 0 {
-		hasAntigravity := false
-		for _, p := range providers {
-			if strings.EqualFold(strings.TrimSpace(p), "antigravity") {
-				hasAntigravity = true
-				break
-			}
-		}
-		if !hasAntigravity {
-			return false
-		}
 	}
 	cfg, _ := m.runtimeConfig.Load().(*internalconfig.Config)
 	if cfg == nil || !cfg.QuotaExceeded.AntigravityCredits {
@@ -4618,6 +4735,11 @@ func (m *Manager) tryAntigravityCreditsExecute(ctx context.Context, req cliproxy
 		}
 		creditsOpts := ensureRequestedModelMetadata(opts, routeModel)
 		creditsCtx = contextWithRequestedModelAlias(creditsCtx, creditsOpts, routeModel)
+		preparedAuth, errPrepare := m.prepareRequestAuth(creditsCtx, c.executor, c.auth)
+		if errPrepare != nil {
+			continue
+		}
+		c.auth = preparedAuth
 		publishSelectedAuthMetadata(creditsOpts.Metadata, c.auth.ID)
 		models := m.executionModelCandidates(c.auth, routeModel)
 		if len(models) == 0 {
@@ -4660,6 +4782,11 @@ func (m *Manager) tryAntigravityCreditsExecuteStream(ctx context.Context, req cl
 			creditsCtx = context.WithValue(creditsCtx, "cliproxy.roundtripper", rt)
 		}
 		creditsOpts := ensureRequestedModelMetadata(opts, routeModel)
+		preparedAuth, errPrepare := m.prepareRequestAuth(creditsCtx, c.executor, c.auth)
+		if errPrepare != nil {
+			continue
+		}
+		c.auth = preparedAuth
 		publishSelectedAuthMetadata(creditsOpts.Metadata, c.auth.ID)
 		models := m.executionModelCandidates(c.auth, routeModel)
 		if len(models) == 0 {
