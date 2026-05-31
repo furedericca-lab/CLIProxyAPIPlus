@@ -15,21 +15,30 @@ tags:
   - providers
   - commits
   - upstream
-last_checked: 2026-05-28
-updated: 2026-05-28T14:05:00Z
+last_checked: 2026-05-31
+updated: 2026-05-31T05:16:13Z
 ---
 
 # Pre-clean-root Provider and Commit Inventory
 
 ## Current clean-root provider surface
 
-Current `main` is rooted at HsnSaboor and has the HsnSaboor Plus provider surface:
+Current `main` still contains the HsnSaboor clean-root Plus provider surface,
+but the active upstream policy changed on 2026-05-31 to track router `main` and
+adapt Plus providers locally:
 
 - Auth dirs: old local providers plus `cline` and `xai`.
 - Executors: old local executors plus `cline`, `ollama`, and `xai`.
 - Login commands: old local login commands plus `cline_login.go` and `xai_login.go`.
 
 The old local provider directories were not lost during the clean-root switch.
+
+Current provider precedence:
+
+- Providers present in router should use router's implementation.
+- Providers absent from router but present in this fork or the former HsnSaboor
+  Plus line should be preserved as local Plus extensions and updated from
+  HsnSaboor's maintenance line when available.
 
 ## Pre-clean-root local provider surface
 
@@ -108,7 +117,10 @@ Router `router/main` removed or lacks multiple Plus providers that both the pre-
 - Executors: `codebuddy`, `cursor`, `github_copilot`, `gitlab`, `iflow`, `kilo`, `kiro`, `qwen`
 - Login commands: `codebuddy_login.go`, `cursor_login.go`, `github_copilot_login.go`, `gitlab_login.go`, `iflow_cookie.go`, `iflow_login.go`, `kilo_login.go`, `kiro_login.go`, `qwen_login.go`
 
-Do not merge router wholesale into the Plus line.
+Do not merge router wholesale into the Plus line without provider adaptation.
+Router-owned providers should converge to router code; providers missing from
+router should remain local Plus extensions unless explicitly retired, with
+HsnSaboor as their update reference when it has relevant maintenance.
 
 ## Pre-clean-root local commits not in HsnSaboor
 
@@ -152,7 +164,7 @@ When auditing old local commits:
 Evidence commands:
 
 ```bash
-git log --oneline --no-merges upstream/main..backup/main-before-hsnsaboor-clean-root
+git log --oneline --no-merges 8c93cf6884e806bdae6df7df144fd776c1cfb033..backup/main-before-hsnsaboor-clean-root
 git show --stat --oneline <commit>
 git ls-tree -d --name-only backup/main-before-hsnsaboor-clean-root:internal/auth | sort
 git ls-tree --name-only backup/main-before-hsnsaboor-clean-root:internal/runtime/executor | rg '_executor\.go$' | sed 's/_executor\.go$//' | sort

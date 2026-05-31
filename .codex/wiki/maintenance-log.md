@@ -81,3 +81,24 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: .codex/wiki/reference/model-catalog-maintenance.md
 - Verification: go test ./internal/thinking/provider/iflow ./internal/thinking ./internal/registry, go build -o test-output ./cmd/server && rm test-output
 - Residual risk: Archived historical scopes still describe the removed local patches as provenance.
+
+## 2026-05-31T05:16:04Z [router-upstream-rebaseline]
+
+- Summary: Rebased upstream policy to router/main and recorded provider precedence: router-owned providers use router code, local/HsnSaboor-exclusive providers remain Plus extensions.
+- Pages: .codex/wiki/reference/upstream-plus-maintenance.md
+- Verification: git remote set-url upstream https://github.com/router-for-me/CLIProxyAPI; git fetch upstream --prune; comm provider matrices
+- Residual risk: Router integration has not been merged yet; future scopes must validate provider behavior before code changes.
+
+## 2026-05-31T05:19:18Z [router-upstream-rebaseline]
+
+- Summary: Clarified provider precedence: router-owned providers follow router, while local/HsnSaboor-exclusive providers stay as Plus extensions and use HsnSaboor maintenance as their update reference when available.
+- Pages: .codex/wiki/reference/upstream-plus-maintenance.md
+- Verification: update AGENTS.md README.md CLAUDE.md wiki references and router-upstream-rebaseline contract
+- Residual risk: Actual router code integration remains future scoped work.
+
+## 2026-05-31T05:19:52Z [router-upstream-rebaseline]
+
+- Summary: Archived the completed router upstream rebaseline scope and updated entry-point references to docs/archive/router-upstream-rebaseline/.
+- Pages: docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
+- Verification: repo_task.py --root /root/work/CLIProxyAPIPlus archive --scope router-upstream-rebaseline --archive-date 2026-05-31 --apply --json
+- Residual risk: Future router integration still needs separate implementation scopes.

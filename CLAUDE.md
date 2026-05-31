@@ -6,8 +6,11 @@ Do not replace it with upstream CLAUDE.md content during synchronization.
 
 Claude-specific agents should follow the same repository policy as `AGENTS.md`:
 
-- HsnSaboor is the Plus baseline.
-- Router is a selective patch source only.
+- Router `main` is the active upstream baseline.
+- This fork owns the Plus adaptation layer on top of router.
+- Use router provider code for providers router already has.
+- Preserve local/HsnSaboor-exclusive providers as Plus extensions, using
+  HsnSaboor's maintenance line as their update reference when available.
 - Root docs and `docs/**` are locally owned.
 - Active scope plans live under `docs/<scope>/`.
 - Durable project knowledge lives under `.codex/wiki/**`.

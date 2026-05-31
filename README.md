@@ -2,11 +2,17 @@
 
 This repository is our maintained Plus line for CLIProxyAPI-compatible local proxy work.
 
-The project goal is to keep the Plus provider surface while using the best maintained upstream base available. The current policy is:
+The project goal is to keep the Plus provider surface while tracking the
+actively maintained router core. The current policy is:
 
-- Use `HsnSaboor/CLIProxyAPIPlus` as the Plus baseline.
-- Treat `router-for-me/CLIProxyAPI` as a later selective patch source.
-- Do not blindly merge provider deletions from router.
+- Use `router-for-me/CLIProxyAPI` as `upstream`.
+- Maintain our Plus provider adaptation layer locally.
+- For providers router already has, use router's provider implementation as the
+  baseline.
+- For providers only present in this fork or the former HsnSaboor Plus line,
+  keep them, use HsnSaboor's maintenance line as their update reference, and
+  adapt them locally.
+- Do not blindly accept provider deletions or incompatible router API moves.
 - Do not sync upstream root docs or upstream `docs/` content into this repository.
 
 ## Maintenance Model
@@ -31,20 +37,29 @@ The clean-root maintenance scope has been completed and archived:
 
 It created a clean branch rooted at HsnSaboor `upstream/main`, then added only our current maintenance decisions as new commits.
 
+The upstream rebaseline scope has been completed and archived:
+
+- `docs/archive/router-upstream-rebaseline/`
+
 ## Upstream Policy
 
 Configured remotes:
 
 - `origin`: this fork
-- `upstream`: `https://github.com/HsnSaboor/CLIProxyAPIPlus`
-- `router`: `https://github.com/router-for-me/CLIProxyAPI`
+- `upstream`: `https://github.com/router-for-me/CLIProxyAPI`
+- `router`: `https://github.com/router-for-me/CLIProxyAPI` as a compatibility alias
 
 Rules:
 
-- HsnSaboor implementations win by default when local old commits overlap by provider or feature.
+- Router implementations win by default for core behavior and protocol changes.
+- Router provider code wins for providers that exist in router.
+- Plus provider behavior is preserved through explicit local adaptation.
+- Local/HsnSaboor-exclusive providers remain part of this fork unless a scope
+  explicitly retires them, and HsnSaboor remains their update reference when it
+  has relevant maintenance.
 - Local old commits are not replayed wholesale.
-- Router changes are reviewed later as targeted core patches.
-- Router provider deletion hunks are rejected by default.
+- Provider deletion hunks are rejected by default unless a scope explicitly
+  retires the provider.
 
 ## Provider Preservation
 
@@ -56,7 +71,12 @@ git ls-tree --name-only HEAD:internal/runtime/executor | rg '_executor\.go$' | s
 git ls-tree --name-only HEAD:internal/cmd | rg '(_login|_cookie|vertex_import)\.go$' | sort
 ```
 
-The HsnSaboor baseline should preserve Plus providers and currently adds `cline`, `xai`, and `ollama` executor support beyond the old local line.
+Current `internal/auth` split:
+
+- Router-owned providers: `antigravity`, `claude`, `codex`, `empty`, `gemini`,
+  `kimi`, `vertex`, `xai`.
+- Local/HsnSaboor-exclusive Plus providers to preserve: `cline`, `codebuddy`,
+  `copilot`, `cursor`, `gitlab`, `iflow`, `kilo`, `kiro`, `qwen`.
 
 ## Development Commands
 

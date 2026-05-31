@@ -1,7 +1,7 @@
 ---
 title: Track HsnSaboor Plus Before Router Core
 type: decision
-status: accepted
+status: superseded
 scope: hsnsaboor-clean-root
 related_scopes:
   []
@@ -14,10 +14,13 @@ tags:
   - merge-strategy
 decision_date: 2026-05-28
 last_checked: 2026-05-28
-updated: 2026-05-28T14:05:00Z
+updated: 2026-05-31T05:13:53Z
 ---
 
 # Track HsnSaboor Plus Before Router Core
+
+Superseded on 2026-05-31 by
+`.codex/wiki/decisions/track-router-main-as-upstream.md`.
 
 ## Decision
 

@@ -2,7 +2,9 @@
 title: Model Catalog Maintenance
 type: reference
 status: current
-scope: risk-resolution-from-old-local-audit
+scope: router-upstream-rebaseline
+related_scopes:
+  - risk-resolution-from-old-local-audit
 related_files:
   - internal/registry/models/models.json
   - internal/registry/model_definitions.go
@@ -13,8 +15,8 @@ tags:
   - iflow
   - kiro
   - registry
-last_checked: 2026-05-28
-updated: 2026-05-29T00:00:00Z
+last_checked: 2026-05-31
+updated: 2026-05-31T05:16:13Z
 ---
 
 # Model Catalog Maintenance
@@ -23,7 +25,7 @@ This page preserves useful conclusions from the old `docs/iflow-kimi-k2-5`, `doc
 
 ## Current model source policy
 
-Runtime model refresh follows the HsnSaboor baseline:
+Runtime model refresh follows the router model catalog baseline:
 
 - `https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json`
 - `https://models.router-for.me/models.json`
@@ -44,7 +46,8 @@ Historical finding:
 Current implementation:
 
 - The local iFlow Kimi fallback patch was intentionally removed on 2026-05-29.
-- Keep HsnSaboor behavior for iFlow Kimi unless a future current-code/runtime validation proves a real gap.
+- Keep current router-compatible behavior for iFlow Kimi unless a future
+  current-code/runtime validation proves a real gap.
 - `internal/thinking/provider/iflow/apply.go` does not special-case `kimi-*` for iFlow thinking.
 
 Current verification commands:
@@ -82,9 +85,10 @@ Historical decision:
 
 Current implementation:
 
-- `internal/registry/model_updater.go` follows HsnSaboor's router model URLs.
+- `internal/registry/model_updater.go` follows router model URLs.
 - `.github/workflows/release.yaml` and `.github/workflows/pr-test-build.yml` do not fetch a model catalog during CI.
-- There is no local runtime model-source guard test; source behavior should stay close to HsnSaboor unless a future scope decides otherwise.
+- There is no local runtime model-source guard test; source behavior should
+  stay close to router unless a future scope decides otherwise.
 
 Follow-up historical finding:
 
@@ -102,9 +106,10 @@ diff -u <(jq -r '.iflow[].id' internal/registry/models/models.json) <(jq -r '.if
 
 ## Current convergence risk
 
-These model/catalog decisions may conflict with HsnSaboor/router registry changes. During upstream convergence:
+These model/catalog decisions may conflict with router registry changes. During
+upstream convergence:
 
-- Keep runtime source code close to HsnSaboor by default.
+- Keep runtime source code close to router by default.
 - Keep local CI/release policy and local documentation ownership.
 - Re-check whether Kiro models are still code-defined.
 - Do not restore the old iFlow Kimi fallback from archived audit notes unless current runtime/catalog evidence requires it.

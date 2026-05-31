@@ -2,10 +2,11 @@
 title: Upstream Plus Maintenance Strategy
 type: reference
 status: current
-scope: hsnsaboor-clean-root
+scope: router-upstream-rebaseline
 related_scopes:
   []
 related_files:
+  - docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
   - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - internal/auth
   - internal/runtime/executor
@@ -14,8 +15,8 @@ tags:
   - upstream
   - providers
   - maintenance
-last_checked: 2026-05-28
-updated: 2026-05-28T14:05:00Z
+last_checked: 2026-05-31
+updated: 2026-05-31T05:13:53Z
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -25,23 +26,27 @@ updated: 2026-05-28T14:05:00Z
 Use three remotes when maintaining this fork:
 
 - `origin`: this maintained fork, currently `https://github.com/furedericca-lab/CLIProxyAPIPlus`
-- `upstream`: Plus continuation target, currently `https://github.com/HsnSaboor/CLIProxyAPIPlus`
-- `router`: original upstream, currently `https://github.com/router-for-me/CLIProxyAPI`
+- `upstream`: active router baseline, currently `https://github.com/router-for-me/CLIProxyAPI`
+- `router`: compatibility alias, currently `https://github.com/router-for-me/CLIProxyAPI`
 
-As of the clean-root push on 2026-05-28:
+As of the router rebaseline on 2026-05-31:
 
-- pushed clean-root `origin/main`: `6325b63a`
-- local stale-record refresh commit before the old-local audit scope: `71408c2f`
-- HsnSaboor `upstream/main`: `8c93cf68`
-- router `router/main`: `2bcc7622`
-- HsnSaboor and router split at `v7.1.9` (`9ef99aa7`)
+- local `main`: `df53e88d` (`v7.1.9-5`)
+- router `upstream/main`: `3a54fb7f` (`v7.1.32`)
+- local/router split point: `9ef99aa7` (`v7.1.9`)
+- divergence count: local has 4439 commits not in router, router has 86 commits not in local
 - pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 
 ## Maintenance rule
 
-Move to HsnSaboor Plus first, then selectively absorb router changes. Do not directly merge router into the Plus line without a provider-preservation review.
+Track router `main` as the active upstream baseline, then adapt this maintained
+Plus fork on top of it. Do not directly merge router into the Plus line without
+a provider-preservation review.
 
-Reason: router removed multiple Plus provider surfaces that HsnSaboor still carries. The provider-deletion set includes `codebuddy`, `copilot`, `cursor`, `gitlab`, `iflow`, `kilo`, `kiro`, and `qwen`, with `cline`/`ollama` also preserved in HsnSaboor but absent from router.
+Reason: router is the actively moving core, but it removed or lacks multiple
+Plus provider surfaces this fork exists to keep. Treat those differences as
+adaptation work, not as permission to drop providers automatically. For
+providers router already has, use router's implementation as the baseline.
 
 ## Locally owned documentation
 
@@ -75,7 +80,21 @@ Must review these areas if router patches are involved:
 - `internal/config/**`
 - `config.example.yaml`
 
-## First convergence target
+Current `internal/auth` split as of 2026-05-31:
+
+- Router-owned providers: `antigravity`, `claude`, `codex`, `empty`, `gemini`,
+  `kimi`, `vertex`, `xai`.
+- Local/HsnSaboor-exclusive Plus providers to preserve: `cline`, `codebuddy`,
+  `copilot`, `cursor`, `gitlab`, `iflow`, `kilo`, `kiro`, `qwen`.
+
+Provider rule:
+
+- If a provider exists in router, converge to router's provider code.
+- If a provider exists only in this fork or the former HsnSaboor Plus line,
+  preserve it, use HsnSaboor's maintenance line as its update reference when
+  available, and adapt it to router core APIs.
+
+## Historical convergence target
 
 HsnSaboor adds provider/runtime pieces missing locally:
 
@@ -89,12 +108,18 @@ HsnSaboor adds provider/runtime pieces missing locally:
 
 Pre-clean-root local commits, especially provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, require a dedicated audit before reintroduction. The completed audit is archived at `docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md`.
 
-Current refined policy: HsnSaboor is the baseline. If HsnSaboor has the same provider or same-topic implementation, prefer HsnSaboor first and validate behavior before reintroducing old local patches.
+Historical refined policy: HsnSaboor was the baseline. That decision is now
+superseded by `.codex/wiki/decisions/track-router-main-as-upstream.md`.
 
 The clean-root history cleanup scope is archived under `docs/archive/hsnsaboor-clean-root/`: it created a branch from `upstream/main`, then added our current maintenance commit on top.
 
-## Router absorption rule
+## Router adaptation rule
 
-Router changes after `v7.1.9` are still valuable but should be reviewed as core patches, not as a branch replacement. Candidate areas include logging, image support, Codex model fetching, Redis/home behavior, WebSocket auth parsing, translator fixes, and registry updates.
+Router changes after `v7.1.9` are now the primary upstream stream, but they
+still require provider-preservation review before landing on this maintained
+Plus line. Candidate areas include logging, image support, Codex model fetching,
+Redis/home behavior, WebSocket auth parsing, translator fixes, and registry
+updates.
 
-Provider deletion hunks from router should be excluded unless a separate scope explicitly decides to retire a provider.
+Provider deletion hunks for local/HsnSaboor-exclusive providers should be
+excluded unless a separate scope explicitly decides to retire a provider.

@@ -3,8 +3,13 @@ title: Decision Log
 type: decision-log
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-28T17:42:37Z
+updated: 2026-05-31T05:20:00Z
 ---
+
+
+
+
+
 
 
 
@@ -35,8 +40,8 @@ updated: 2026-05-28T17:42:37Z
 # Decision Log
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-28T17:42:37Z
-- Decision count: 1
+- Last rebuilt: 2026-05-31T05:20:00Z
+- Decision count: 2
 
 ## Draft Decisions
 
@@ -44,7 +49,7 @@ updated: 2026-05-28T17:42:37Z
 
 ## Accepted Decisions
 
-- 2026-05-28 | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | scope: hsnsaboor-clean-root
+- 2026-05-31 | [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md) | scope: router-upstream-rebaseline
 
 ## Current Decisions
 
@@ -52,7 +57,7 @@ updated: 2026-05-28T17:42:37Z
 
 ## Superseded Decisions
 
-- None.
+- 2026-05-28 | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | scope: hsnsaboor-clean-root
 
 ## Stale Decisions
 

@@ -8,12 +8,23 @@ This repository is not a plain mirror of upstream CLIProxyAPI or any upstream Pl
 
 Current upstream policy:
 
-- `upstream` points to `https://github.com/HsnSaboor/CLIProxyAPIPlus`.
-- `router` points to `https://github.com/router-for-me/CLIProxyAPI`.
-- HsnSaboor is the first convergence baseline.
-- Router is a later selective patch source, not a direct merge target.
+- `upstream` points to `https://github.com/router-for-me/CLIProxyAPI`.
+- `router` also points to `https://github.com/router-for-me/CLIProxyAPI` as an
+  explicit compatibility alias for older local commands.
+- Router `main` is the active upstream baseline.
+- This fork owns the Plus adaptation layer on top of router.
 
-When local old commits overlap with HsnSaboor by provider or feature, prefer HsnSaboor first. Reintroduce local behavior only after current-code validation proves a gap.
+When router changes overlap with local Plus provider behavior, prefer the
+current router implementation for core behavior, then reintroduce or adapt Plus
+provider support only after current-code validation proves the gap.
+
+Provider precedence:
+
+- For providers that already exist in router, use router's implementation as
+  the source of truth.
+- For providers that exist only in this fork or the former HsnSaboor Plus line,
+  keep them as local Plus providers, use HsnSaboor's maintenance line as their
+  update reference, and adapt them to router core changes.
 
 ## Documentation Boundaries
 
@@ -72,9 +83,14 @@ git ls-tree --name-only HEAD:internal/cmd | rg '(_login|_cookie|vertex_import)\.
 
 Expected strategy:
 
-- Preserve HsnSaboor's Plus provider surface.
-- Accept HsnSaboor additions such as `cline`, `xai`, and `ollama` executor support.
-- Reject router provider deletion hunks by default.
+- Preserve the local Plus provider surface unless a scope explicitly retires a
+  provider.
+- Use router's provider code for providers router already owns.
+- Keep local/HsnSaboor-exclusive providers as Plus extensions and update them
+  from HsnSaboor's maintenance line when available.
+- Treat router provider deletions or API moves as adaptation work, not as
+  automatic permission to drop Plus behavior.
+- Accept router core fixes and protocol updates after provider-surface review.
 - Do not replay old local provider patches unless tests or code review prove they are still needed.
 
 ## Commands
@@ -120,3 +136,8 @@ For the completed clean-root effort, use:
 - `docs/archive/hsnsaboor-clean-root/`
 - `.codex/wiki/reference/upstream-plus-maintenance.md`
 - `.codex/wiki/reference/local-provider-and-commit-inventory.md`
+
+For the completed router-first rebaseline decision, use:
+
+- `docs/archive/router-upstream-rebaseline/`
+- `.codex/wiki/decisions/track-router-main-as-upstream.md`
