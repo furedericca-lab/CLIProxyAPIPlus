@@ -150,7 +150,7 @@ routing:
   # fallback-max-depth: 3  # (optional) maximum fallback depth (default: 3)
 
 # When true, enable authentication for the WebSocket API (/v1/ws).
-ws-auth: false
+ws-auth: true
 
 # When true, enable Gemini CLI internal endpoints (/v1internal:*).
 # Default is false for safety.
