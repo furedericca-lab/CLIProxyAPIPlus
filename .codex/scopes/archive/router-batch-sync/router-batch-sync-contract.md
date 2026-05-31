@@ -22,13 +22,13 @@ with provider precedence checks.
   `kiro`, `qwen`.
 - Use HsnSaboor's maintenance line as the update reference for those exclusive
   providers when relevant.
-- Keep root docs and `docs/**` locally owned.
+- Keep root .codex/scopes and `.codex/scopes/**` locally owned.
 
 ## Non-goals
 
 - Do not jump directly to `upstream/main`.
 - Do not remove Plus providers without an explicit retirement scope.
-- Do not import upstream root docs or upstream `docs/**` as product docs.
+- Do not import upstream root .codex/scopes or upstream `.codex/scopes/**` as product docs.
 
 ## Batch Plan
 
@@ -139,7 +139,7 @@ Do not reset the branch after pushing.
 
 ## Archive Record
 
-- Archived on 2026-05-31 under `docs/archive/router-batch-sync/`.
+- Archived on 2026-05-31 under `.codex/scopes/archive/router-batch-sync/`.
 - Archive purpose: preserve the completed router-batch-sync audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.

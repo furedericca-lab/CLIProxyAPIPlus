@@ -79,7 +79,7 @@ Non-goals:
 
 Allowed changes:
 - Transport selection and tests needed for automatic bare-IP HTTPS TLS bypass.
-- Scope evidence updates under `docs/archive/bare-ip-tls-skip/`.
+- Scope evidence updates under `.codex/scopes/archive/bare-ip-tls-skip/`.
 
 Forbidden changes:
 - Config schema additions for a user-facing TLS skip flag.
@@ -103,12 +103,12 @@ Forbidden changes:
 - `go test ./internal/auth/codex ./internal/auth/kimi`
 - `go test ./...`
 - `go build -o test-output ./cmd/server && rm test-output`
-- `bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh docs/archive/bare-ip-tls-skip`
+- `bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh .codex/scopes/archive/bare-ip-tls-skip`
 - `git diff --check`
 
 ## Escalation triggers
 
-- Escalate only when code/runtime evidence, authoritative wiki, and scope docs materially conflict and the conflict cannot be resolved from local evidence.
+- Escalate only when code/runtime evidence, authoritative wiki, and scope .codex/scopes materially conflict and the conflict cannot be resolved from local evidence.
 - Escalate for data deletion, permission semantics, production access model, or public API compatibility decisions outside the stated boundaries.
 - Escalate when user-specified boundaries cannot be satisfied together.
 
@@ -148,7 +148,7 @@ Forbidden changes:
 
 ## Archive Record
 
-- Archived on 2026-05-31 under `docs/archive/bare-ip-tls-skip/`.
+- Archived on 2026-05-31 under `.codex/scopes/archive/bare-ip-tls-skip/`.
 - Archive purpose: preserve the completed bare-ip-tls-skip audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.

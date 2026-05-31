@@ -30,8 +30,8 @@ Provider precedence:
 
 Use `docs/` for repo-task-driven scope work:
 
-- Active scopes: `docs/<scope>/`
-- Archived scopes: `docs/archive/<scope>/`
+- Active scopes: `.codex/scopes/<scope>/`
+- Archived scopes: `.codex/scopes/archive/<scope>/`
 - Scope contracts, phase plans, checklists, evidence, and archive records belong here.
 
 Do not put upstream docs in `docs/`. The previous cleanup removed old upstream/user-facing docs so the directory can be used for our scope workflow.
@@ -57,7 +57,7 @@ These paths are local project identity and operator policy:
 
 Do not blindly sync these files from upstream. If upstream changes contain useful command or compatibility information, manually port the relevant facts into our local docs or wiki.
 
-The same rule applies to upstream `docs/**`: do not merge it into this repo as documentation content.
+The same rule applies to upstream `.codex/scopes/**`: do not merge it into this repo as documentation content.
 
 `README_CN.md` and `README_JA.md` are intentionally absent. Do not recreate them from upstream during synchronization.
 
@@ -125,7 +125,7 @@ go build -o test-output ./cmd/server && rm test-output
 
 For non-trivial repo work:
 
-1. Create or update a scope under `docs/<scope>/`.
+1. Create or update a scope under `.codex/scopes/<scope>/`.
 2. Keep long-lived knowledge aligned in `.codex/wiki/**`.
 3. Record evidence commands and results in the scope checklist.
 4. Run the narrowest meaningful verification, then broader checks when risk justifies it.
@@ -133,15 +133,15 @@ For non-trivial repo work:
 
 For the completed clean-root effort, use:
 
-- `docs/archive/hsnsaboor-clean-root/`
+- `.codex/scopes/archive/hsnsaboor-clean-root/`
 - `.codex/wiki/reference/upstream-plus-maintenance.md`
 - `.codex/wiki/reference/local-provider-and-commit-inventory.md`
 
 For the completed router-first rebaseline decision, use:
 
-- `docs/archive/router-upstream-rebaseline/`
+- `.codex/scopes/archive/router-upstream-rebaseline/`
 - `.codex/wiki/decisions/track-router-main-as-upstream.md`
 
 For the completed router batch sync through `v7.1.32`, use:
 
-- `docs/archive/router-batch-sync/`
+- `.codex/scopes/archive/router-batch-sync/`

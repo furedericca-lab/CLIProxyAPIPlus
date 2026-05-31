@@ -17,7 +17,7 @@ the release workflow actions.
 
 Goals:
 
-- Remove absent translated root docs from GoReleaser archives.
+- Remove absent translated root .codex/scopes from GoReleaser archives.
 - Keep release archives tied to files that exist in this fork.
 - Move the release workflow to Node 24-backed action majors.
 - Keep GoReleaser on the v2 line while using the current action wrapper.
@@ -88,7 +88,7 @@ workflow action majors and archive file list.
 
 ## Archive Record
 
-- Archived on 2026-05-28 under `docs/archive/release-ci-repair/`.
+- Archived on 2026-05-28 under `.codex/scopes/archive/release-ci-repair/`.
 - Archive purpose: preserve the completed release-ci-repair audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.

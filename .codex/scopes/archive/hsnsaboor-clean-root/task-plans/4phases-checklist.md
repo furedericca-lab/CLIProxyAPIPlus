@@ -6,11 +6,11 @@ description: Execution checklist for the HsnSaboor clean-root integration scope.
 
 ## Input References
 
-- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`
-- `docs/archive/hsnsaboor-clean-root/task-plans/phase-1-hsnsaboor-clean-root.md`
-- `docs/archive/hsnsaboor-clean-root/task-plans/phase-2-hsnsaboor-clean-root.md`
-- `docs/archive/hsnsaboor-clean-root/task-plans/phase-3-hsnsaboor-clean-root.md`
-- `docs/archive/hsnsaboor-clean-root/task-plans/phase-4-hsnsaboor-clean-root.md`
+- `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`
+- `.codex/scopes/archive/hsnsaboor-clean-root/task-plans/phase-1-hsnsaboor-clean-root.md`
+- `.codex/scopes/archive/hsnsaboor-clean-root/task-plans/phase-2-hsnsaboor-clean-root.md`
+- `.codex/scopes/archive/hsnsaboor-clean-root/task-plans/phase-3-hsnsaboor-clean-root.md`
+- `.codex/scopes/archive/hsnsaboor-clean-root/task-plans/phase-4-hsnsaboor-clean-root.md`
 - `.codex/wiki/reference/upstream-plus-maintenance.md`
 - `.codex/wiki/reference/local-provider-and-commit-inventory.md`
 
@@ -48,13 +48,13 @@ Result:
 
 - [x] `.codex/wiki/**` is trackable.
 - [x] `.codex/notepad.md` remains ignored.
-- [x] Scope docs exist under `docs/archive/hsnsaboor-clean-root/`.
+- [x] Scope .codex/scopes exist under `.codex/scopes/archive/hsnsaboor-clean-root/`.
 - [x] Wiki lint passes.
 
 Evidence commands:
 
 ```bash
-git check-ignore -v .codex/wiki/index.md .codex/notepad.md docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md || true
+git check-ignore -v .codex/wiki/index.md .codex/notepad.md .codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md || true
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint
 ```
 
@@ -81,8 +81,8 @@ git config --get merge.ours.driver
 
 Result:
 
-- Root docs now describe our maintained Plus fork and scope/wiki boundaries.
-- `.gitattributes` sets `merge=ours` for root docs and `docs/**`.
+- Root .codex/scopes now describe our maintained Plus fork and scope/wiki boundaries.
+- `.gitattributes` sets `merge=ours` for root .codex/scopes and `.codex/scopes/**`.
 - `git config --get merge.ours.driver` returns `true`.
 
 ## Phase 4: Verification and Switch Decision
@@ -116,7 +116,7 @@ Clean-root branch verification passed. `main` was replaced and pushed to `origin
 
 ## Archive Record
 
-- Archived on 2026-05-28 under `docs/archive/hsnsaboor-clean-root/`.
+- Archived on 2026-05-28 under `.codex/scopes/archive/hsnsaboor-clean-root/`.
 - Archive purpose: preserve the completed hsnsaboor-clean-root audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.

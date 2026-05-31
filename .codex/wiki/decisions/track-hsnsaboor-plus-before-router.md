@@ -6,7 +6,7 @@ scope: hsnsaboor-clean-root
 related_scopes:
   []
 related_files:
-  - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
+  - .codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - .codex/wiki/reference/upstream-plus-maintenance.md
 tags:
   - upstream
@@ -43,4 +43,4 @@ Refinement on 2026-05-28:
 - Use HsnSaboor implementations as the default when local old commits overlap by provider or feature.
 - Do not replay local old commits wholesale.
 - Build a clean branch from `upstream/main`, then add only our current maintenance commits on top.
-- Audit old local commits under `docs/archive/old-local-commit-audit/` before reintroducing any missing behavior.
+- Audit old local commits under `.codex/scopes/archive/old-local-commit-audit/` before reintroducing any missing behavior.

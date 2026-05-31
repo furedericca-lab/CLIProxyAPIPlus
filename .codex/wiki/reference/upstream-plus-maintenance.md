@@ -6,8 +6,8 @@ scope: router-upstream-rebaseline
 related_scopes:
   []
 related_files:
-  - docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
-  - docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
+  - .codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
+  - .codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
   - internal/auth
   - internal/runtime/executor
   - internal/cmd
@@ -106,12 +106,12 @@ HsnSaboor adds provider/runtime pieces missing locally:
 - `internal/cmd/cline_login.go`
 - `internal/cmd/xai_login.go`
 
-Pre-clean-root local commits, especially provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, require a dedicated audit before reintroduction. The completed audit is archived at `docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md`.
+Pre-clean-root local commits, especially provider routing changes such as `044678b0 fix(copilot): route claude models through native messages`, require a dedicated audit before reintroduction. The completed audit is archived at `.codex/scopes/archive/old-local-commit-audit/old-local-commit-audit-contract.md`.
 
 Historical refined policy: HsnSaboor was the baseline. That decision is now
 superseded by `.codex/wiki/decisions/track-router-main-as-upstream.md`.
 
-The clean-root history cleanup scope is archived under `docs/archive/hsnsaboor-clean-root/`: it created a branch from `upstream/main`, then added our current maintenance commit on top.
+The clean-root history cleanup scope is archived under `.codex/scopes/archive/hsnsaboor-clean-root/`: it created a branch from `upstream/main`, then added our current maintenance commit on top.
 
 ## Router adaptation rule
 

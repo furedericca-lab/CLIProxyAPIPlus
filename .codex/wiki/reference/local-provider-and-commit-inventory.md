@@ -150,14 +150,14 @@ Non-merge commits from `backup/main-before-hsnsaboor-clean-root` that are not in
 
 Merge commits not in HsnSaboor are mostly historical upstream/router integration points and should not be replayed as feature patches.
 
-The dedicated audit is archived at `docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md`.
+The dedicated audit is archived at `.codex/scopes/archive/old-local-commit-audit/old-local-commit-audit-contract.md`.
 
 ## Merge guidance
 
 When auditing old local commits:
 
 - Do not replay `044678b0` unless HsnSaboor lacks equivalent native Claude routing implementation for Copilot.
-- Re-evaluate model fork commits against the current decision to avoid stale `docs/*` and stale submodule behavior.
+- Re-evaluate model fork commits against the current decision to avoid stale `.codex/scopes/*` and stale submodule behavior.
 - Treat CI workflow commits as optional and easy to reapply.
 - Inspect `2a1cf2b3` before carrying it forward, because static model data may conflict with newer registry architecture.
 

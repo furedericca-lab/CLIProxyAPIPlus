@@ -6,7 +6,7 @@ description: Implementation scope for resolving risks found in the archived old-
 
 ## Context
 
-The completed audit at `docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md` identified one high-risk and three medium-risk gaps that should be fixed before more upstream absorption work:
+The completed audit at `.codex/scopes/archive/old-local-commit-audit/old-local-commit-audit-contract.md` identified one high-risk and three medium-risk gaps that should be fixed before more upstream absorption work:
 
 - Model catalog source still pointed at router instead of this fork's model catalog.
 - Release and PR workflows rewrote `internal/registry/models/models.json` from router during CI.
@@ -90,8 +90,8 @@ go build -o test-output ./cmd/server && rm test-output
 go test ./...
 rg -n "router-for-me/models|models.router-for.me" .github internal/registry -g '!**/*_test.go'
 git diff --check
-bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh docs/archive/risk-resolution-from-old-local-audit
-bash /root/.codex/skills/repo-task-driven/scripts/post_refactor_text_scan.sh docs/archive/risk-resolution-from-old-local-audit README.md AGENTS.md
+bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh .codex/scopes/archive/risk-resolution-from-old-local-audit
+bash /root/.codex/skills/repo-task-driven/scripts/post_refactor_text_scan.sh .codex/scopes/archive/risk-resolution-from-old-local-audit README.md AGENTS.md
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint
 ```
 
@@ -107,7 +107,7 @@ Revert the implementation commit and this scope archive commit. This will restor
 
 ## Archive Record
 
-- Archived on 2026-05-28 under `docs/archive/risk-resolution-from-old-local-audit/`.
+- Archived on 2026-05-28 under `.codex/scopes/archive/risk-resolution-from-old-local-audit/`.
 - Archive purpose: preserve the completed risk-resolution-from-old-local-audit audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.

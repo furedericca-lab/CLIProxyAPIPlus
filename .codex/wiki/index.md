@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-31T08:25:09Z
+updated: 2026-05-31T14:35:04Z
 ---
+
 
 
 
@@ -43,7 +44,7 @@ updated: 2026-05-31T08:25:09Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-31T08:25:09Z
+- Last rebuilt: 2026-05-31T14:35:04Z
 - Page count: 8
 
 ## By Type
@@ -111,15 +112,15 @@ updated: 2026-05-31T08:25:09Z
 
 ## File-Coupled Pages
 
+- `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
+- `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
+- `.codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `.codex/wiki/reference/upstream-plus-maintenance.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - `.codex/wiki/reference/upstream-plus-maintenance.md` -> [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
 - `.github/workflows/release.yaml` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - `AGENTS.md` -> [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
 - `README.md` -> [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
 - `cmd/server/main.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
-- `docs/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- `docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - `internal/api/handlers/management/api_tools.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
 - `internal/api/handlers/management/auth_files_gitlab_test.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - `internal/api/modules` -> [Codebase Function Map](concepts/codebase-function-map.md)

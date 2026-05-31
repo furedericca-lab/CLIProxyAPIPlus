@@ -18,7 +18,7 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 
 ## 2026-05-28T12:57:58Z [docs-migration]
 
-- Summary: Migrated useful docs content into project wiki and cleared docs/* per repository maintenance policy.
+- Summary: Migrated useful docs content into project wiki and cleared .codex/scopes/* per repository maintenance policy.
 - Pages: .codex/wiki/index.md
 - Verification: find docs -mindepth 1 -maxdepth 1 -exec rm -rf {} +
 - Residual risk: Migrated docs are concise maintainer notes, not full verbatim documentation.
@@ -26,7 +26,7 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 ## 2026-05-28T13:03:48Z [hsnsaboor-clean-root]
 
 - Summary: Added detailed clean-root integration plan using HsnSaboor upstream as base and replaying only current local maintenance decisions.
-- Pages: docs/archive/hsnsaboor-clean-root/
+- Pages: .codex/scopes/archive/hsnsaboor-clean-root/
 - Verification: scope archived after build, full tests, provider matrix, wiki lint, and scope inventory passed
 - Residual risk: Plan only; integration branch has not been created yet.
 
@@ -39,7 +39,7 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 ## 2026-05-28T13:39:25Z [old-local-commit-audit]
 
 - Summary: Archived completed old-local commit audit scope and updated wiki references from active docs path to archive path.
-- Pages: docs/archive/old-local-commit-audit/old-local-commit-audit-contract.md
+- Pages: .codex/scopes/archive/old-local-commit-audit/old-local-commit-audit-contract.md
 - Verification: archive_scope_docs.sh old-local-commit-audit 2026-05-28
 
 ## 2026-05-28T13:44:58Z [risk-resolution-from-old-local-audit]
@@ -51,20 +51,20 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 ## 2026-05-28T13:45:49Z [risk-resolution-from-old-local-audit]
 
 - Summary: Archived completed risk-resolution scope after verification and scope inventory showed no active scopes.
-- Pages: docs/archive/risk-resolution-from-old-local-audit/risk-resolution-from-old-local-audit-contract.md
+- Pages: .codex/scopes/archive/risk-resolution-from-old-local-audit/risk-resolution-from-old-local-audit-contract.md
 - Verification: archive_scope_docs.sh risk-resolution-from-old-local-audit 2026-05-28; scope_inventory.sh --archive
 
 ## 2026-05-28T16:03:33Z [release-ci-repair]
 
 - Summary: Repaired release CI packaging after GoReleaser failed on absent README_CN.md and moved release actions to Node 24-backed majors.
-- Pages: docs/archive/release-ci-repair/release-ci-repair-contract.md
+- Pages: .codex/scopes/archive/release-ci-repair/release-ci-repair-contract.md
 - Verification: go run github.com/goreleaser/goreleaser/v2@v2.16.0 check, go build -o test-output ./cmd/server && rm test-output, go run github.com/goreleaser/goreleaser/v2@v2.16.0 release --snapshot --clean --skip=publish
 - Residual risk: A real GitHub release publish was not rerun from this local validation.
 
 ## 2026-05-28T16:04:24Z [release-ci-repair]
 
 - Summary: Archived completed release CI repair scope after config validation and server build passed.
-- Pages: docs/archive/release-ci-repair/release-ci-repair-contract.md
+- Pages: .codex/scopes/archive/release-ci-repair/release-ci-repair-contract.md
 - Verification: bash /root/.codex/skills/repo-task-driven/scripts/archive_scope_docs.sh release-ci-repair 2026-05-28, bash /root/.codex/skills/repo-task-driven/scripts/scope_inventory.sh --archive
 - Residual risk: Release publishing still needs a new GitHub Actions run.
 
@@ -98,8 +98,8 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 
 ## 2026-05-31T05:19:52Z [router-upstream-rebaseline]
 
-- Summary: Archived the completed router upstream rebaseline scope and updated entry-point references to docs/archive/router-upstream-rebaseline/.
-- Pages: docs/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
+- Summary: Archived the completed router upstream rebaseline scope and updated entry-point references to .codex/scopes/archive/router-upstream-rebaseline/.
+- Pages: .codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
 - Verification: repo_task.py --root /root/work/CLIProxyAPIPlus archive --scope router-upstream-rebaseline --archive-date 2026-05-31 --apply --json
 - Residual risk: Future router integration still needs separate implementation scopes.
 
@@ -111,11 +111,11 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 ## 2026-05-31T07:01:48Z [bare-ip-tls-skip]
 
 - Summary: Archived bare-IP HTTPS TLS bypass scope after implementation and verification
-- Pages: docs/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
+- Pages: .codex/scopes/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
 
 ## 2026-05-31T08:23:43Z [bare-ip-tls-skip]
 
 - Summary: Recorded the management resource transport pitfall: `/ai-providers/*` probes use `apiCallTransport`, separate from executor transports, and must also wrap bare-IP HTTPS requests with `proxyutil.WrapBareIPTLSBypass`.
-- Pages: .codex/wiki/concepts/codebase-function-map.md; docs/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
+- Pages: .codex/wiki/concepts/codebase-function-map.md; .codex/scopes/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
 - Verification: `rg` confirmed the pitfall was only in the archived scope before this wiki update; current source has `apiCallTransport` wrapping all return paths.
 - Residual risk: Running services still need a rebuilt/restarted binary before the management UI observes the transport fix.

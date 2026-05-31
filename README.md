@@ -25,7 +25,7 @@ Root documentation is locally owned:
 
 These files describe our fork, not upstream marketing or upstream operator policy. Upstream changes to these paths should be reviewed manually only when they affect real commands, compatibility, or runtime behavior.
 
-Repository task documentation lives under `docs/<scope>/` and completed scopes may move to `docs/archive/<scope>/`. This directory is for our active scope plans, contracts, evidence, and archived scope records. It is not a place to mirror upstream documentation.
+Repository task documentation lives under `.codex/scopes/<scope>/` and completed scopes may move to `.codex/scopes/archive/<scope>/`. This directory is for our active scope plans, contracts, evidence, and archived scope records. It is not a place to mirror upstream documentation.
 
 Durable maintainer knowledge lives under `.codex/wiki/**`. Use it for decisions, maintenance notes, architecture breadcrumbs, provider inventories, and lessons learned that should survive context compaction.
 
@@ -33,17 +33,17 @@ Durable maintainer knowledge lives under `.codex/wiki/**`. Use it for decisions,
 
 The clean-root maintenance scope has been completed and archived:
 
-- `docs/archive/hsnsaboor-clean-root/`
+- `.codex/scopes/archive/hsnsaboor-clean-root/`
 
 It created a clean branch rooted at HsnSaboor `upstream/main`, then added only our current maintenance decisions as new commits.
 
 The upstream rebaseline scope has been completed and archived:
 
-- `docs/archive/router-upstream-rebaseline/`
+- `.codex/scopes/archive/router-upstream-rebaseline/`
 
 The router batch sync through `v7.1.32` has been completed and archived:
 
-- `docs/archive/router-batch-sync/`
+- `.codex/scopes/archive/router-batch-sync/`
 
 ## Upstream Policy
 
@@ -105,10 +105,10 @@ Common server flags:
 
 ## Documentation Rules
 
-- Put active scope contracts and task plans in `docs/<scope>/`.
-- Put completed scope records in `docs/archive/<scope>/`.
+- Put active scope contracts and task plans in `.codex/scopes/<scope>/`.
+- Put completed scope records in `.codex/scopes/archive/<scope>/`.
 - Put durable maintainer knowledge in `.codex/wiki/**`.
-- Do not restore upstream `docs/*` during sync.
+- Do not restore upstream `.codex/scopes/*` during sync.
 - Do not restore upstream `README*`, `AGENTS.md`, or `CLAUDE.md` during sync.
 - `README_CN.md` and `README_JA.md` are intentionally absent.
 

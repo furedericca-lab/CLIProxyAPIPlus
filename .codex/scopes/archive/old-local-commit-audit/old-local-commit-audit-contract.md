@@ -45,7 +45,7 @@ The current clean-root line may silently drift back to router's model catalog ev
 
 Assessment:
 
-Do not replay the old submodule approach as-is. It added `.gitmodules`, `third_party/models`, and old docs in one broad commit. Rebuild this as a small current-code change if we still want the fork-owned catalog source.
+Do not replay the old submodule approach as-is. It added `.gitmodules`, `third_party/models`, and old .codex/scopes in one broad commit. Rebuild this as a small current-code change if we still want the fork-owned catalog source.
 
 Recommended fix scope:
 
@@ -65,7 +65,7 @@ Evidence:
 
 Impact:
 
-If iFlow exposes Kimi models with `Thinking` support from the model catalog, current clean-root will advertise thinking but leave the outgoing body unchanged for Kimi IDs. That is a behavioral gap, not just a docs gap.
+If iFlow exposes Kimi models with `Thinking` support from the model catalog, current clean-root will advertise thinking but leave the outgoing body unchanged for Kimi IDs. That is a behavioral gap, not just a .codex/scopes gap.
 
 Assessment:
 
@@ -255,7 +255,7 @@ Immediate follow-up scopes, in order:
 
 ## Archive Record
 
-- Archived on 2026-05-28 under `docs/archive/old-local-commit-audit/`.
+- Archived on 2026-05-28 under `.codex/scopes/archive/old-local-commit-audit/`.
 - Archive purpose: preserve the completed old-local-commit-audit audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.

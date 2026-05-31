@@ -12,7 +12,7 @@ The target is to make future history clearer:
 
 ```text
 upstream/main (HsnSaboor)
-  -> our: wiki and docs cleanup policy
+  -> our: wiki and .codex/scopes cleanup policy
   -> our: local README/AGENTS/merge policy
   -> our: selected repo-specific maintenance only after review
 ```
@@ -43,10 +43,10 @@ Goals:
 - Recreate only current maintenance decisions as new commits on top of HsnSaboor.
 - Track `.codex/wiki/**`.
 - Keep `.codex/notepad.md` and scratch ignored.
-- Keep durable scope execution docs under `docs/archive/hsnsaboor-clean-root/`.
+- Keep durable scope execution .codex/scopes under `.codex/scopes/archive/hsnsaboor-clean-root/`.
 - Keep `docs/` available for `repo-task-driven` active scopes and archives; the cleanup only removed old upstream/historical docs.
 - Keep long-lived project knowledge under `.codex/wiki/**`.
-- Own root entrypoint docs locally:
+- Own root entrypoint .codex/scopes locally:
   - `README.md`
   - `AGENTS.md`
   - `CLAUDE.md`
@@ -83,7 +83,7 @@ Old local commits not in HsnSaboor should not be replayed wholesale.
 - `.gitignore`
 - `.gitattributes`
 - `.codex/wiki/**`
-- `docs/archive/hsnsaboor-clean-root/**`
+- `.codex/scopes/archive/hsnsaboor-clean-root/**`
 - `README.md`
 - `AGENTS.md`
 - `CLAUDE.md`
@@ -100,8 +100,8 @@ Potential later review areas, only after clean root is stable:
 - HsnSaboor is the Plus baseline.
 - If HsnSaboor already has a provider or feature, use HsnSaboor's version by default.
 - Local old implementation wins only if a current behavioral gap is proven after testing.
-- Root docs are local project identity and should not be blindly synced from upstream.
-- Upstream `docs/**` content should not be synced; our `docs/**` is reserved for scopes and scope archives.
+- Root .codex/scopes are local project identity and should not be blindly synced from upstream.
+- Upstream `.codex/scopes/**` content should not be synced; our `.codex/scopes/**` is reserved for scopes and scope archives.
 - `.gitattributes` records owned-doc merge policy; local clones must set `git config merge.ours.driver true`.
 - Router provider deletion hunks are rejected by default.
 
@@ -128,7 +128,7 @@ Docs/wiki:
 ```bash
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py rebuild
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint
-find docs -maxdepth 3 -type f -print | sort
+find .codex/scopes -maxdepth 3 -type f -print | sort
 git log --oneline upstream/main..HEAD
 ```
 
@@ -157,4 +157,4 @@ Final replacement of `main` and any force push require explicit user approval.
 ## Execution log / evidence updates
 
 - 2026-05-28: User selected HsnSaboor-first clean-root strategy.
-- 2026-05-28: User clarified that scope plans belong under `docs/*`; wiki remains for durable knowledge.
+- 2026-05-28: User clarified that scope plans belong under `.codex/scopes/*`; wiki remains for durable knowledge.

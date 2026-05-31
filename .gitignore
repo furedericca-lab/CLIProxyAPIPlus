@@ -34,6 +34,8 @@ auths/*
 .worktrees/
 .codex/*
 !.codex/
+!.codex/scopes/
+!.codex/scopes/**
 !.codex/wiki/
 !.codex/wiki/**
 .claude/*

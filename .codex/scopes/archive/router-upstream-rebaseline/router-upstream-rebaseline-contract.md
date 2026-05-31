@@ -36,7 +36,7 @@ HsnSaboor's line as their update reference before adapting to router core APIs.
 ## Goals
 
 - Point `upstream` at router.
-- Update local operator docs and wiki so future agents do not keep applying the
+- Update local operator .codex/scopes and wiki so future agents do not keep applying the
   old HsnSaboor-first rule.
 - Preserve archived HsnSaboor records as historical provenance.
 - Record provider precedence so future router integration does not preserve old
@@ -62,14 +62,14 @@ HsnSaboor's line as their update reference before adapting to router core APIs.
 
 ## Constraints
 
-- Root docs remain locally owned.
+- Root .codex/scopes remain locally owned.
 - `docs/` remains reserved for scope contracts and archives.
 - `.codex/wiki/**` remains the durable maintainer knowledge layer.
 - Provider surface checks are mandatory before future router integration work.
 
 ## Boundaries
 
-Archived docs under `docs/archive/**` may still describe HsnSaboor-first history.
+Archived .codex/scopes under `.codex/scopes/archive/**` may still describe HsnSaboor-first history.
 Those records should stay stable unless a future task finds factual stale links
 or path references that affect current operation.
 
@@ -87,7 +87,7 @@ git rev-list --left-right --count main...upstream/main
 git merge-base main upstream/main
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py rebuild
 python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint
-rg -n "HsnSaboor|selective patch source|first convergence" AGENTS.md README.md CLAUDE.md .codex/wiki docs -g '!docs/archive/**'
+rg -n "HsnSaboor|selective patch source|first convergence" AGENTS.md README.md CLAUDE.md .codex/wiki .codex/scopes -g '!.codex/scopes/archive/**'
 git diff --check
 ```
 
@@ -114,7 +114,7 @@ git diff --check
 
 - Router integration deletes or disables Plus providers without an explicit
   retirement decision.
-- Root docs or upstream `docs/**` overwrite local operator policy.
+- Root .codex/scopes or upstream `.codex/scopes/**` overwrite local operator policy.
 - Model catalog or auth behavior changes without runtime validation.
 
 ## Rollback
@@ -131,7 +131,7 @@ edits, and record a new decision page explaining the reversal.
 
 ## Archive Record
 
-- Archived on 2026-05-31 under `docs/archive/router-upstream-rebaseline/`.
+- Archived on 2026-05-31 under `.codex/scopes/archive/router-upstream-rebaseline/`.
 - Archive purpose: preserve the completed router-upstream-rebaseline audit trail.
 - Future enhancements should use a new `repo-task-driven` scope under `docs/<enhancement-scope>/`.
-- Archived docs should only change for factual errata or path-maintenance updates.
+- Archived .codex/scopes should only change for factual errata or path-maintenance updates.
