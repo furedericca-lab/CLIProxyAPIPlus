@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"sort"
 	"strings"
 	"time"
@@ -246,7 +247,11 @@ func (e *CodexExecutor) HttpRequest(ctx context.Context, auth *cliproxyauth.Auth
 	if err := e.PrepareRequest(httpReq, auth); err != nil {
 		return nil, err
 	}
-	httpClient := helps.NewProxyAwareHTTPClient(ctx, e.cfg, auth, 0)
+	upstreamURL := ""
+	if req.URL != nil {
+		upstreamURL = req.URL.String()
+	}
+	httpClient := codexHTTPClient(ctx, e.cfg, auth, upstreamURL, 0)
 	return httpClient.Do(httpReq)
 }
 
@@ -322,7 +327,7 @@ func (e *CodexExecutor) Execute(ctx context.Context, auth *cliproxyauth.Auth, re
 		AuthType:  authType,
 		AuthValue: authValue,
 	})
-	httpClient := helps.NewProxyAwareHTTPClient(ctx, e.cfg, auth, 0)
+	httpClient := codexHTTPClient(ctx, e.cfg, auth, url, 0)
 	httpClient = reporter.TrackHTTPClient(httpClient)
 	httpResp, err := httpClient.Do(httpReq)
 	if err != nil {
@@ -485,7 +490,7 @@ func (e *CodexExecutor) executeCompact(ctx context.Context, auth *cliproxyauth.A
 		AuthType:  authType,
 		AuthValue: authValue,
 	})
-	httpClient := helps.NewProxyAwareHTTPClient(ctx, e.cfg, auth, 0)
+	httpClient := codexHTTPClient(ctx, e.cfg, auth, url, 0)
 	httpClient = reporter.TrackHTTPClient(httpClient)
 	httpResp, err := httpClient.Do(httpReq)
 	if err != nil {
@@ -594,7 +599,7 @@ func (e *CodexExecutor) ExecuteStream(ctx context.Context, auth *cliproxyauth.Au
 		AuthValue: authValue,
 	})
 
-	httpClient := helps.NewProxyAwareHTTPClient(ctx, e.cfg, auth, 0)
+	httpClient := codexHTTPClient(ctx, e.cfg, auth, url, 0)
 	httpClient = reporter.TrackHTTPClient(httpClient)
 	httpResp, err := httpClient.Do(httpReq)
 	if err != nil {
@@ -714,6 +719,21 @@ func (e *CodexExecutor) CountTokens(ctx context.Context, auth *cliproxyauth.Auth
 	usageJSON := fmt.Sprintf(`{"response":{"usage":{"input_tokens":%d,"output_tokens":0,"total_tokens":%d}}}`, count, count)
 	translated := sdktranslator.TranslateTokenCount(ctx, to, from, count, []byte(usageJSON))
 	return cliproxyexecutor.Response{Payload: translated}, nil
+}
+
+func codexHTTPClient(ctx context.Context, cfg *config.Config, auth *cliproxyauth.Auth, upstreamURL string, timeout time.Duration) *http.Client {
+	if codexShouldUseUtls(upstreamURL) {
+		return helps.NewUtlsHTTPClient(cfg, auth, timeout)
+	}
+	return helps.NewProxyAwareHTTPClient(ctx, cfg, auth, timeout)
+}
+
+func codexShouldUseUtls(upstreamURL string) bool {
+	parsed, err := url.Parse(strings.TrimSpace(upstreamURL))
+	if err != nil {
+		return false
+	}
+	return strings.EqualFold(parsed.Scheme, "https") && strings.EqualFold(parsed.Hostname(), "chatgpt.com")
 }
 
 func tokenizerForCodexModel(model string) (tokenizer.Codec, error) {
@@ -1130,6 +1150,14 @@ func newCodexStatusErr(statusCode int, body []byte) statusErr {
 }
 
 func classifyCodexStatusError(statusCode int, body []byte) []byte {
+	if isCodexCloudflareChallenge(body) {
+		out := []byte(`{"error":{}}`)
+		out, _ = sjson.SetBytes(out, "error.message", "Codex upstream returned a Cloudflare challenge. The server-side request path is blocked before the Codex API response is available.")
+		out, _ = sjson.SetBytes(out, "error.type", "upstream_error")
+		out, _ = sjson.SetBytes(out, "error.code", "cloudflare_challenge")
+		return out
+	}
+
 	code, errType, ok := codexStatusErrorClassification(statusCode, body)
 	if !ok {
 		return body
@@ -1149,6 +1177,20 @@ func classifyCodexStatusError(statusCode int, body []byte) []byte {
 	out, _ = sjson.SetBytes(out, "error.type", errType)
 	out, _ = sjson.SetBytes(out, "error.code", code)
 	return out
+}
+
+func isCodexCloudflareChallenge(body []byte) bool {
+	if len(body) == 0 {
+		return false
+	}
+	lower := bytes.ToLower(body)
+	if !bytes.Contains(lower, []byte("cloudflare")) && !bytes.Contains(lower, []byte("_cf_chl_opt")) && !bytes.Contains(lower, []byte("cf_chl")) {
+		return false
+	}
+	return bytes.Contains(lower, []byte("challenge-platform")) ||
+		bytes.Contains(lower, []byte("_cf_chl_opt")) ||
+		bytes.Contains(lower, []byte("__cf_chl_tk")) ||
+		bytes.Contains(lower, []byte("enable javascript and cookies to continue"))
 }
 
 func codexStatusErrorClassification(statusCode int, body []byte) (code string, errType string, ok bool) {

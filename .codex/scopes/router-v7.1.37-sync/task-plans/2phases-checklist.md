@@ -81,3 +81,17 @@ Status: Complete
   `go test ./internal/auth/antigravity ./internal/auth/claude ./internal/auth/codex ./internal/auth/gemini ./internal/auth/kimi ./internal/auth/xai ./internal/config ./internal/api/handlers/management ./internal/runtime/executor ./sdk/auth`;
   `go build -o test-output ./cmd/server && rm test-output`;
   `go test ./...`.
+- 2026-06-01: user runtime report narrowed Codex failure to message-send time:
+  OAuth login completed, then `/responses` returned HTTP 403 Cloudflare
+  challenge HTML. Upstream search found
+  `router-for-me/CLIProxyAPI#3626` (`[Bug] codex: chatgpt.com blocked by
+  Cloudflare managed challenge (HTTP 403)`) and closed PR `#2900`, which
+  proposed extending the existing uTLS Cloudflare bypass to `chatgpt.com`.
+- 2026-06-01: local follow-up extends the uTLS protected-host list to
+  `chatgpt.com`, routes default Codex HTTP and image requests through uTLS only
+  when the upstream URL is `https://chatgpt.com/...`, leaves custom base URLs on
+  `NewProxyAwareHTTPClient`, and classifies Cloudflare challenge HTML as
+  `cloudflare_challenge` JSON instead of leaking the raw page to web clients.
+- 2026-06-01: Cloudflare follow-up verification passed:
+  `go test ./internal/runtime/executor ./internal/runtime/executor/helps`;
+  `go build -o test-output ./cmd/server && rm test-output`.

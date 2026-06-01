@@ -158,6 +158,18 @@ git diff --check
   `go test ./internal/auth/antigravity ./internal/auth/claude ./internal/auth/codex ./internal/auth/gemini ./internal/auth/kimi ./internal/auth/xai ./internal/config ./internal/api/handlers/management ./internal/runtime/executor ./sdk/auth`;
   `go build -o test-output ./cmd/server && rm test-output`;
   `go test ./...`.
+- 2026-06-01: runtime follow-up confirmed user-reported Codex OAuth login
+  succeeded but `/responses` message sends received Cloudflare managed
+  challenge HTML with HTTP 403 from `chatgpt.com/backend-api/codex`. Upstream
+  issue `router-for-me/CLIProxyAPI#3626` tracks the same failure and points to
+  closed PR `#2900`; the local fix extends the existing uTLS protected-host
+  list to `chatgpt.com`, routes default Codex HTTP and image requests through
+  that client only for the ChatGPT host, and normalizes Cloudflare challenge
+  HTML into a stable `cloudflare_challenge` JSON error instead of returning a
+  full HTML page to clients.
+- 2026-06-01: Cloudflare follow-up verification passed:
+  `go test ./internal/runtime/executor ./internal/runtime/executor/helps`;
+  `go build -o test-output ./cmd/server && rm test-output`.
 
 ## Escalation Triggers
 
@@ -177,5 +189,6 @@ rewrite pushed `main`.
 
 Router `v7.1.37` is merged into `main` with Plus provider surfaces preserved,
 router-owned OAuth/auth implementations aligned to router upstream,
-`oauth-endpoint-overrides` narrowed to Plus-only consumers, and validation
-passing.
+`oauth-endpoint-overrides` narrowed to Plus-only consumers, Codex ChatGPT
+OAuth requests protected from the known Cloudflare TLS-fingerprint challenge,
+and validation passing.

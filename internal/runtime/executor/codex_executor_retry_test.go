@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 )
@@ -125,6 +126,42 @@ func TestNewCodexStatusErrClassifiesKnownCodexFailures(t *testing.T) {
 				t.Fatalf("status code = %d, want %d", got, tc.wantStatus)
 			}
 			assertCodexErrorCode(t, err.Error(), tc.wantType, tc.wantCode)
+		})
+	}
+}
+
+func TestNewCodexStatusErrClassifiesCloudflareChallengeHTML(t *testing.T) {
+	body := []byte(`<html><body><span id="challenge-error-text">Enable JavaScript and cookies to continue</span><script>window._cf_chl_opt={cZone:"chatgpt.com"};a.src="/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1";</script></body></html>`)
+
+	err := newCodexStatusErr(http.StatusForbidden, body)
+
+	if got := err.StatusCode(); got != http.StatusForbidden {
+		t.Fatalf("status code = %d, want %d", got, http.StatusForbidden)
+	}
+	assertCodexErrorCode(t, err.Error(), "upstream_error", "cloudflare_challenge")
+	if strings.Contains(strings.ToLower(err.Error()), "<html") {
+		t.Fatalf("error leaked raw HTML: %s", err.Error())
+	}
+}
+
+func TestCodexShouldUseUtlsOnlyForChatGPTHTTPS(t *testing.T) {
+	tests := []struct {
+		name string
+		url  string
+		want bool
+	}{
+		{name: "chatgpt codex backend", url: "https://chatgpt.com/backend-api/codex/responses", want: true},
+		{name: "case insensitive host", url: "https://ChatGPT.com/backend-api/codex/responses", want: true},
+		{name: "custom https base", url: "https://example.com/backend-api/codex/responses", want: false},
+		{name: "local test server", url: "http://127.0.0.1:8080/responses", want: false},
+		{name: "invalid", url: "://bad", want: false},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := codexShouldUseUtls(tc.url); got != tc.want {
+				t.Fatalf("codexShouldUseUtls(%q) = %v, want %v", tc.url, got, tc.want)
+			}
 		})
 	}
 }

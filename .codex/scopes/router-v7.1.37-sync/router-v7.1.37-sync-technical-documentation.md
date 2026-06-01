@@ -94,3 +94,30 @@ go test ./internal/auth/antigravity ./internal/auth/claude ./internal/auth/codex
 go build -o test-output ./cmd/server && rm test-output
 go test ./...
 ```
+
+Runtime Codex OAuth follow-up on 2026-06-01 found that login/token exchange can
+succeed while message sends fail with HTTP 403 Cloudflare managed challenge
+HTML from `chatgpt.com/backend-api/codex/responses`. Upstream issue
+`router-for-me/CLIProxyAPI#3626` documents the same failure and references
+closed PR `#2900`, which proposed extending the existing uTLS Cloudflare
+fingerprint bypass to `chatgpt.com`.
+
+The local follow-up keeps the upstream OAuth implementation intact, but adapts
+the runtime transport boundary:
+
+- `internal/runtime/executor/helps/utls_client.go` now includes `chatgpt.com`
+  in the protected-host list alongside `api.anthropic.com`.
+- Default Codex HTTP, compact, stream, arbitrary HTTP, and image paths use the
+  uTLS client only when the upstream URL is `https://chatgpt.com/...`.
+- Custom Codex `base_url` values and local test servers continue to use
+  `NewProxyAwareHTTPClient`.
+- Cloudflare challenge HTML is classified into a stable
+  `cloudflare_challenge` JSON error so web clients do not display a raw
+  challenge page.
+
+Verification:
+
+```bash
+go test ./internal/runtime/executor ./internal/runtime/executor/helps
+go build -o test-output ./cmd/server && rm test-output
+```
