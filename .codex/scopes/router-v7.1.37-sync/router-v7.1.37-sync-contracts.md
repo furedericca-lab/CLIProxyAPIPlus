@@ -132,6 +132,21 @@ git diff --check
   (`Merge tag 'v7.1.37' into merge-router-v7.1.37`).
 - 2026-06-01: closeout evidence commit prepared after merge-back so the
   active scope records the final mainline state.
+- 2026-06-01: follow-up review found local Codex OAuth endpoint override and
+  success-page URL validation changes relative to router. Per provider
+  precedence, Codex is router-owned, so `internal/auth/codex/openai_auth.go`
+  and `internal/auth/codex/oauth_server.go` were restored to match
+  the upstream main branch.
+- 2026-06-01: `internal/auth/codex/openai_auth_test.go` remains locally adapted
+  only because this fork wraps HTTP transports with bare-IP TLS bypass handling;
+  the OAuth implementation under test follows upstream endpoints and flow.
+- 2026-06-01: comparing `internal/auth/codex/openai_auth.go` and
+  `internal/auth/codex/oauth_server.go` against the upstream main branch
+  returned no diff.
+- 2026-06-01: follow-up verification passed:
+  `go test ./internal/auth/codex ./internal/api/handlers/management ./internal/runtime/executor`;
+  `go build -o test-output ./cmd/server && rm test-output`;
+  `go test ./...`.
 
 ## Escalation Triggers
 
@@ -149,5 +164,5 @@ rewrite pushed `main`.
 
 ## Outcome
 
-Router `v7.1.37` is merged into `main` with Plus provider surfaces preserved
-and validation passing.
+Router `v7.1.37` is merged into `main` with Plus provider surfaces preserved,
+Codex OAuth implementation aligned to router upstream, and validation passing.

@@ -95,6 +95,11 @@ Provider rule:
 - If a provider exists only in this fork or the former HsnSaboor Plus line,
   preserve it, use HsnSaboor's maintenance line as its update reference when
   available, and adapt it to router core APIs.
+- Codex is router-owned. Keep Codex OAuth implementation aligned with router
+  upstream unless a future explicit decision scope approves a local divergence.
+  Local tests may adapt around this fork's transport wrappers, but authorization
+  URL generation, token exchange, refresh, and callback behavior should remain
+  upstream-compatible.
 
 ## Historical convergence target
 

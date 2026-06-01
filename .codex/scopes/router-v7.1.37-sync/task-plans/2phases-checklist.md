@@ -64,3 +64,11 @@ Status: Complete
 - 2026-06-01: `git diff --check` passed.
 - 2026-06-01: `main` fast-forwarded to merge commit `5a697b18`.
 - 2026-06-01: closeout docs prepared for push after merge-back.
+- 2026-06-01: follow-up aligned Codex OAuth implementation with the upstream
+  main branch; `openai_auth.go` and `oauth_server.go` now have no diff from
+  upstream. `openai_auth_test.go` stays locally adapted for this fork's
+  transport wrapper.
+- 2026-06-01: follow-up verification passed:
+  `go test ./internal/auth/codex ./internal/api/handlers/management ./internal/runtime/executor`;
+  `go build -o test-output ./cmd/server && rm test-output`;
+  `go test ./...`.

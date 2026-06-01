@@ -15,6 +15,19 @@ the Codex executor and websocket executor. Local merge review should verify
 that these changes do not break local Codex-compatible routing or OpenAI image
 handling.
 
+### Codex OAuth
+
+Codex is a router-owned provider. The OAuth implementation in
+`internal/auth/codex/openai_auth.go` and `internal/auth/codex/oauth_server.go`
+should stay aligned with router upstream for authorization URL generation, token
+exchange, refresh, and callback success behavior. This fork should not add
+Codex OAuth endpoint overrides unless a future explicit decision scope changes
+that policy.
+
+`internal/auth/codex/openai_auth_test.go` may differ from upstream only where
+needed to test this fork's HTTP transport wrapping, such as bare-IP TLS bypass
+behavior.
+
 ### Config Surface
 
 Router adds config fields and default/diff handling for Codex websocket header
@@ -59,3 +72,12 @@ go test ./...
 ```
 
 All three checks passed on 2026-06-01.
+
+Follow-up Codex OAuth checks also passed on 2026-06-01:
+
+```bash
+git diff <upstream-main> -- internal/auth/codex/openai_auth.go internal/auth/codex/oauth_server.go
+go test ./internal/auth/codex ./internal/api/handlers/management ./internal/runtime/executor
+go build -o test-output ./cmd/server && rm test-output
+go test ./...
+```
