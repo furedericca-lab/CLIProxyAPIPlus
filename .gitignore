@@ -38,6 +38,7 @@ auths/*
 !.codex/scopes/**
 !.codex/wiki/
 !.codex/wiki/**
+.codex/wiki/.index/
 .claude/*
 .gemini/*
 .serena/*

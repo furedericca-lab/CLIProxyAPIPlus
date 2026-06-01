@@ -119,3 +119,17 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: .codex/wiki/concepts/codebase-function-map.md; .codex/scopes/archive/bare-ip-tls-skip/bare-ip-tls-skip-contract.md
 - Verification: `rg` confirmed the pitfall was only in the archived scope before this wiki update; current source has `apiCallTransport` wrapping all return paths.
 - Residual risk: Running services still need a rebuilt/restarted binary before the management UI observes the transport fix.
+
+## 2026-06-01T03:07:47Z [docs-consolidation]
+
+- Summary: Aligned README and AGENTS with wiki-note documentation structure; added source docs archive map so the wiki is the durable docs surface and root docs remain routing summaries.
+- Pages: .codex/wiki/reference/source-docs-archive-map.md, README.md, AGENTS.md
+- Verification: wiki.py rebuild; wiki.py nav build --json
+- Residual risk: No code behavior changed; Go build and tests were not run for this documentation-only update.
+
+## 2026-06-01T10:09:56Z [docs-consolidation]
+
+- Summary: Removed the obsolete .codex/notepad.md scratch-file example and made the generated wiki navigation index explicitly ignored.
+- Pages: .gitignore, AGENTS.md, .codex/wiki/reference/upstream-plus-maintenance.md
+- Verification: rg notepad README.md AGENTS.md .codex/wiki /root/.codex/skills/wiki-note; git check-ignore -v .codex/wiki/.index .codex/wiki/.index/pages.json
+- Residual risk: No code behavior changed; documentation and ignore-rule update only.

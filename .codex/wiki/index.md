@@ -3,8 +3,13 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-31T14:35:04Z
+updated: 2026-06-01T10:10:06Z
 ---
+
+
+
+
+
 
 
 
@@ -44,8 +49,8 @@ updated: 2026-05-31T14:35:04Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-31T14:35:04Z
-- Page count: 8
+- Last rebuilt: 2026-06-01T10:10:06Z
+- Page count: 9
 
 ## By Type
 
@@ -67,9 +72,14 @@ updated: 2026-05-31T14:35:04Z
 
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-31T05:16:13Z
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-31T05:16:13Z
+- [Source Docs Archive Map](reference/source-docs-archive-map.md) | status: current | updated: 2026-06-01T03:05:26Z
 - [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-31T05:13:53Z
 
 ## By Scope
+
+### docs-consolidation
+
+- [Source Docs Archive Map](reference/source-docs-archive-map.md) | type: reference | status: current
 
 ### docs-migration
 
@@ -97,6 +107,7 @@ updated: 2026-05-31T14:35:04Z
 
 ## Recently Updated
 
+- 2026-06-01T03:05:26Z | [Source Docs Archive Map](reference/source-docs-archive-map.md)
 - 2026-05-31T08:23:43Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-31T05:16:13Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-31T05:16:13Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
@@ -110,44 +121,19 @@ updated: 2026-05-31T14:35:04Z
 
 - No draft or stale pages found.
 
-## File-Coupled Pages
+## Code Navigation
 
-- `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
-- `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- `.codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- `.codex/wiki/reference/upstream-plus-maintenance.md` -> [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
-- `.codex/wiki/reference/upstream-plus-maintenance.md` -> [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
-- `.github/workflows/release.yaml` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
-- `AGENTS.md` -> [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
-- `README.md` -> [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
-- `cmd/server/main.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/api/handlers/management/api_tools.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/api/handlers/management/auth_files_gitlab_test.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
-- `internal/api/modules` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/api/server.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/auth` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
-- `internal/auth` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- `internal/auth/gitlab` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
-- `internal/cmd` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
-- `internal/cmd` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- `internal/cmd/gitlab_login.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
-- `internal/cmd/run.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/registry` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/registry/model_definitions.go` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
-- `internal/registry/model_definitions.go` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
-- `internal/registry/model_updater.go` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
-- `internal/registry/models/models.json` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
-- `internal/runtime/executor` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `internal/runtime/executor` -> [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
-- `internal/runtime/executor` -> [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
-- `internal/runtime/executor/gitlab_executor.go` -> [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
-- `internal/thinking/provider/iflow/apply.go` -> [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
-- `internal/watcher` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- `sdk/access` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- `sdk/cliproxy` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `sdk/cliproxy` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
-- `sdk/proxyutil/proxy.go` -> [Codebase Function Map](concepts/codebase-function-map.md)
-- `sdk/translator` -> [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
+- [Codebase Function Map](concepts/codebase-function-map.md) | files: `cmd/server/main.go`, `internal/cmd/run.go`, `internal/api/server.go` ... | anchors: 0 | status: current
+- [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md) | files: `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`, `.codex/wiki/reference/upstream-plus-maintenance.md` | anchors: 0 | status: superseded
+- [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md) | files: `AGENTS.md`, `README.md`, `.codex/wiki/reference/upstream-plus-maintenance.md` | anchors: 0 | status: accepted
+- [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md) | files: `internal/auth/gitlab`, `internal/runtime/executor/gitlab_executor.go`, `internal/api/handlers/management/auth_files_gitlab_test.go` ... | anchors: 0 | status: current
+- [SDK Embedding Notes](implementation/sdk-embedding-notes.md) | files: `sdk/cliproxy`, `sdk/access`, `sdk/translator` ... | anchors: 0 | status: current
+- [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | files: `internal/auth`, `internal/runtime/executor`, `internal/cmd` ... | anchors: 0 | status: current
+- [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | files: `internal/registry/models/models.json`, `internal/registry/model_definitions.go`, `internal/registry/model_updater.go` ... | anchors: 0 | status: current
+- [Source Docs Archive Map](reference/source-docs-archive-map.md) | files: `.codex/wiki`, `README.md`, `AGENTS.md` | anchors: 0 | status: current
+- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | files: `.codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md`, `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`, `internal/auth` ... | anchors: 0 | status: current
+
+Use `scripts/wiki.py nav goto` and `scripts/wiki.py nav refs` for symbol-level navigation.
 <!-- END AUTO -->
 
 ## Manual Priority Notes

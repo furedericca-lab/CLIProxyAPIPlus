@@ -58,7 +58,9 @@ Treat these root docs as local project identity and operator policy, not upstrea
 
 Future upstream merges should keep local versions for these files. `README_CN.md` and `README_JA.md` are intentionally absent and should not be restored from upstream. The recommended implementation is a `.gitattributes` merge rule using an `ours` merge driver, plus repo-local merge driver config. Root docs should explain this maintained Plus fork, not mirror upstream sponsor/marketing text unless intentionally reintroduced.
 
-Tracked maintainer knowledge belongs under `.codex/wiki/**`. Scratch notes should stay outside git, for example `.codex/notepad.md`.
+Tracked maintainer knowledge belongs under `.codex/wiki/**`. Scratch notes
+should stay outside git; promote durable decisions, references, or debugging
+breadcrumbs into typed wiki pages instead.
 
 ## Provider preservation checklist
 

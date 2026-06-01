@@ -1,77 +1,78 @@
 # AGENTS.md
 
-This is the local operator contract for our maintained CLIProxyAPIPlus fork.
+This is the local coding-agent contract for our maintained CLIProxyAPIPlus
+fork. This repository is not a plain mirror of upstream CLIProxyAPI or any
+upstream Plus fork.
 
-## Project Identity
+## Source Of Truth
 
-This repository is not a plain mirror of upstream CLIProxyAPI or any upstream Plus fork. It is our maintained Plus line.
+Use these surfaces in this order:
 
-Current upstream policy:
+1. Newest user instruction in the current conversation.
+2. This `AGENTS.md` for coding-agent boundaries and validation defaults.
+3. `.codex/wiki/index.md` for durable project knowledge.
+4. `.codex/scopes/<scope>/` and `.codex/scopes/archive/<scope>/` for scoped
+   plans, evidence, and historical implementation records.
+5. Current source code and runtime checks.
 
-- `upstream` points to `https://github.com/router-for-me/CLIProxyAPI`.
-- `router` also points to `https://github.com/router-for-me/CLIProxyAPI` as an
-  explicit compatibility alias for older local commands.
-- Router `main` is the active upstream baseline.
-- This fork owns the Plus adaptation layer on top of router.
-
-When router changes overlap with local Plus provider behavior, prefer the
-current router implementation for core behavior, then reintroduce or adapt Plus
-provider support only after current-code validation proves the gap.
-
-Provider precedence:
-
-- For providers that already exist in router, use router's implementation as
-  the source of truth.
-- For providers that exist only in this fork or the former HsnSaboor Plus line,
-  keep them as local Plus providers, use HsnSaboor's maintenance line as their
-  update reference, and adapt them to router core changes.
-
-## Documentation Boundaries
-
-Use `docs/` for repo-task-driven scope work:
-
-- Active scopes: `.codex/scopes/<scope>/`
-- Archived scopes: `.codex/scopes/archive/<scope>/`
-- Scope contracts, phase plans, checklists, evidence, and archive records belong here.
-
-Do not put upstream docs in `docs/`. The previous cleanup removed old upstream/user-facing docs so the directory can be used for our scope workflow.
-
-Use `.codex/wiki/**` for durable local project knowledge:
-
-- decisions
-- maintenance notes
-- provider inventories
-- architecture breadcrumbs
-- implementation notes
-- lessons learned
-
-Keep scratch notes out of git, for example `.codex/notepad.md`.
-
-## Root Docs Are Locally Owned
-
-These paths are local project identity and operator policy:
+Root docs are locally owned project identity and policy:
 
 - `README.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 
-Do not blindly sync these files from upstream. If upstream changes contain useful command or compatibility information, manually port the relevant facts into our local docs or wiki.
+Do not blindly sync these files from upstream. If upstream changes contain
+useful command, compatibility, or runtime facts, manually port the facts into
+the local README, this contract, or `.codex/wiki/**`.
 
-The same rule applies to upstream `.codex/scopes/**`: do not merge it into this repo as documentation content.
+`README_CN.md` and `README_JA.md` are intentionally absent. Do not recreate
+them from upstream during synchronization.
 
-`README_CN.md` and `README_JA.md` are intentionally absent. Do not recreate them from upstream during synchronization.
+## Upstream And Provider Policy
 
-The merge policy is recorded in `.gitattributes`.
+Current upstream policy:
 
-On a fresh clone, enable the local merge driver once:
+- `upstream` points to `https://github.com/router-for-me/CLIProxyAPI`.
+- `router` points to the same URL as a compatibility alias.
+- Router `main` is the active upstream baseline.
+- This fork owns the Plus adaptation layer on top of router.
 
-```bash
-git config merge.ours.driver true
-```
+Provider precedence:
+
+- Router-owned providers use router's implementation as the source of truth.
+- Local or HsnSaboor-exclusive providers stay as Plus extensions unless a scope
+  explicitly retires them.
+- HsnSaboor remains the update reference for Plus-only provider behavior when
+  it has relevant maintenance.
+- Router provider deletions or API moves are adaptation work, not automatic
+  permission to drop Plus behavior.
+
+Current detailed policy lives in:
+
+- `.codex/wiki/decisions/track-router-main-as-upstream.md`
+- `.codex/wiki/reference/upstream-plus-maintenance.md`
+- `.codex/wiki/reference/local-provider-and-commit-inventory.md`
+
+## Documentation And Wiki Policy
+
+`.codex/wiki/**` is the durable knowledge layer. Use it for decisions,
+maintenance notes, provider inventories, architecture breadcrumbs,
+implementation notes, and lessons learned.
+
+`README.md` and `AGENTS.md` should summarize and route; they should not become
+competing manuals for the same facts. When long-lived details change, update
+the wiki first or in the same pass.
+
+Do not restore upstream `.codex/scopes/**` or upstream `docs/` content as
+local documentation. If an upstream doc contains useful facts, absorb those
+facts into the wiki and rebuild the wiki index. The docs consolidation map is:
+
+- `.codex/wiki/reference/source-docs-archive-map.md`
+
+Keep scratch notes out of git. Promote durable decisions, references, or
+debugging breadcrumbs into typed wiki pages instead.
 
 ## Provider Preservation
-
-The Plus provider surface is the main reason this fork exists.
 
 Before and after any upstream integration, capture:
 
@@ -81,17 +82,9 @@ git ls-tree --name-only HEAD:internal/runtime/executor | rg '_executor\.go$' | s
 git ls-tree --name-only HEAD:internal/cmd | rg '(_login|_cookie|vertex_import)\.go$' | sort
 ```
 
-Expected strategy:
-
-- Preserve the local Plus provider surface unless a scope explicitly retires a
-  provider.
-- Use router's provider code for providers router already owns.
-- Keep local/HsnSaboor-exclusive providers as Plus extensions and update them
-  from HsnSaboor's maintenance line when available.
-- Treat router provider deletions or API moves as adaptation work, not as
-  automatic permission to drop Plus behavior.
-- Accept router core fixes and protocol updates after provider-surface review.
-- Do not replay old local provider patches unless tests or code review prove they are still needed.
+Accept router core fixes and protocol updates only after provider-surface
+review. Do not replay old local provider patches unless tests or code review
+prove they are still needed.
 
 ## Commands
 
@@ -109,6 +102,15 @@ The compile check is required after Go changes:
 go build -o test-output ./cmd/server && rm test-output
 ```
 
+Wiki checks after documentation or scope changes:
+
+```bash
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py legacy lint
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py legacy surface-check --json
+```
+
 ## Code Conventions
 
 - Keep changes small and simple.
@@ -117,9 +119,12 @@ go build -o test-output ./cmd/server && rm test-output
 - Keep user-visible strings in the language already used by that area.
 - Avoid `log.Fatal` and `log.Fatalf`; return errors or log with logrus.
 - Wrap defer errors when cleanup can fail.
-- Avoid leaking credentials, tokens, cookies, or auth material in logs, docs, diffs, final answers, and wiki.
-- Do not add standalone `internal/translator/` changes unless repository policy and permissions allow it.
-- Keep `internal/runtime/executor/` limited to executors and executor tests. Helper files belong under `internal/runtime/executor/helps/`.
+- Avoid leaking credentials, tokens, cookies, or auth material in logs, docs,
+  diffs, final answers, and wiki.
+- Do not add standalone `internal/translator/` changes unless repository
+  policy and permissions allow it.
+- Keep `internal/runtime/executor/` limited to executors and executor tests.
+  Helper files belong under `internal/runtime/executor/helps/`.
 
 ## Scope Workflow
 
@@ -128,20 +133,13 @@ For non-trivial repo work:
 1. Create or update a scope under `.codex/scopes/<scope>/`.
 2. Keep long-lived knowledge aligned in `.codex/wiki/**`.
 3. Record evidence commands and results in the scope checklist.
-4. Run the narrowest meaningful verification, then broader checks when risk justifies it.
-5. Do not claim completion without matching evidence.
+4. Run the narrowest meaningful verification, then broader checks when risk
+   justifies it.
+5. Rebuild and lint the wiki after scope or durable-doc changes.
+6. Do not claim completion without matching evidence.
 
-For the completed clean-root effort, use:
+Completed scope anchors:
 
 - `.codex/scopes/archive/hsnsaboor-clean-root/`
-- `.codex/wiki/reference/upstream-plus-maintenance.md`
-- `.codex/wiki/reference/local-provider-and-commit-inventory.md`
-
-For the completed router-first rebaseline decision, use:
-
 - `.codex/scopes/archive/router-upstream-rebaseline/`
-- `.codex/wiki/decisions/track-router-main-as-upstream.md`
-
-For the completed router batch sync through `v7.1.32`, use:
-
 - `.codex/scopes/archive/router-batch-sync/`
