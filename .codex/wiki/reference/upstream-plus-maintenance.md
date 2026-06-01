@@ -15,8 +15,8 @@ tags:
   - upstream
   - providers
   - maintenance
-last_checked: 2026-05-31
-updated: 2026-05-31T05:13:53Z
+last_checked: 2026-06-01
+updated: 2026-06-01T18:24:00+08:00
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -29,12 +29,12 @@ Use three remotes when maintaining this fork:
 - `upstream`: active router baseline, currently `https://github.com/router-for-me/CLIProxyAPI`
 - `router`: compatibility alias, currently `https://github.com/router-for-me/CLIProxyAPI`
 
-As of the router rebaseline on 2026-05-31:
+As of the router `v7.1.37` sync on 2026-06-01:
 
-- local `main`: `df53e88d` (`v7.1.9-5`)
-- router `upstream/main`: `3a54fb7f` (`v7.1.32`)
+- local integration branch: `merge-router-v7.1.37`
+- router `upstream/main`: `05b97247` (`v7.1.37`)
 - local/router split point: `9ef99aa7` (`v7.1.9`)
-- divergence count: local has 4439 commits not in router, router has 86 commits not in local
+- latest active sync scope: `.codex/scopes/router-v7.1.37-sync/`
 - pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 
 ## Maintenance rule

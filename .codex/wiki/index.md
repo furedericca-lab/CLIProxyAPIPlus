@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-06-01T10:10:06Z
+updated: 2026-06-01T10:24:23Z
 ---
+
 
 
 
@@ -49,7 +50,7 @@ updated: 2026-06-01T10:10:06Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-06-01T10:10:06Z
+- Last rebuilt: 2026-06-01T10:24:23Z
 - Page count: 9
 
 ## By Type
@@ -73,7 +74,7 @@ updated: 2026-06-01T10:10:06Z
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-31T05:16:13Z
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-31T05:16:13Z
 - [Source Docs Archive Map](reference/source-docs-archive-map.md) | status: current | updated: 2026-06-01T03:05:26Z
-- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-05-31T05:13:53Z
+- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-06-01T18:24:00+08:00
 
 ## By Scope
 
@@ -107,13 +108,13 @@ updated: 2026-06-01T10:10:06Z
 
 ## Recently Updated
 
+- 2026-06-01T18:24:00+08:00 | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - 2026-06-01T03:05:26Z | [Source Docs Archive Map](reference/source-docs-archive-map.md)
 - 2026-05-31T08:23:43Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-31T05:16:13Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
 - 2026-05-31T05:16:13Z | [Model Catalog Maintenance](reference/model-catalog-maintenance.md)
 - 2026-05-31T05:13:53Z | [Track HsnSaboor Plus Before Router Core](decisions/track-hsnsaboor-plus-before-router.md)
 - 2026-05-31T05:13:53Z | [Track Router Main As Upstream](decisions/track-router-main-as-upstream.md)
-- 2026-05-31T05:13:53Z | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - 2026-05-28T13:20:00Z | [GitLab Duo Provider Notes](implementation/gitlab-duo-provider.md)
 - 2026-05-28T13:20:00Z | [SDK Embedding Notes](implementation/sdk-embedding-notes.md)
 
