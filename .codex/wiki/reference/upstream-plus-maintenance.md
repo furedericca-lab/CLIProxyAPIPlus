@@ -95,11 +95,18 @@ Provider rule:
 - If a provider exists only in this fork or the former HsnSaboor Plus line,
   preserve it, use HsnSaboor's maintenance line as its update reference when
   available, and adapt it to router core APIs.
-- Codex is router-owned. Keep Codex OAuth implementation aligned with router
-  upstream unless a future explicit decision scope approves a local divergence.
-  Local tests may adapt around this fork's transport wrappers, but authorization
-  URL generation, token exchange, refresh, and callback behavior should remain
-  upstream-compatible.
+- Router-owned OAuth implementations stay aligned with router upstream unless a
+  future explicit decision scope approves a local divergence. This currently
+  covers `antigravity`, `claude`, `codex`, `gemini`, `kimi`, `xai`, `vertex`,
+  and `empty` where OAuth or auth code exists.
+- Local tests may adapt around this fork's transport wrappers, but
+  authorization URL generation, token exchange, refresh, callback behavior, and
+  provider-owned endpoint constants should remain upstream-compatible for
+  router-owned providers.
+- `oauth-endpoint-overrides` is retained only for Plus-only OAuth providers
+  that still consume it, currently `github-copilot` and `kiro`. Do not wire
+  router-owned providers back to this generic override map without a new
+  explicit local policy decision.
 
 ## Historical convergence target
 

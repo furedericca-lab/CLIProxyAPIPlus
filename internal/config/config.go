@@ -172,6 +172,9 @@ type Config struct {
 	// gemini-api-key, codex-api-key, claude-api-key, openai-compatibility, vertex-api-key, and ampcode.
 	OAuthModelAlias map[string][]OAuthModelAlias `yaml:"oauth-model-alias,omitempty" json:"oauth-model-alias,omitempty"`
 
+	// OAuthEndpointOverrides defines endpoint overrides for local Plus-only OAuth providers.
+	// Router-owned provider OAuth implementations should stay aligned with upstream and
+	// should not consume these overrides without an explicit local policy decision.
 	OAuthEndpointOverrides map[string]OAuthEndpointConfig `yaml:"oauth-endpoint-overrides,omitempty" json:"oauth-endpoint-overrides,omitempty"`
 
 	Payload PayloadConfig `yaml:"payload" json:"payload"`

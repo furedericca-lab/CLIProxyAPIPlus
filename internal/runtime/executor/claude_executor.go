@@ -1142,11 +1142,6 @@ func claudeCreds(a *cliproxyauth.Auth, cfg *config.Config) (apiKey, baseURL stri
 
 func claudeCredsForLLM(a *cliproxyauth.Auth, cfg *config.Config) (apiKey, baseURL string) {
 	if a == nil {
-		if cfg != nil {
-			if override := strings.TrimSpace(cfg.GetOAuthEndpointOverride("claude").ApiBaseURL); override != "" {
-				return "", override
-			}
-		}
 		return "", ""
 	}
 	if a.Attributes != nil {
@@ -1163,11 +1158,6 @@ func claudeCredsForLLM(a *cliproxyauth.Auth, cfg *config.Config) (apiKey, baseUR
 			if v, ok := a.Metadata["base_url"].(string); ok {
 				baseURL = strings.TrimSpace(v)
 			}
-		}
-	}
-	if baseURL == "" && cfg != nil {
-		if override := strings.TrimSpace(cfg.GetOAuthEndpointOverride("claude").ApiBaseURL); override != "" {
-			baseURL = override
 		}
 	}
 	return

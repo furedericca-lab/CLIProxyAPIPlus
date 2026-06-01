@@ -1454,7 +1454,7 @@ func TestClaudeExecutor_Execute_InjectsMaxTokensWhenMissing(t *testing.T) {
 	}
 }
 
-func TestManagerClaudeOAuthAlias_Execute_UsesExpandedModelAndOverrideBaseURL(t *testing.T) {
+func TestManagerClaudeOAuthAlias_Execute_UsesExpandedModelAndAuthBaseURL(t *testing.T) {
 	const (
 		routeModel     = "sonnet"
 		targetModel    = "claude-sonnet-4-6"
@@ -1477,13 +1477,7 @@ func TestManagerClaudeOAuthAlias_Execute_UsesExpandedModelAndOverrideBaseURL(t *
 	}))
 	defer server.Close()
 
-	cfg := &config.Config{
-		OAuthEndpointOverrides: map[string]config.OAuthEndpointConfig{
-			"claude": {
-				ApiBaseURL: server.URL,
-			},
-		},
-	}
+	cfg := &config.Config{}
 	manager := coreauth.NewManager(nil, nil, nil)
 	manager.RegisterExecutor(NewClaudeExecutor(cfg))
 	manager.SetOAuthModelAlias(map[string][]config.OAuthModelAlias{
@@ -1500,6 +1494,7 @@ func TestManagerClaudeOAuthAlias_Execute_UsesExpandedModelAndOverrideBaseURL(t *
 		Metadata: map[string]any{
 			"email":        "oauth@example.com",
 			"access_token": "oauth-token",
+			"base_url":     server.URL,
 		},
 	}
 	if _, err := manager.Register(context.Background(), oauthAuth); err != nil {
@@ -1541,7 +1536,7 @@ func TestManagerClaudeOAuthAlias_Execute_UsesExpandedModelAndOverrideBaseURL(t *
 	}
 }
 
-func TestClaudeExecutor_CountTokens_UsesConfigOAuthApiBaseURL(t *testing.T) {
+func TestClaudeExecutor_CountTokens_UsesAuthBaseURL(t *testing.T) {
 	t.Parallel()
 
 	var requestedPath string
@@ -1552,11 +1547,7 @@ func TestClaudeExecutor_CountTokens_UsesConfigOAuthApiBaseURL(t *testing.T) {
 	}))
 	defer server.Close()
 
-	executor := NewClaudeExecutor(&config.Config{
-		OAuthEndpointOverrides: map[string]config.OAuthEndpointConfig{
-			"claude": {ApiBaseURL: server.URL},
-		},
-	})
+	executor := NewClaudeExecutor(&config.Config{})
 	auth := &cliproxyauth.Auth{
 		Provider: "claude",
 		Attributes: map[string]string{
@@ -1564,6 +1555,7 @@ func TestClaudeExecutor_CountTokens_UsesConfigOAuthApiBaseURL(t *testing.T) {
 		},
 		Metadata: map[string]any{
 			"access_token": "oauth-token",
+			"base_url":     server.URL,
 		},
 	}
 
@@ -1577,33 +1569,6 @@ func TestClaudeExecutor_CountTokens_UsesConfigOAuthApiBaseURL(t *testing.T) {
 
 	if requestedPath != "/v1/messages/count_tokens" {
 		t.Fatalf("requested path = %q, want %q", requestedPath, "/v1/messages/count_tokens")
-	}
-}
-
-func TestResolveClaudeKeyConfig_IgnoresConfigOAuthApiBaseURLForOAuthLookup(t *testing.T) {
-	t.Parallel()
-
-	cfg := &config.Config{
-		OAuthEndpointOverrides: map[string]config.OAuthEndpointConfig{
-			"claude": {ApiBaseURL: "https://override.example.com/anthropic"},
-		},
-		ClaudeKey: []config.ClaudeKey{{
-			APIKey:  "oauth-token",
-			BaseURL: "https://override.example.com/anthropic",
-		}},
-	}
-	auth := &cliproxyauth.Auth{
-		Provider: "claude",
-		Attributes: map[string]string{
-			"auth_kind": "oauth",
-		},
-		Metadata: map[string]any{
-			"access_token": "oauth-token",
-		},
-	}
-
-	if entry := resolveClaudeKeyConfig(cfg, auth); entry != nil {
-		t.Fatalf("resolveClaudeKeyConfig() = %+v, want nil because oauth auth should not inherit config ApiBaseURL for auth lookup", entry)
 	}
 }
 

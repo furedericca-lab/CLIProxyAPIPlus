@@ -63,19 +63,13 @@ func TestOAuthEndpointConfig_RefreshURLDefaultsToTokenURL(t *testing.T) {
 
 func TestGetOAuthEndpointOverride_AllProviderKeys(t *testing.T) {
 	providers := []string{
-		"antigravity", "claude", "codex", "gemini",
-		"github-copilot", "kiro", "kimi",
+		"github-copilot", "kiro",
 	}
 
 	cfg := &Config{
 		OAuthEndpointOverrides: map[string]OAuthEndpointConfig{
-			"antigravity":    {TokenURL: "https://antigravity.token"},
-			"claude":         {TokenURL: "https://claude.token"},
-			"codex":          {TokenURL: "https://codex.token"},
-			"gemini":         {TokenURL: "https://gemini.token"},
 			"github-copilot": {TokenURL: "https://copilot.token"},
 			"kiro":           {TokenURL: "https://kiro.token"},
-			"kimi":           {TokenURL: "https://kimi.token"},
 		},
 	}
 
@@ -109,7 +103,7 @@ func TestGetOAuthEndpointOverride_DeviceAuthorizeURL(t *testing.T) {
 	cfg := &Config{
 		OAuthEndpointOverrides: map[string]OAuthEndpointConfig{
 			"github-copilot": {DeviceAuthorizeURL: "https://custom-github.example.com/login/device/code"},
-			"kimi":           {DeviceAuthorizeURL: "https://custom-kimi.example.com/device"},
+			"kiro":           {DeviceAuthorizeURL: "https://custom-kiro.example.com/device"},
 		},
 	}
 
@@ -118,23 +112,21 @@ func TestGetOAuthEndpointOverride_DeviceAuthorizeURL(t *testing.T) {
 		t.Errorf("github-copilot DeviceAuthorizeURL = %q, want custom", ep.DeviceAuthorizeURL)
 	}
 
-	ep = cfg.GetOAuthEndpointOverride("kimi")
-	if ep.DeviceAuthorizeURL != "https://custom-kimi.example.com/device" {
-		t.Errorf("kimi DeviceAuthorizeURL = %q, want custom", ep.DeviceAuthorizeURL)
+	ep = cfg.GetOAuthEndpointOverride("kiro")
+	if ep.DeviceAuthorizeURL != "https://custom-kiro.example.com/device" {
+		t.Errorf("kiro DeviceAuthorizeURL = %q, want custom", ep.DeviceAuthorizeURL)
 	}
 }
 
 func TestGetOAuthEndpointOverride_UserinfoURL(t *testing.T) {
 	cfg := &Config{
 		OAuthEndpointOverrides: map[string]OAuthEndpointConfig{
-			"antigravity":    {UserinfoURL: "https://custom.googleapis.com/userinfo"},
 			"github-copilot": {UserinfoURL: "https://custom-github.example.com/user"},
-			"gemini":         {UserinfoURL: "https://custom.googleapis.com/oauth2/userinfo"},
 			"kiro":           {UserinfoURL: "https://custom-oidc.example.com/userinfo"},
 		},
 	}
 
-	for _, provider := range []string{"antigravity", "github-copilot", "gemini", "kiro"} {
+	for _, provider := range []string{"github-copilot", "kiro"} {
 		ep := cfg.GetOAuthEndpointOverride(provider)
 		if ep.UserinfoURL == "" {
 			t.Errorf("GetOAuthEndpointOverride(%q) returned empty UserinfoURL", provider)
@@ -145,17 +137,17 @@ func TestGetOAuthEndpointOverride_UserinfoURL(t *testing.T) {
 func TestGetOAuthEndpointOverride_MultipleFieldsOverride(t *testing.T) {
 	cfg := &Config{
 		OAuthEndpointOverrides: map[string]OAuthEndpointConfig{
-			"claude": {
-				AuthorizeURL:       "https://custom.claude.ai/oauth/authorize",
-				TokenURL:           "https://custom.api.anthropic.com/v1/oauth/token",
-				RefreshURL:         "https://custom.api.anthropic.com/v1/oauth/refresh",
-				UserinfoURL:        "https://custom.api.anthropic.com/v1/userinfo",
-				DeviceAuthorizeURL: "https://custom.claude.ai/device",
+			"kiro": {
+				AuthorizeURL:       "https://custom.kiro.example.com/oauth/authorize",
+				TokenURL:           "https://custom.kiro.example.com/oauth/token",
+				RefreshURL:         "https://custom.kiro.example.com/oauth/refresh",
+				UserinfoURL:        "https://custom.kiro.example.com/userinfo",
+				DeviceAuthorizeURL: "https://custom.kiro.example.com/device",
 			},
 		},
 	}
 
-	ep := cfg.GetOAuthEndpointOverride("claude")
+	ep := cfg.GetOAuthEndpointOverride("kiro")
 	if ep.AuthorizeURL == "" || ep.TokenURL == "" || ep.RefreshURL == "" ||
 		ep.UserinfoURL == "" || ep.DeviceAuthorizeURL == "" {
 		t.Errorf("Expected all fields populated, got: %+v", ep)

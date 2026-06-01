@@ -2355,18 +2355,12 @@ func (h *Handler) RequestAnthropicToken(c *gin.Context) {
 		// Create token storage
 		tokenStorage := anthropicAuth.CreateTokenStorage(bundle)
 		metadata := map[string]any{"email": tokenStorage.Email}
-		attributes := map[string]string{}
-		if baseURL := strings.TrimSpace(tokenStorage.BaseURL); baseURL != "" {
-			metadata["base_url"] = baseURL
-			attributes["base_url"] = baseURL
-		}
 		record := &coreauth.Auth{
-			ID:         fmt.Sprintf("claude-%s.json", tokenStorage.Email),
-			Provider:   "claude",
-			FileName:   fmt.Sprintf("claude-%s.json", tokenStorage.Email),
-			Storage:    tokenStorage,
-			Attributes: attributes,
-			Metadata:   metadata,
+			ID:       fmt.Sprintf("claude-%s.json", tokenStorage.Email),
+			Provider: "claude",
+			FileName: fmt.Sprintf("claude-%s.json", tokenStorage.Email),
+			Storage:  tokenStorage,
+			Metadata: metadata,
 		}
 		savedPath, errSave := h.saveTokenRecord(ctx, record)
 		if errSave != nil {

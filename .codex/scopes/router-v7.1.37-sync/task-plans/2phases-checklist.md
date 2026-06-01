@@ -72,3 +72,12 @@ Status: Complete
   `go test ./internal/auth/codex ./internal/api/handlers/management ./internal/runtime/executor`;
   `go build -o test-output ./cmd/server && rm test-output`;
   `go test ./...`.
+- 2026-06-01: second follow-up aligned all router-owned OAuth/auth files with
+  upstream main and narrowed `oauth-endpoint-overrides` documentation/tests to
+  Plus-only consumers (`github-copilot`, `kiro`).
+- 2026-06-01: second follow-up verification passed:
+  `git diff upstream/main -- internal/auth/antigravity/auth.go internal/auth/claude/anthropic_auth.go internal/auth/claude/oauth_server.go internal/auth/claude/token.go internal/auth/gemini/gemini_auth.go internal/auth/kimi/kimi.go internal/auth/codex/openai_auth.go internal/auth/codex/oauth_server.go internal/auth/xai internal/auth/vertex internal/auth/empty`;
+  `rg -n 'GetOAuthEndpointOverride\("(antigravity|claude|codex|gemini|kimi|xai|vertex|empty)"' internal sdk` returned no source consumers;
+  `go test ./internal/auth/antigravity ./internal/auth/claude ./internal/auth/codex ./internal/auth/gemini ./internal/auth/kimi ./internal/auth/xai ./internal/config ./internal/api/handlers/management ./internal/runtime/executor ./sdk/auth`;
+  `go build -o test-output ./cmd/server && rm test-output`;
+  `go test ./...`.

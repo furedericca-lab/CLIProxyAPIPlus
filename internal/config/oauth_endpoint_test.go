@@ -73,9 +73,9 @@ func TestOAuthEndpointConfig_ApplyDefaults(t *testing.T) {
 func TestNormalizeOAuthEndpointOverrides(t *testing.T) {
 	cfg := &Config{
 		OAuthEndpointOverrides: map[string]OAuthEndpointConfig{
-			"ANTIGRAVITY": {TokenURL: "https://custom.token", AuthorizeURL: "  https://custom.auth  "},
-			"  claude  ":  {TokenURL: "https://claude.token"},
-			"":            {TokenURL: "should be dropped"},
+			"GITHUB-COPILOT": {TokenURL: "https://custom.token", AuthorizeURL: "  https://custom.auth  "},
+			"  kiro  ":       {TokenURL: "https://kiro.token"},
+			"":               {TokenURL: "should be dropped"},
 		},
 	}
 
@@ -85,8 +85,8 @@ func TestNormalizeOAuthEndpointOverrides(t *testing.T) {
 		t.Errorf("expected 2 providers, got %d", len(cfg.OAuthEndpointOverrides))
 	}
 
-	if ep, ok := cfg.OAuthEndpointOverrides["antigravity"]; !ok {
-		t.Error("expected 'antigravity' key (normalized from 'ANTIGRAVITY')")
+	if ep, ok := cfg.OAuthEndpointOverrides["github-copilot"]; !ok {
+		t.Error("expected 'github-copilot' key (normalized from 'GITHUB-COPILOT')")
 	} else if ep.AuthorizeURL != "https://custom.auth" {
 		t.Errorf("expected trimmed AuthorizeURL, got %q", ep.AuthorizeURL)
 	}
@@ -99,7 +99,7 @@ func TestNormalizeOAuthEndpointOverrides(t *testing.T) {
 func TestGetOAuthEndpointOverride(t *testing.T) {
 	cfg := &Config{
 		OAuthEndpointOverrides: map[string]OAuthEndpointConfig{
-			"antigravity": {TokenURL: "https://antigravity.token"},
+			"github-copilot": {TokenURL: "https://copilot.token"},
 		},
 	}
 
@@ -110,13 +110,13 @@ func TestGetOAuthEndpointOverride(t *testing.T) {
 	}{
 		{
 			name:     "existing provider",
-			provider: "antigravity",
-			expected: OAuthEndpointConfig{TokenURL: "https://antigravity.token"},
+			provider: "github-copilot",
+			expected: OAuthEndpointConfig{TokenURL: "https://copilot.token"},
 		},
 		{
 			name:     "existing provider case insensitive",
-			provider: "ANTIGRAVITY",
-			expected: OAuthEndpointConfig{TokenURL: "https://antigravity.token"},
+			provider: "GITHUB-COPILOT",
+			expected: OAuthEndpointConfig{TokenURL: "https://copilot.token"},
 		},
 		{
 			name:     "non-existing provider",
@@ -142,7 +142,7 @@ func TestGetOAuthEndpointOverride(t *testing.T) {
 
 func TestGetOAuthEndpointOverride_NilConfig(t *testing.T) {
 	var cfg *Config
-	result := cfg.GetOAuthEndpointOverride("antigravity")
+	result := cfg.GetOAuthEndpointOverride("github-copilot")
 	if result != (OAuthEndpointConfig{}) {
 		t.Errorf("nil config should return empty config, got %+v", result)
 	}

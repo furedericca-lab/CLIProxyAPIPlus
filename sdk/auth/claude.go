@@ -204,11 +204,6 @@ waitForCallback:
 	metadata := map[string]any{
 		"email": tokenStorage.Email,
 	}
-	attributes := map[string]string{}
-	if baseURL := strings.TrimSpace(tokenStorage.BaseURL); baseURL != "" {
-		metadata["base_url"] = baseURL
-		attributes["base_url"] = baseURL
-	}
 
 	fmt.Println("Claude authentication successful")
 	if authBundle.APIKey != "" {
@@ -216,11 +211,10 @@ waitForCallback:
 	}
 
 	return &coreauth.Auth{
-		ID:         fileName,
-		Provider:   a.Provider(),
-		FileName:   fileName,
-		Storage:    tokenStorage,
-		Attributes: attributes,
-		Metadata:   metadata,
+		ID:       fileName,
+		Provider: a.Provider(),
+		FileName: fileName,
+		Storage:  tokenStorage,
+		Metadata: metadata,
 	}, nil
 }

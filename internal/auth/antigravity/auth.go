@@ -33,47 +33,19 @@ type userInfo struct {
 // AntigravityAuth handles Antigravity OAuth authentication
 type AntigravityAuth struct {
 	httpClient *http.Client
-	cfg        *config.Config
 }
 
+// NewAntigravityAuth creates a new Antigravity auth service.
 func NewAntigravityAuth(cfg *config.Config, httpClient *http.Client) *AntigravityAuth {
 	if cfg == nil {
 		cfg = &config.Config{}
 	}
 	if httpClient != nil {
-		return &AntigravityAuth{httpClient: httpClient, cfg: cfg}
+		return &AntigravityAuth{httpClient: httpClient}
 	}
 	return &AntigravityAuth{
 		httpClient: util.SetProxy(&cfg.SDKConfig, &http.Client{}),
-		cfg:        cfg,
 	}
-}
-
-func (o *AntigravityAuth) tokenEndpoint() string {
-	if o.cfg != nil {
-		if ep := o.cfg.GetOAuthEndpointOverride("antigravity").TokenURL; ep != "" {
-			return ep
-		}
-	}
-	return TokenEndpoint
-}
-
-func (o *AntigravityAuth) authEndpoint() string {
-	if o.cfg != nil {
-		if ep := o.cfg.GetOAuthEndpointOverride("antigravity").AuthorizeURL; ep != "" {
-			return ep
-		}
-	}
-	return AuthEndpoint
-}
-
-func (o *AntigravityAuth) userinfoEndpoint() string {
-	if o.cfg != nil {
-		if ep := o.cfg.GetOAuthEndpointOverride("antigravity").UserinfoURL; ep != "" {
-			return ep
-		}
-	}
-	return UserInfoEndpoint
 }
 
 func (o *AntigravityAuth) shortUserAgent() string {
@@ -159,7 +131,7 @@ func (o *AntigravityAuth) BuildAuthURL(state, redirectURI string) string {
 	params.Set("response_type", "code")
 	params.Set("scope", strings.Join(Scopes, " "))
 	params.Set("state", state)
-	return o.authEndpoint() + "?" + params.Encode()
+	return AuthEndpoint + "?" + params.Encode()
 }
 
 // ExchangeCodeForTokens exchanges authorization code for access and refresh tokens
@@ -171,7 +143,7 @@ func (o *AntigravityAuth) ExchangeCodeForTokens(ctx context.Context, code, redir
 	data.Set("redirect_uri", redirectURI)
 	data.Set("grant_type", "authorization_code")
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, o.tokenEndpoint(), strings.NewReader(data.Encode()))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, TokenEndpoint, strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, fmt.Errorf("antigravity token exchange: create request: %w", err)
 	}
@@ -212,7 +184,7 @@ func (o *AntigravityAuth) FetchUserInfo(ctx context.Context, accessToken string)
 	if accessToken == "" {
 		return "", fmt.Errorf("antigravity userinfo: missing access token")
 	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, o.userinfoEndpoint(), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, UserInfoEndpoint, nil)
 	if err != nil {
 		return "", fmt.Errorf("antigravity userinfo: create request: %w", err)
 	}

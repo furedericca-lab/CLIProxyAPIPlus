@@ -147,6 +147,17 @@ git diff --check
   `go test ./internal/auth/codex ./internal/api/handlers/management ./internal/runtime/executor`;
   `go build -o test-output ./cmd/server && rm test-output`;
   `go test ./...`.
+- 2026-06-01: second follow-up aligned all router-owned OAuth/auth files with
+  upstream main for `antigravity`, `claude`, `codex`, `gemini`, `kimi`, `xai`,
+  `vertex`, and `empty`. `oauth-endpoint-overrides` was retained only as a
+  Plus-only config extension for current consumers `github-copilot` and `kiro`;
+  router-owned providers no longer consume it.
+- 2026-06-01: second follow-up verification passed:
+  `git diff upstream/main -- internal/auth/antigravity/auth.go internal/auth/claude/anthropic_auth.go internal/auth/claude/oauth_server.go internal/auth/claude/token.go internal/auth/gemini/gemini_auth.go internal/auth/kimi/kimi.go internal/auth/codex/openai_auth.go internal/auth/codex/oauth_server.go internal/auth/xai internal/auth/vertex internal/auth/empty`;
+  `rg -n 'GetOAuthEndpointOverride\("(antigravity|claude|codex|gemini|kimi|xai|vertex|empty)"' internal sdk` returned no source consumers;
+  `go test ./internal/auth/antigravity ./internal/auth/claude ./internal/auth/codex ./internal/auth/gemini ./internal/auth/kimi ./internal/auth/xai ./internal/config ./internal/api/handlers/management ./internal/runtime/executor ./sdk/auth`;
+  `go build -o test-output ./cmd/server && rm test-output`;
+  `go test ./...`.
 
 ## Escalation Triggers
 
@@ -165,4 +176,6 @@ rewrite pushed `main`.
 ## Outcome
 
 Router `v7.1.37` is merged into `main` with Plus provider surfaces preserved,
-Codex OAuth implementation aligned to router upstream, and validation passing.
+router-owned OAuth/auth implementations aligned to router upstream,
+`oauth-endpoint-overrides` narrowed to Plus-only consumers, and validation
+passing.

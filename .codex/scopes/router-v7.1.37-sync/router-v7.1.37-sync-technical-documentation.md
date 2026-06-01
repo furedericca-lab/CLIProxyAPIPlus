@@ -15,18 +15,30 @@ the Codex executor and websocket executor. Local merge review should verify
 that these changes do not break local Codex-compatible routing or OpenAI image
 handling.
 
-### Codex OAuth
+### Router-Owned OAuth
 
-Codex is a router-owned provider. The OAuth implementation in
-`internal/auth/codex/openai_auth.go` and `internal/auth/codex/oauth_server.go`
-should stay aligned with router upstream for authorization URL generation, token
-exchange, refresh, and callback success behavior. This fork should not add
-Codex OAuth endpoint overrides unless a future explicit decision scope changes
-that policy.
+Router-owned OAuth/auth implementations should stay aligned with router upstream
+for authorization URL generation, token exchange, refresh, callback success
+behavior, and provider endpoint constants. The follow-up alignment restored the
+router-owned provider files under `internal/auth/antigravity`,
+`internal/auth/claude`, `internal/auth/codex`, `internal/auth/gemini`, and
+`internal/auth/kimi` to match upstream main where those files are router-owned.
+`internal/auth/xai`, `internal/auth/vertex`, and `internal/auth/empty` also
+show no local diff against upstream main for this boundary.
 
-`internal/auth/codex/openai_auth_test.go` may differ from upstream only where
-needed to test this fork's HTTP transport wrapping, such as bare-IP TLS bypass
-behavior.
+This fork should not add OAuth endpoint overrides for router-owned providers
+unless a future explicit decision scope changes that policy. Local tests may
+differ from upstream only where needed to test this fork's HTTP transport
+wrapping, such as bare-IP TLS bypass behavior.
+
+`oauth-endpoint-overrides` remains in `internal/config` because Plus-only
+providers still consume it:
+
+- `internal/auth/copilot/oauth.go`
+- `internal/auth/kiro/sso_oidc.go`
+
+It should be treated as a Plus-only extension, not a generic customization
+surface for router-owned provider OAuth.
 
 ### Config Surface
 
@@ -73,11 +85,12 @@ go test ./...
 
 All three checks passed on 2026-06-01.
 
-Follow-up Codex OAuth checks also passed on 2026-06-01:
+Follow-up router-owned OAuth checks also passed on 2026-06-01:
 
 ```bash
-git diff <upstream-main> -- internal/auth/codex/openai_auth.go internal/auth/codex/oauth_server.go
-go test ./internal/auth/codex ./internal/api/handlers/management ./internal/runtime/executor
+git diff upstream/main -- internal/auth/antigravity/auth.go internal/auth/claude/anthropic_auth.go internal/auth/claude/oauth_server.go internal/auth/claude/token.go internal/auth/gemini/gemini_auth.go internal/auth/kimi/kimi.go internal/auth/codex/openai_auth.go internal/auth/codex/oauth_server.go internal/auth/xai internal/auth/vertex internal/auth/empty
+rg -n 'GetOAuthEndpointOverride\("(antigravity|claude|codex|gemini|kimi|xai|vertex|empty)"' internal sdk
+go test ./internal/auth/antigravity ./internal/auth/claude ./internal/auth/codex ./internal/auth/gemini ./internal/auth/kimi ./internal/auth/xai ./internal/config ./internal/api/handlers/management ./internal/runtime/executor ./sdk/auth
 go build -o test-output ./cmd/server && rm test-output
 go test ./...
 ```
