@@ -38,8 +38,8 @@ surface:
 ## Non-goals
 
 - Do not retire Plus-only providers.
-- Do not restore upstream `README_CN.md`, `README_JA.md`, upstream `docs/`, or
-  upstream `.codex/scopes/**`.
+- Do not restore upstream `README_CN.md`, `README_JA.md`, the upstream docs
+  tree, or upstream `.codex/scopes/**`.
 - Do not rework unrelated provider architecture outside the `v7.1.37` merge
   boundary.
 - Do not push until merge, validation, and scope evidence are coherent.
@@ -126,10 +126,12 @@ git diff --check
   `python3 /root/.codex/skills/wiki-note/scripts/wiki.py legacy surface-check --json`.
 - 2026-06-01: scope doc checks passed:
   `doc_placeholder_scan.sh .codex/scopes/router-v7.1.37-sync` and
-  `scope_sync_check.sh router-v7.1.37-sync README.md AGENTS.md`; sync warnings
-  were non-blocking references to intentionally absent upstream `docs/` and
-  planned `origin/main` text.
+  `scope_sync_check.sh router-v7.1.37-sync README.md AGENTS.md`.
 - 2026-06-01: `git diff --check` passed.
+- 2026-06-01: `main` fast-forwarded to merge commit `5a697b18`
+  (`Merge tag 'v7.1.37' into merge-router-v7.1.37`).
+- 2026-06-01: closeout evidence commit prepared after merge-back so the
+  active scope records the final mainline state.
 
 ## Escalation Triggers
 
@@ -147,6 +149,5 @@ rewrite pushed `main`.
 
 ## Outcome
 
-Router `v7.1.37` is merged into the integration branch with Plus provider
-surfaces preserved and validation passing. The branch is ready for merge-back
-to `main`.
+Router `v7.1.37` is merged into `main` with Plus provider surfaces preserved
+and validation passing.

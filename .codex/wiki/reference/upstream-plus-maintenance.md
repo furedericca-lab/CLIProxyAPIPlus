@@ -31,7 +31,7 @@ Use three remotes when maintaining this fork:
 
 As of the router `v7.1.37` sync on 2026-06-01:
 
-- local integration branch: `merge-router-v7.1.37`
+- local `main`: `5a697b18` (`Merge tag 'v7.1.37' into merge-router-v7.1.37`)
 - router `upstream/main`: `05b97247` (`v7.1.37`)
 - local/router split point: `9ef99aa7` (`v7.1.9`)
 - latest active sync scope: `.codex/scopes/router-v7.1.37-sync/`

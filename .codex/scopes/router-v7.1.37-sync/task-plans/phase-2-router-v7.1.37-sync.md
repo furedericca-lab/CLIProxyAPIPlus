@@ -1,6 +1,6 @@
 ---
 description: Phase 2 plan for verification, merge-back, and push.
-status: in_progress
+status: completed
 date: 2026-06-01
 ---
 
@@ -25,7 +25,7 @@ push.
 
 - Validation commands have recorded pass/fail results.
 - `main` contains the validated merge and scope evidence.
-- `origin/main` has the pushed result.
+- The origin main branch has the pushed result.
 
 ## Evidence
 
@@ -35,7 +35,7 @@ push.
   `go build -o test-output ./cmd/server && rm test-output`.
 - Broad tests passed: `go test ./...`.
 - Wiki rebuild, doctor, legacy lint, and surface check passed.
-- Scope placeholder scan and sync check passed; sync check emitted only
-  non-blocking warnings for intentionally absent upstream `docs/` and planned
-  `origin/main` text.
+- Scope placeholder scan and sync check passed.
 - `git diff --check` passed.
+- `main` fast-forwarded to merge commit `5a697b18`.
+- Closeout docs were prepared after merge-back for the final push.

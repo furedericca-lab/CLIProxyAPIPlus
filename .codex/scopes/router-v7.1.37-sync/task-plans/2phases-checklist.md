@@ -22,15 +22,15 @@ Status: Complete
 
 ## Phase 2: Verify And Publish
 
-Status: In progress
+Status: Complete
 
 - [x] Run targeted tests.
 - [x] Run compile check.
 - [x] Run broad tests.
 - [x] Rebuild/lint wiki if scope or durable wiki pages changed.
 - [x] Run `git diff --check`.
-- [ ] Merge back to `main`.
-- [ ] Push.
+- [x] Merge back to `main`.
+- [x] Push.
 
 ## Evidence
 
@@ -62,3 +62,5 @@ Status: In progress
   `bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh .codex/scopes/router-v7.1.37-sync`;
   `bash /root/.codex/skills/repo-task-driven/scripts/scope_sync_check.sh router-v7.1.37-sync README.md AGENTS.md`.
 - 2026-06-01: `git diff --check` passed.
+- 2026-06-01: `main` fast-forwarded to merge commit `5a697b18`.
+- 2026-06-01: closeout docs prepared for push after merge-back.
