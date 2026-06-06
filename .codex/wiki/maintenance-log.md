@@ -133,3 +133,10 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: .gitignore, AGENTS.md, .codex/wiki/reference/upstream-plus-maintenance.md
 - Verification: rg notepad README.md AGENTS.md .codex/wiki /root/.codex/skills/wiki-note; git check-ignore -v .codex/wiki/.index .codex/wiki/.index/pages.json
 - Residual risk: No code behavior changed; documentation and ignore-rule update only.
+
+## 2026-06-06T09:29:01Z [router-v7.1.46-sync]
+
+- Summary: Recorded router v7.1.46 merge pitfalls: Plus deletion hunks, tag fetch warnings, file-backed logging helpers, usage reporter API migration, Codex uTLS routing, Cloudflare cooldown split, and auth test helper dependency.
+- Pages: .codex/wiki/reference/upstream-plus-maintenance.md
+- Verification: go test ./...; go build -o test-output ./cmd/server && rm test-output; wiki.py rebuild/doctor/lint/surface-check
+- Residual risk: Future router merges still need provider-surface review before accepting upstream deletions.

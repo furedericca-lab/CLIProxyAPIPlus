@@ -8,6 +8,7 @@ related_scopes:
 related_files:
   - .codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
   - .codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
+  - .codex/scopes/router-v7.1.46-sync/router-v7.1.46-sync-contract.md
   - internal/auth
   - internal/runtime/executor
   - internal/cmd
@@ -15,8 +16,8 @@ tags:
   - upstream
   - providers
   - maintenance
-last_checked: 2026-06-01
-updated: 2026-06-01T18:24:00+08:00
+last_checked: 2026-06-06
+updated: 2026-06-06T14:35:00+08:00
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -29,13 +30,16 @@ Use three remotes when maintaining this fork:
 - `upstream`: active router baseline, currently `https://github.com/router-for-me/CLIProxyAPI`
 - `router`: compatibility alias, currently `https://github.com/router-for-me/CLIProxyAPI`
 
-As of the router `v7.1.37` sync on 2026-06-01:
+As of the router `v7.1.46` sync on 2026-06-06:
 
-- local `main`: `5a697b18` (`Merge tag 'v7.1.37' into merge-router-v7.1.37`)
-- router `upstream/main`: `05b97247` (`v7.1.37`)
+- local merge target before commit: `c96575ca` (`Remove obsolete Claude agent doc`)
+- router `upstream/main`: `fca12a26` (`v7.1.46`)
 - local/router split point: `9ef99aa7` (`v7.1.9`)
-- latest active sync scope: `.codex/scopes/router-v7.1.37-sync/`
+- latest active sync scope: `.codex/scopes/router-v7.1.46-sync/`
 - pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
+
+The previous validated sync scope for `v7.1.37` remains under
+`.codex/scopes/router-v7.1.37-sync/` as historical evidence.
 
 ## Maintenance rule
 
@@ -137,3 +141,41 @@ updates.
 
 Provider deletion hunks for local/HsnSaboor-exclusive providers should be
 excluded unless a separate scope explicitly decides to retire a provider.
+
+## Router v7.1.46 merge pitfalls
+
+The `v7.1.46` sync exposed recurring merge hazards that future upstream work
+should check early:
+
+- Router `main` still deletes Plus-only provider surfaces. Do not accept
+  upstream deletion hunks for local auth dirs, executors, login commands,
+  `.codex/wiki/**`, `.codex/scopes/**`, or the intentionally absent translated
+  READMEs without a separate retirement decision.
+- `git fetch upstream main --tags` can update `upstream/main` while returning a
+  non-zero status because old local tags such as `v6.8.44-0`, `v6.8.45-0`,
+  `v6.9.2-0`, and `v6.9.5-0` would be clobbered. Treat that as a tag hygiene
+  warning, not proof that `upstream/main` failed to update.
+- Upstream file-backed API logging changes require the whole helper set:
+  `extractWebsocketTimelineSource`, `extractAPIWebsocketTimelineSource`, and
+  `extractFileBodySource` must be present with the `logRequest` source-aware
+  path. Package-targeted tests may miss this; the server compile check caught
+  the missing helpers.
+- Upstream executor usage reporting now prefers
+  `helps.NewExecutorUsageReporter` and exported methods
+  `Publish`, `PublishFailure`, `EnsurePublished`, and `TrackFailure`.
+  Old local wrapper-style calls such as `reporter.publish` compile only while
+  using the legacy compat wrapper.
+- Codex HTTP routing is intentionally local-adapted: keep `chatgpt.com`
+  requests on the uTLS path, but keep other Codex requests proxy-aware with
+  bare-IP TLS bypass behavior.
+- Local quota cooldown policy remains one minute based on prior fork behavior,
+  while upstream Cloudflare challenge tests expect an initial retry window of
+  about 10 seconds. Keep Cloudflare challenge cooldown independent from the
+  local quota cooldown base.
+- Upstream auth removal tests depend on `sdk/cliproxy/auth/auto_refresh_loop_test.go`
+  for `setRefreshLeadFactory`. If `conductor_remove_test.go` is added, bring
+  that test helper file too.
+
+The validated closeout sequence for this sync was: targeted Go tests, required
+server compile check, full `go test ./...`, provider-surface checks, wiki
+rebuild/doctor/lint/surface-check, and `git diff --check`.

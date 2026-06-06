@@ -113,8 +113,8 @@ func (e *GeminiCLIExecutor) Execute(ctx context.Context, auth *cliproxyauth.Auth
 		return resp, err
 	}
 
-	reporter := newUsageReporter(ctx, e.Identifier(), baseModel, auth)
-	defer reporter.trackFailure(ctx, &err)
+	reporter := helps.NewExecutorUsageReporter(ctx, e, baseModel, auth)
+	defer reporter.TrackFailure(ctx, &err)
 
 	from := opts.SourceFormat
 	to := sdktranslator.FromString("gemini-cli")
@@ -226,7 +226,7 @@ func (e *GeminiCLIExecutor) Execute(ctx context.Context, auth *cliproxyauth.Auth
 		}
 		appendAPIResponseChunk(ctx, e.cfg, data)
 		if httpResp.StatusCode >= 200 && httpResp.StatusCode < 300 {
-			reporter.publish(ctx, parseGeminiCLIUsage(data))
+			reporter.Publish(ctx, parseGeminiCLIUsage(data))
 			var param any
 			out := sdktranslator.TranslateNonStream(respCtx, to, from, attemptModel, opts.OriginalRequest, payload, data, &param)
 			resp = cliproxyexecutor.Response{Payload: out, Headers: httpResp.Header.Clone()}
@@ -271,8 +271,8 @@ func (e *GeminiCLIExecutor) ExecuteStream(ctx context.Context, auth *cliproxyaut
 		return nil, err
 	}
 
-	reporter := newUsageReporter(ctx, e.Identifier(), baseModel, auth)
-	defer reporter.trackFailure(ctx, &err)
+	reporter := helps.NewExecutorUsageReporter(ctx, e, baseModel, auth)
+	defer reporter.TrackFailure(ctx, &err)
 
 	from := opts.SourceFormat
 	to := sdktranslator.FromString("gemini-cli")
@@ -405,7 +405,7 @@ func (e *GeminiCLIExecutor) ExecuteStream(ctx context.Context, auth *cliproxyaut
 					line := scanner.Bytes()
 					appendAPIResponseChunk(ctx, e.cfg, line)
 					if detail, ok := parseGeminiCLIStreamUsage(line); ok {
-						reporter.publish(ctx, detail)
+						reporter.Publish(ctx, detail)
 					}
 					if bytes.HasPrefix(line, dataTag) {
 						segments := sdktranslator.TranslateStream(respCtx, to, from, attemptModel, opts.OriginalRequest, reqBody, bytes.Clone(line), &param)
@@ -430,7 +430,7 @@ func (e *GeminiCLIExecutor) ExecuteStream(ctx context.Context, auth *cliproxyaut
 				if errScan := scanner.Err(); errScan != nil {
 					helps.RecordAPIResponseError(ctx, e.cfg, errScan)
 
-					reporter.publishFailure(ctx)
+					reporter.PublishFailure(ctx)
 
 					select {
 					case out <- cliproxyexecutor.StreamChunk{Err: errScan}:
@@ -438,7 +438,7 @@ func (e *GeminiCLIExecutor) ExecuteStream(ctx context.Context, auth *cliproxyaut
 					}
 					return
 				}
-				reporter.ensurePublished(ctx)
+				reporter.EnsurePublished(ctx)
 				return
 			}
 
@@ -446,7 +446,7 @@ func (e *GeminiCLIExecutor) ExecuteStream(ctx context.Context, auth *cliproxyaut
 			if errRead != nil {
 				helps.RecordAPIResponseError(ctx, e.cfg, errRead)
 
-				reporter.publishFailure(ctx)
+				reporter.PublishFailure(ctx)
 
 				select {
 				case out <- cliproxyexecutor.StreamChunk{Err: errRead}:
@@ -455,7 +455,7 @@ func (e *GeminiCLIExecutor) ExecuteStream(ctx context.Context, auth *cliproxyaut
 				return
 			}
 			appendAPIResponseChunk(ctx, e.cfg, data)
-			reporter.publish(ctx, parseGeminiCLIUsage(data))
+			reporter.Publish(ctx, parseGeminiCLIUsage(data))
 			var param any
 			segments := sdktranslator.TranslateStream(respCtx, to, from, attemptModel, opts.OriginalRequest, reqBody, data, &param)
 			for i := range segments {
