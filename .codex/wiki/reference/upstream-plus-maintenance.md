@@ -16,8 +16,8 @@ tags:
   - upstream
   - providers
   - maintenance
-last_checked: 2026-06-06
-updated: 2026-06-06T14:35:00+08:00
+last_checked: 2026-06-09
+updated: 2026-06-09T11:10:00+08:00
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -30,16 +30,17 @@ Use three remotes when maintaining this fork:
 - `upstream`: active router baseline, currently `https://github.com/router-for-me/CLIProxyAPI`
 - `router`: compatibility alias, currently `https://github.com/router-for-me/CLIProxyAPI`
 
-As of the router `v7.1.46` sync on 2026-06-06:
+As of the router `upstream/main` `58305350` sync on 2026-06-09:
 
-- local merge target before commit: `c96575ca` (`Remove obsolete Claude agent doc`)
-- router `upstream/main`: `fca12a26` (`v7.1.46`)
+- local merge target before commit: `f179df79` (`tools: add management password checker`)
+- router `upstream/main`: `58305350` (`feat(jshandler): add new plugin providing JavaScript-based interceptors and capabilities`)
 - local/router split point: `9ef99aa7` (`v7.1.9`)
-- latest active sync scope: `.codex/scopes/router-v7.1.46-sync/`
+- latest active sync scope: `.codex/scopes/router-main-58305350-sync/`
 - pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 
-The previous validated sync scope for `v7.1.37` remains under
-`.codex/scopes/router-v7.1.37-sync/` as historical evidence.
+The previous validated sync scopes for `v7.1.37` and `v7.1.46` remain under
+`.codex/scopes/router-v7.1.37-sync/` and
+`.codex/scopes/router-v7.1.46-sync/` as historical evidence.
 
 ## Maintenance rule
 
@@ -179,3 +180,34 @@ should check early:
 The validated closeout sequence for this sync was: targeted Go tests, required
 server compile check, full `go test ./...`, provider-surface checks, wiki
 rebuild/doctor/lint/surface-check, and `git diff --check`.
+
+## Router main 58305350 merge pitfalls
+
+The 2026-06-09 sync to router `58305350` had no exact release tag. Treat the
+commit hash as the target baseline unless a later tag appears on the same
+commit.
+
+New pitfalls from this sync:
+
+- Upstream pluginhost support is cross-cutting. It touches server startup,
+  management API routes, SDK handler interceptors, watcher auth parsing,
+  model registration, translator hooks, and service runtime sync. Accepting
+  only the new `internal/pluginhost/**` package is insufficient.
+- Local Plus runtime hooks still matter. Preserve local Kiro refresh startup,
+  `GetWatcher`, GitLab auth/model registration behavior, management IP
+  blacklist handling, and config-applied reload callbacks while adding
+  pluginhost hooks.
+- Release/build changes need local adaptation. Upstream moved plugin-capable
+  builds toward CGO/Debian, but its release workflow still assumes translated
+  README files. Keep local release packaging unless it is deliberately
+  redesigned.
+- `.gitignore` patterns can block conflict resolution. Bare `cliproxy` and
+  `server` patterns ignore `sdk/cliproxy` and `cmd/server`; keep them
+  anchored as `/cliproxy` and `/server`.
+- Tests may need signature adaptation after upstream adds context-aware model
+  registration. Existing local tests should call `registerModelsForAuth` with
+  `context.Background()`.
+
+Validated closeout for this sync: server compile, targeted `sdk/cliproxy`
+tests, full `go test ./...`, provider-surface checks, wiki rebuild/doctor/
+lint/surface-check, and `git diff --check`.

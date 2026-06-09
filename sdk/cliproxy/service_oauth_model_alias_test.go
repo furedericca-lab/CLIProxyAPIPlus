@@ -1,6 +1,7 @@
 package cliproxy
 
 import (
+	"context"
 	"testing"
 
 	internalconfig "github.com/router-for-me/CLIProxyAPI/v7/internal/config"
@@ -223,7 +224,7 @@ func TestRegisterModelsForAuth_ClaudeOAuthAliasSetsExecutionTarget(t *testing.T)
 		reg.UnregisterClient(auth.ID)
 	})
 
-	service.registerModelsForAuth(auth)
+	service.registerModelsForAuth(context.Background(), auth)
 
 	models := reg.GetModelsForClient(auth.ID)
 	if len(models) == 0 {
@@ -305,5 +306,47 @@ func TestBuildOllamaConfigModels_NoExecutionTargetWhenNameEqualsAlias(t *testing
 	}
 	if out[0].ExecutionTarget != "" {
 		t.Fatalf("execution target = %q, want empty", out[0].ExecutionTarget)
+	}
+}
+
+func TestApplyOAuthModelAlias_PluginProvider(t *testing.T) {
+	cfg := &config.Config{
+		OAuthModelAlias: map[string][]config.OAuthModelAlias{
+			"qoder": {
+				{Name: "qmodel_latest", Alias: "qlatest"},
+			},
+		},
+	}
+	models := []*ModelInfo{
+		{ID: "qmodel_latest", Name: "models/qmodel_latest"},
+	}
+
+	out := applyOAuthModelAlias(cfg, "qoder", "oauth", models)
+	if len(out) != 1 {
+		t.Fatalf("expected 1 model, got %d", len(out))
+	}
+	if out[0].ID != "qlatest" {
+		t.Fatalf("expected plugin alias id %q, got %q", "qlatest", out[0].ID)
+	}
+	if out[0].Name != "models/qlatest" {
+		t.Fatalf("expected plugin alias name %q, got %q", "models/qlatest", out[0].Name)
+	}
+}
+
+func TestApplyOAuthModelAlias_PluginProviderSkipsAPIKey(t *testing.T) {
+	cfg := &config.Config{
+		OAuthModelAlias: map[string][]config.OAuthModelAlias{
+			"qoder": {
+				{Name: "qmodel_latest", Alias: "qlatest"},
+			},
+		},
+	}
+	models := []*ModelInfo{
+		{ID: "qmodel_latest", Name: "models/qmodel_latest"},
+	}
+
+	out := applyOAuthModelAlias(cfg, "qoder", "api_key", models)
+	if len(out) != 1 || out[0].ID != "qmodel_latest" {
+		t.Fatalf("expected API key plugin model to remain unchanged, got %#v", out)
 	}
 }

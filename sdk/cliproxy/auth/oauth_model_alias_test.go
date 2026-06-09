@@ -221,6 +221,17 @@ func TestOAuthModelAliasChannel_Kiro(t *testing.T) {
 	}
 }
 
+func TestOAuthModelAliasChannel_PluginProvider(t *testing.T) {
+	t.Parallel()
+
+	if got := OAuthModelAliasChannel(" Qoder ", "oauth"); got != "qoder" {
+		t.Fatalf("OAuthModelAliasChannel() = %q, want %q", got, "qoder")
+	}
+	if got := OAuthModelAliasChannel("qoder", "api_key"); got != "" {
+		t.Fatalf("OAuthModelAliasChannel() = %q, want empty channel for API key", got)
+	}
+}
+
 func TestApplyOAuthModelAlias_SuffixPreservation(t *testing.T) {
 	t.Parallel()
 
@@ -669,5 +680,43 @@ func TestPrepareExecutionModels_AuthSpecificRealFirstAliasSecond(t *testing.T) {
 	modelsB := m.prepareExecutionModels(authB, "gpt-5.4")
 	if len(modelsB) != 1 || modelsB[0] != "gpt-5.2" {
 		t.Fatalf("prepareExecutionModels(authB) = %v, want [%q]", modelsB, "gpt-5.2")
+	}
+}
+
+func TestApplyOAuthModelAlias_PluginProvider(t *testing.T) {
+	t.Parallel()
+
+	aliases := map[string][]internalconfig.OAuthModelAlias{
+		"qoder": {{Name: "qmodel_latest", Alias: "qlatest"}},
+	}
+
+	mgr := NewManager(nil, nil, nil)
+	mgr.SetConfig(&internalconfig.Config{})
+	mgr.SetOAuthModelAlias(aliases)
+
+	auth := &Auth{ID: "qoder-auth", Provider: "qoder", Attributes: map[string]string{"auth_kind": "oauth"}}
+
+	resolvedModel := mgr.applyOAuthModelAlias(auth, "qlatest")
+	if resolvedModel != "qmodel_latest" {
+		t.Errorf("applyOAuthModelAlias() model = %q, want %q", resolvedModel, "qmodel_latest")
+	}
+}
+
+func TestApplyOAuthModelAlias_PluginProviderSkipsAPIKey(t *testing.T) {
+	t.Parallel()
+
+	aliases := map[string][]internalconfig.OAuthModelAlias{
+		"qoder": {{Name: "qmodel_latest", Alias: "qlatest"}},
+	}
+
+	mgr := NewManager(nil, nil, nil)
+	mgr.SetConfig(&internalconfig.Config{})
+	mgr.SetOAuthModelAlias(aliases)
+
+	auth := &Auth{ID: "qoder-auth", Provider: "qoder", Attributes: map[string]string{"auth_kind": "api_key"}}
+
+	resolvedModel := mgr.applyOAuthModelAlias(auth, "qlatest")
+	if resolvedModel != "qlatest" {
+		t.Errorf("applyOAuthModelAlias() model = %q, want %q", resolvedModel, "qlatest")
 	}
 }

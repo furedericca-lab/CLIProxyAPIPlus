@@ -1,6 +1,6 @@
 # Binaries
 cli-proxy-api
-cliproxy
+/cliproxy
 /server
 *.exe
 
@@ -16,6 +16,8 @@ conv/*
 temp/*
 refs/*
 tmp/*
+plugins/*
+examples/plugin/bin/*
 
 # Storage backends
 pgstore/*
@@ -59,14 +61,13 @@ _bmad-output/*
 # Opencode
 .beads/
 .opencode/
-.cli-proxy-api/
 .venv/
 *.bak
 *.json
 .cli-proxy-api/
 .sisyphus/
 .tldr/
-server
+/server
 .gocache/
 chat.txt
 *.orig
