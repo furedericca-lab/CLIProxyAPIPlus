@@ -35,7 +35,7 @@ As of the router `upstream/main` `58305350` sync on 2026-06-09:
 - local merge target before commit: `f179df79` (`tools: add management password checker`)
 - router `upstream/main`: `58305350` (`feat(jshandler): add new plugin providing JavaScript-based interceptors and capabilities`)
 - local/router split point: `9ef99aa7` (`v7.1.9`)
-- latest active sync scope: `.codex/scopes/router-main-58305350-sync/`
+- latest archived sync scope: `.codex/scopes/archive/router-main-58305350-sync/`
 - pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 
 The previous validated sync scopes for `v7.1.37` and `v7.1.46` remain under
