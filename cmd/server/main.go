@@ -90,32 +90,12 @@ func main() {
 	var codexLogin bool
 	var codexDeviceLogin bool
 	var claudeLogin bool
-	var qwenLogin bool
-	var kiloLogin bool
-	var iflowLogin bool
-	var iflowCookie bool
-	var gitlabLogin bool
-	var gitlabTokenLogin bool
 	var noBrowser bool
 	var oauthCallbackPort int
 	var antigravityLogin bool
 	var kimiLogin bool
 	var xaiLogin bool
-	var cursorLogin bool
-	var kiroLogin bool
-	var kiroGoogleLogin bool
-	var kiroAWSLogin bool
-	var kiroAWSAuthCode bool
-	var kiroImport bool
-	var kiroIDCLogin bool
-	var kiroCLILogin bool
-	var kiroIDCStartURL string
-	var kiroIDCRegion string
-	var kiroIDCFlow string
-	var githubCopilotLogin bool
-	var clineLogin bool
-	var codeBuddyLogin bool
-	var codeBuddyIntlLogin bool
+	var plusLogins plusLoginFlags
 	var projectID string
 	var vertexImport string
 	var vertexImportPrefix string
@@ -134,12 +114,6 @@ func main() {
 	flag.BoolVar(&codexLogin, "codex-login", false, "Login to Codex using OAuth")
 	flag.BoolVar(&codexDeviceLogin, "codex-device-login", false, "Login to Codex using device code flow")
 	flag.BoolVar(&claudeLogin, "claude-login", false, "Login to Claude using OAuth")
-	flag.BoolVar(&qwenLogin, "qwen-login", false, "Login to Qwen using OAuth")
-	flag.BoolVar(&kiloLogin, "kilo-login", false, "Login to Kilo AI using device flow")
-	flag.BoolVar(&iflowLogin, "iflow-login", false, "Login to iFlow using OAuth")
-	flag.BoolVar(&iflowCookie, "iflow-cookie", false, "Login to iFlow using Cookie")
-	flag.BoolVar(&gitlabLogin, "gitlab-login", false, "Login to GitLab Duo using OAuth")
-	flag.BoolVar(&gitlabTokenLogin, "gitlab-token-login", false, "Login to GitLab Duo using a personal access token")
 	flag.BoolVar(&noBrowser, "no-browser", false, "Don't open browser automatically for OAuth")
 	flag.IntVar(&oauthCallbackPort, "oauth-callback-port", 0, "Override OAuth callback port (defaults to provider-specific port)")
 	flag.BoolVar(&useIncognito, "incognito", false, "Open browser in incognito/private mode for OAuth (useful for multiple accounts)")
@@ -147,21 +121,7 @@ func main() {
 	flag.BoolVar(&antigravityLogin, "antigravity-login", false, "Login to Antigravity using OAuth")
 	flag.BoolVar(&kimiLogin, "kimi-login", false, "Login to Kimi using OAuth")
 	flag.BoolVar(&xaiLogin, "xai-login", false, "Login to xAI using OAuth")
-	flag.BoolVar(&cursorLogin, "cursor-login", false, "Login to Cursor using OAuth")
-	flag.BoolVar(&kiroLogin, "kiro-login", false, "Login to Kiro using Google OAuth")
-	flag.BoolVar(&kiroGoogleLogin, "kiro-google-login", false, "Login to Kiro using Google OAuth (same as --kiro-login)")
-	flag.BoolVar(&kiroAWSLogin, "kiro-aws-login", false, "Login to Kiro using AWS Builder ID (device code flow)")
-	flag.BoolVar(&kiroAWSAuthCode, "kiro-aws-authcode", false, "Login to Kiro using AWS Builder ID (authorization code flow, better UX)")
-	flag.BoolVar(&kiroImport, "kiro-import", false, "Import Kiro token from Kiro IDE (~/.aws/sso/cache/kiro-auth-token.json)")
-	flag.BoolVar(&kiroIDCLogin, "kiro-idc-login", false, "Login to Kiro using IAM Identity Center (IDC)")
-	flag.BoolVar(&kiroCLILogin, "kiro-cli-login", false, "Login to Kiro using native Kiro CLI OAuth flow")
-	flag.StringVar(&kiroIDCStartURL, "kiro-idc-start-url", "", "IDC start URL (required with --kiro-idc-login)")
-	flag.StringVar(&kiroIDCRegion, "kiro-idc-region", "", "IDC region (default: us-east-1)")
-	flag.StringVar(&kiroIDCFlow, "kiro-idc-flow", "", "IDC flow type: authcode (default) or device")
-	flag.BoolVar(&githubCopilotLogin, "github-copilot-login", false, "Login to GitHub Copilot using device flow")
-	flag.BoolVar(&clineLogin, "cline-login", false, "Login to Cline using OAuth")
-	flag.BoolVar(&codeBuddyLogin, "codebuddy-login", false, "Login to CodeBuddy using browser OAuth flow")
-	flag.BoolVar(&codeBuddyIntlLogin, "codebuddy-intl-login", false, "Login to CodeBuddy International (codebuddy.ai) using browser OAuth flow")
+	registerPlusLoginFlags(flag.CommandLine, &plusLogins)
 	flag.StringVar(&projectID, "project_id", "", "Project ID (Gemini only, not required)")
 	flag.StringVar(&configPath, "config", DefaultConfigPath, "Configure File Path")
 	flag.StringVar(&vertexImport, "vertex-import", "", "Import Vertex service account key JSON file")
@@ -592,7 +552,7 @@ func main() {
 		CallbackPort: oauthCallbackPort,
 	}
 
-	commandMode := vertexImport != "" || login || antigravityLogin || codexLogin || codexDeviceLogin || claudeLogin || kimiLogin || xaiLogin
+	commandMode := vertexImport != "" || login || antigravityLogin || codexLogin || codexDeviceLogin || claudeLogin || kimiLogin || xaiLogin || plusLogins.Active()
 	cloudConfigMissing := isCloudDeploy && !configFileExists
 	homeMode := configLoadedFromHome || (cfg != nil && cfg.Home.Enabled)
 	if shouldStartExampleAPIKeyWarningServer(cfg, commandMode, tuiMode, standalone, cloudConfigMissing, homeMode) {
@@ -636,16 +596,6 @@ func main() {
 	} else if antigravityLogin {
 		// Handle Antigravity login
 		cmd.DoAntigravityLogin(cfg, options)
-	} else if githubCopilotLogin {
-		// Handle GitHub Copilot login
-		cmd.DoGitHubCopilotLogin(cfg, options)
-	} else if codeBuddyLogin {
-		cmd.DoCodeBuddyLogin(cfg, options)
-	} else if codeBuddyIntlLogin {
-		cmd.DoCodeBuddyIntlLogin(cfg, options)
-	} else if clineLogin {
-		// Handle Cline login
-		cmd.DoClineLogin(cfg, options)
 	} else if codexLogin {
 		// Handle Codex login
 		cmd.DoCodexLogin(cfg, options)
@@ -655,62 +605,12 @@ func main() {
 	} else if claudeLogin {
 		// Handle Claude login
 		cmd.DoClaudeLogin(cfg, options)
-	} else if qwenLogin {
-		cmd.DoQwenLogin(cfg, options)
-	} else if kiloLogin {
-		cmd.DoKiloLogin(cfg, options)
-	} else if iflowLogin {
-		cmd.DoIFlowLogin(cfg, options)
-	} else if iflowCookie {
-		cmd.DoIFlowCookieAuth(cfg, options)
-	} else if gitlabLogin {
-		cmd.DoGitLabLogin(cfg, options)
-	} else if gitlabTokenLogin {
-		cmd.DoGitLabTokenLogin(cfg, options)
 	} else if kimiLogin {
 		cmd.DoKimiLogin(cfg, options)
 	} else if xaiLogin {
 		cmd.DoXAILogin(cfg, options)
-	} else if cursorLogin {
-		cmd.DoCursorLogin(cfg, options)
-	} else if kiroLogin {
-		// For Kiro auth, default to incognito mode for multi-account support
-		// Users can explicitly override with --no-incognito
-		// Note: This config mutation is safe - auth commands exit after completion
-		// and don't share config with StartService (which is in the else branch)
-		setKiroIncognitoMode(cfg, useIncognito, noIncognito)
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroLogin(cfg, options)
-	} else if kiroGoogleLogin {
-		// For Kiro auth, default to incognito mode for multi-account support
-		// Users can explicitly override with --no-incognito
-		// Note: This config mutation is safe - auth commands exit after completion
-		setKiroIncognitoMode(cfg, useIncognito, noIncognito)
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroGoogleLogin(cfg, options)
-	} else if kiroAWSLogin {
-		// For Kiro auth, default to incognito mode for multi-account support
-		// Users can explicitly override with --no-incognito
-		setKiroIncognitoMode(cfg, useIncognito, noIncognito)
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroAWSLogin(cfg, options)
-	} else if kiroAWSAuthCode {
-		// For Kiro auth with authorization code flow (better UX)
-		setKiroIncognitoMode(cfg, useIncognito, noIncognito)
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroAWSAuthCodeLogin(cfg, options)
-	} else if kiroImport {
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroImport(cfg, options)
-	} else if kiroIDCLogin {
-		// For Kiro IDC auth, default to incognito mode for multi-account support
-		setKiroIncognitoMode(cfg, useIncognito, noIncognito)
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroIDCLogin(cfg, options, kiroIDCStartURL, kiroIDCRegion, kiroIDCFlow)
-	} else if kiroCLILogin {
-		setKiroIncognitoMode(cfg, useIncognito, noIncognito)
-		kiro.InitFingerprintConfig(cfg)
-		cmd.DoKiroCLILogin(cfg, options)
+	} else if handlePlusLoginCommand(cfg, options, plusLogins, useIncognito, noIncognito) {
+		return
 	} else {
 		// In cloud deploy mode without config file, just wait for shutdown signals
 		if isCloudDeploy && !configFileExists {

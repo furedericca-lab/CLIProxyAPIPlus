@@ -17,7 +17,7 @@ tags:
   - providers
   - maintenance
 last_checked: 2026-06-13
-updated: 2026-06-13T12:05:00+08:00
+updated: 2026-06-13T12:42:51+08:00
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -62,11 +62,58 @@ Treat these root docs as local project identity and operator policy, not upstrea
 - `AGENTS.md`
 - `CLAUDE.md`
 
+Also treat these build and documentation-adjacent surfaces as local-owned unless a future scope explicitly redesigns them:
+
+- `.codex/**`
+- `.github/**`
+- `.goreleaser.yml`
+- release/build documentation linked from the local fork identity
+
 Future upstream merges should keep local versions for these files. `README_CN.md` and `README_JA.md` are intentionally absent and should not be restored from upstream. The recommended implementation is a `.gitattributes` merge rule using an `ours` merge driver, plus repo-local merge driver config. Root docs should explain this maintained Plus fork, not mirror upstream sponsor/marketing text unless intentionally reintroduced.
 
 Tracked maintainer knowledge belongs under `.codex/wiki/**`. Scratch notes
 should stay outside git; promote durable decisions, references, or debugging
 breadcrumbs into typed wiki pages instead.
+
+## Merge-surface reduction rule
+
+The 2026-06-13 `plus-merge-surface-reduction` scope established a low-risk
+pattern for local extensions that repeatedly collide with router-owned files:
+keep upstream-shaped core files thin and move Plus-only registrations or
+provider catalogs into same-package extension files.
+
+Current split points:
+
+- `cmd/server/main.go` keeps router startup flow plus one `plusLoginFlags`
+  hook; Plus-only login flag registration and dispatch live in
+  `cmd/server/plus_login_flags.go`.
+- `sdk/auth/refresh_registry.go` keeps router-owned refresh lead providers;
+  Plus-only refresh lead providers live in
+  `sdk/auth/refresh_registry_plus.go`.
+- `internal/registry/model_definitions.go` keeps shared/router static model
+  lookup and built-ins. Plus provider catalogs now live in provider-specific
+  files:
+  `internal/registry/model_definitions_codebuddy.go`,
+  `internal/registry/model_definitions_codebuddy_intl.go`,
+  `internal/registry/model_definitions_cursor.go`,
+  `internal/registry/model_definitions_github_copilot.go`, and
+  `internal/registry/model_definitions_kiro.go`.
+- `internal/config/config.go` keeps central config loading and shared config
+  types; Plus-oriented OAuth alias/exclusion/endpoint override helpers live in
+  `internal/config/oauth_plus.go`.
+- `internal/api/handlers/management/auth_files.go` keeps generic auth-file
+  handler flow; Antigravity primary/tier management helpers live in
+  `internal/api/handlers/management/auth_files_antigravity.go`.
+
+This scope intentionally excludes high-risk routing and scheduler internals.
+Do not fold `sdk/cliproxy/auth/conductor.go`, auth scheduling, request routing
+policy, or auth persistence behavior changes into this scope. Those require a
+dedicated future scope with behavior-level tests.
+
+Future low/medium-risk candidates for the same treatment, when touched by real merge conflicts:
+
+- Introduce provider-specific management auth helpers before expanding
+  `internal/api/handlers/management/auth_files.go` further.
 
 ## Provider preservation checklist
 
