@@ -16,8 +16,8 @@ tags:
   - upstream
   - providers
   - maintenance
-last_checked: 2026-06-09
-updated: 2026-06-09T11:10:00+08:00
+last_checked: 2026-06-13
+updated: 2026-06-13T12:05:00+08:00
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -30,12 +30,13 @@ Use three remotes when maintaining this fork:
 - `upstream`: active router baseline, currently `https://github.com/router-for-me/CLIProxyAPI`
 - `router`: compatibility alias, currently `https://github.com/router-for-me/CLIProxyAPI`
 
-As of the router `upstream/main` `58305350` sync on 2026-06-09:
+As of the router `upstream/main` `6a0b198c` sync on 2026-06-13:
 
-- local merge target before commit: `f179df79` (`tools: add management password checker`)
-- router `upstream/main`: `58305350` (`feat(jshandler): add new plugin providing JavaScript-based interceptors and capabilities`)
+- local merge target before commit: `338220f3` (`Archive router main 58305350 sync scope`)
+- router `upstream/main`: `6a0b198c` (`Merge pull request #3823 from router-for-me/fix/cors-expose-plugin-support`)
 - local/router split point: `9ef99aa7` (`v7.1.9`)
-- latest archived sync scope: `.codex/scopes/archive/router-main-58305350-sync/`
+- latest active sync scope: `.codex/scopes/router-main-6a0b198c-sync/`
+- latest archived sync scope before this run: `.codex/scopes/archive/router-main-58305350-sync/`
 - pre-clean-root local backup: `backup/main-before-hsnsaboor-clean-root` at `044678b0`
 
 The previous validated sync scopes for `v7.1.37` and `v7.1.46` remain under
@@ -211,3 +212,45 @@ New pitfalls from this sync:
 Validated closeout for this sync: server compile, targeted `sdk/cliproxy`
 tests, full `go test ./...`, provider-surface checks, wiki rebuild/doctor/
 lint/surface-check, and `git diff --check`.
+
+## Router main 6a0b198c merge pitfalls
+
+The 2026-06-13 sync moved from router `58305350` to `6a0b198c`; the latest
+fetched tag in the range was `v7.1.73`.
+
+New pitfalls from this sync:
+
+- Upstream plugin work moved beyond the initial pluginhost stack into
+  `internal/pluginstore/**`, latest-release resolution, plugin config get,
+  host model callbacks, scheduler support, interceptor skipping, HTML/JSON
+  sanitization, and the `X-CPA-SUPPORT-PLUGIN` response header. Future syncs
+  should treat pluginhost, pluginstore, management handlers, SDK handlers, and
+  CORS exposure as one integration surface.
+- Preserve local management behavior while adding upstream plugin store state:
+  keep management IP blacklist handling, config-applied callbacks, and local
+  `SetOnConfigApplied` behavior together with upstream `SetConfigReloadHook`,
+  plugin release cache, and plugin registry HTTP client fields.
+- SDK handler merges need both sides of the execution metadata path. Keep local
+  estimated input token metadata and fallback-route hints, while accepting
+  upstream model execution source metadata, explicit response format, query
+  cloning, and request-after-auth interceptors.
+- `sdk/cliproxy/auth` merges must combine local fallback model context with
+  upstream plugin request-after-auth interception. Apply the interceptor after
+  any local OAuth execution-model and fallback-model rewrite so plugins see the
+  actual upstream request.
+- Executor translator merges should use upstream `ResponseFormatOrSource`
+  for response translation, but preserve local OpenAI-compatible stream
+  normalization with `normalizeDeltaContentArray` before passing SSE data to
+  downstream translators.
+- Antigravity refresh tests can hang if they rely on global
+  `antigravityTransport` injection. Current runtime builds HTTP clients through
+  proxy-aware helpers, so tests should inject the test transport through
+  context key `cliproxy.roundtripper`.
+- `GinLogrusLogger` now requires a `*config.Config`; older tests that still
+  call it with no arguments must pass at least `&config.Config{}`.
+
+Validated closeout for this sync: required server compile, targeted
+`sdk/cliproxy` and `sdk/cliproxy/auth` tests, targeted logging and Antigravity
+refresh tests during repair, full `go test ./...`, provider-surface checks,
+wiki rebuild/doctor/legacy lint/surface-check, scope placeholder scan, and
+`git diff --check`.
