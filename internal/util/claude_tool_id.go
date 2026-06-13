@@ -32,5 +32,3 @@ func SanitizeClaudeToolID(id string) string {
 	}
 	return s
 }
-
-

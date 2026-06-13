@@ -871,6 +871,7 @@ func (h *BaseAPIHandler) executeStreamWithAuthManagerFormats(ctx context.Context
 	pendingChunks := make([]coreexecutor.StreamChunk, 0, 1)
 	streamClosedBeforeRead := false
 	streamCanceledBeforeRead := false
+	streamHeaderInitBeforeReturn := false
 	readInitialStreamChunks := func() {
 		for {
 			var chunk coreexecutor.StreamChunk
@@ -887,7 +888,7 @@ func (h *BaseAPIHandler) executeStreamWithAuthManagerFormats(ctx context.Context
 			}
 			if !ok {
 				streamClosedBeforeRead = true
-				applyStreamHeaderInit()
+				streamHeaderInitBeforeReturn = true
 				return
 			}
 			pendingChunks = append(pendingChunks, chunk)
@@ -895,7 +896,7 @@ func (h *BaseAPIHandler) executeStreamWithAuthManagerFormats(ctx context.Context
 				return
 			}
 			if len(chunk.Payload) > 0 {
-				applyStreamHeaderInit()
+				streamHeaderInitBeforeReturn = true
 				return
 			}
 		}
@@ -1048,10 +1049,11 @@ func (h *BaseAPIHandler) executeStreamWithAuthManagerFormats(ctx context.Context
 					}
 				}
 			}
-			applyStreamHeaderInit()
-			return
 		}
 	}()
+	if streamHeaderInitBeforeReturn {
+		applyStreamHeaderInit()
+	}
 	return dataChan, upstreamHeaders, errChan
 }
 

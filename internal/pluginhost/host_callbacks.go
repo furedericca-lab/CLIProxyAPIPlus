@@ -154,9 +154,13 @@ func (h *Host) callHostHTTPDoStream(ctx context.Context, request []byte) ([]byte
 		ctx = context.Background()
 	}
 	streamCtx, cancel := context.WithCancel(ctx)
+	defer func() {
+		if cancel != nil {
+			cancel()
+		}
+	}()
 	resp, errDo := h.newHTTPClient(nil).DoStream(streamCtx, httpReq)
 	if errDo != nil {
-		cancel()
 		return nil, errDo
 	}
 	streamID := ""
@@ -164,9 +168,9 @@ func (h *Host) callHostHTTPDoStream(ctx context.Context, request []byte) ([]byte
 		streamID = h.httpStreams.open(resp.Chunks, cancel)
 	}
 	if streamID == "" {
-		cancel()
 		return nil, fmt.Errorf("host http stream bridge is unavailable")
 	}
+	cancel = nil
 	return marshalRPCResult(rpcHostHTTPStreamResponse{
 		StatusCode: resp.StatusCode,
 		Headers:    httpHeader(resp.Headers),
@@ -301,9 +305,13 @@ func (h *Host) callHostModelExecuteStream(ctx context.Context, request []byte) (
 		ctx = context.Background()
 	}
 	streamCtx, cancel := context.WithCancel(ctx)
+	defer func() {
+		if cancel != nil {
+			cancel()
+		}
+	}()
 	stream, errMsg := executor.ExecuteModelStream(streamCtx, modelExecutionRequestFromPlugin(req.HostModelExecutionRequest, skipPluginID))
 	if errMsg != nil {
-		cancel()
 		return nil, modelExecutionError(errMsg)
 	}
 	streamID := ""
@@ -311,9 +319,9 @@ func (h *Host) callHostModelExecuteStream(ctx context.Context, request []byte) (
 		streamID = h.modelStreams.open(req.HostCallbackID, stream.Chunks, cancel)
 	}
 	if streamID == "" {
-		cancel()
 		return nil, fmt.Errorf("host model stream bridge is unavailable")
 	}
+	cancel = nil
 	if req.HostCallbackID != "" {
 		h.addCallbackCleanup(req.HostCallbackID, func() {
 			h.modelStreams.close(streamID)

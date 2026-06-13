@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-06-13T04:46:51Z
+updated: 2026-06-13T04:57:51Z
 ---
+
 
 
 
@@ -64,7 +65,7 @@ updated: 2026-06-13T04:46:51Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-06-13T04:46:51Z
+- Last rebuilt: 2026-06-13T04:57:51Z
 - Page count: 9
 
 ## By Type
@@ -88,7 +89,7 @@ updated: 2026-06-13T04:46:51Z
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | status: current | updated: 2026-05-31T05:16:13Z
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | status: current | updated: 2026-05-31T05:16:13Z
 - [Source Docs Archive Map](reference/source-docs-archive-map.md) | status: current | updated: 2026-06-01T03:05:26Z
-- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-06-13T12:42:51+08:00
+- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | status: current | updated: 2026-06-13T12:56:42+08:00
 
 ## By Scope
 
@@ -122,7 +123,7 @@ updated: 2026-06-13T04:46:51Z
 
 ## Recently Updated
 
-- 2026-06-13T12:42:51+08:00 | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
+- 2026-06-13T12:56:42+08:00 | [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md)
 - 2026-06-01T03:05:26Z | [Source Docs Archive Map](reference/source-docs-archive-map.md)
 - 2026-05-31T08:23:43Z | [Codebase Function Map](concepts/codebase-function-map.md)
 - 2026-05-31T05:16:13Z | [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md)
@@ -146,7 +147,7 @@ updated: 2026-06-13T04:46:51Z
 - [Pre-clean-root Provider and Commit Inventory](reference/local-provider-and-commit-inventory.md) | files: `internal/auth`, `internal/runtime/executor`, `internal/cmd` ... | anchors: 0 | status: current
 - [Model Catalog Maintenance](reference/model-catalog-maintenance.md) | files: `internal/registry/models/models.json`, `internal/registry/model_definitions.go`, `internal/registry/model_updater.go` ... | anchors: 0 | status: current
 - [Source Docs Archive Map](reference/source-docs-archive-map.md) | files: `.codex/wiki`, `README.md`, `AGENTS.md` | anchors: 0 | status: current
-- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | files: `.codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md`, `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`, `.codex/scopes/router-v7.1.46-sync/router-v7.1.46-sync-contract.md` ... | anchors: 0 | status: current
+- [Upstream Plus Maintenance Strategy](reference/upstream-plus-maintenance.md) | files: `.codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md`, `.codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md`, `.codex/scopes/archive/plus-merge-surface-reduction/plus-merge-surface-reduction-contract.md` ... | anchors: 0 | status: current
 
 Use `scripts/wiki.py nav goto` and `scripts/wiki.py nav refs` for symbol-level navigation.
 <!-- END AUTO -->

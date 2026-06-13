@@ -8,6 +8,8 @@ related_scopes:
 related_files:
   - .codex/scopes/archive/router-upstream-rebaseline/router-upstream-rebaseline-contract.md
   - .codex/scopes/archive/hsnsaboor-clean-root/hsnsaboor-clean-root-contract.md
+  - .codex/scopes/archive/plus-merge-surface-reduction/plus-merge-surface-reduction-contract.md
+  - .codex/scopes/archive/post-merge-hygiene-scan-2026-06-13/post-merge-hygiene-scan-2026-06-13-contract.md
   - .codex/scopes/router-v7.1.46-sync/router-v7.1.46-sync-contract.md
   - internal/auth
   - internal/runtime/executor
@@ -17,7 +19,7 @@ tags:
   - providers
   - maintenance
 last_checked: 2026-06-13
-updated: 2026-06-13T12:42:51+08:00
+updated: 2026-06-13T12:56:42+08:00
 ---
 
 # Upstream Plus Maintenance Strategy
@@ -114,6 +116,23 @@ Future low/medium-risk candidates for the same treatment, when touched by real m
 
 - Introduce provider-specific management auth helpers before expanding
   `internal/api/handlers/management/auth_files.go` further.
+
+## Post-merge hygiene rule
+
+After a merge-surface reduction or upstream sync, run a hygiene pass before
+claiming the branch stable enough for the next integration scope:
+
+- `go vet ./...`
+- `gofmt -l $(git ls-files '*.go')`
+- `git diff --check`
+- targeted tests for any vet or cleanup touch points
+- `go build -o test-output ./cmd/server && rm test-output`
+- `go test ./...`
+
+The 2026-06-13 `post-merge-hygiene-scan-2026-06-13` pass cleared only
+low/medium-risk findings. It intentionally did not touch conductor,
+scheduler, routing policy, auth persistence, provider retirement, CI, or
+release behavior.
 
 ## Provider preservation checklist
 

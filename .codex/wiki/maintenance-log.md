@@ -140,3 +140,10 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: .codex/wiki/reference/upstream-plus-maintenance.md
 - Verification: go test ./...; go build -o test-output ./cmd/server && rm test-output; wiki.py rebuild/doctor/lint/surface-check
 - Residual risk: Future router merges still need provider-surface review before accepting upstream deletions.
+
+## 2026-06-13T12:56:42+08:00 [post-merge-hygiene-scan-2026-06-13]
+
+- Summary: Cleared latest post-merge hygiene findings from `go vet`, including file-backed request logging `WriteTo` semantics, pluginhost stream cancel ownership, stream header initialization reachability, and tracked Go formatting drift.
+- Pages: .codex/scopes/archive/post-merge-hygiene-scan-2026-06-13/post-merge-hygiene-scan-2026-06-13-contract.md
+- Verification: go vet ./...; go test ./internal/logging ./internal/api/middleware ./internal/pluginhost ./sdk/api/handlers; go build -o test-output ./cmd/server && rm test-output; go test ./...; git diff --check; gofmt -l $(git ls-files '*.go')
+- Residual risk: High-risk conductor, scheduler, routing policy, auth persistence, provider retirement, CI, and release behavior were intentionally left untouched.
